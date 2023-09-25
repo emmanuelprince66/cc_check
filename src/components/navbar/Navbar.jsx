@@ -16,7 +16,9 @@ import { Box } from "@mui/material";
 const Navbar = () => {
   const currentTheme = useTheme();
   const cartItem = useSelector((state) => state.cart);
+  const {orders} = useSelector((state) => state.merchantReducer);
   const [numOfItem, setNumOfItem] = useState("");
+  const [noOfResItem, setNoOfResItem] = useState(0);
 
   const MyTypography = styled(Typography)(({ theme }) => ({
     color: currentTheme.palette.type === "light" ? "#373737" : "#fff",
@@ -36,8 +38,15 @@ const Navbar = () => {
 
   useEffect(() => {
     const val = cartItem.length;
+    const restaurantOrders  = orders
+    .filter((order) => order.items.length > 0)
+    .map((item) => {
+      const { menu, ...rest } = item;
+      return rest;
+    });
+setNoOfResItem(restaurantOrders.length)
     setNumOfItem(val);
-  }, [cartItem]);
+  }, [cartItem,orders]);
 
   return (
     <div className="gpt3__nav">
@@ -129,13 +138,14 @@ const Navbar = () => {
                 alignItems: "center",
                 padding: "8px",
                 fontSize: "9px",
-                background: numOfItem === 0 ? "" : "#dc0019",
+                background:  orders.length > 0 ?(noOfResItem === 0 ? "" : "#dc0019") : (numOfItem === 0 ? "" : "#dc0019"),
                 width: "15px",
                 height: "15px",
                 zIndex: "1",
               }}
             >
-              {numOfItem === 0 ? "" : numOfItem}
+{ orders.length > 0 ?(noOfResItem === 0 ? "" : noOfResItem) : (numOfItem === 0 ? "" : numOfItem)
+}
             </Box>
             <Link
               to="/cart"

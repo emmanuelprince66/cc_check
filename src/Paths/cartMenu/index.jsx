@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import useMenu from "../../hooks/useMenu";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useState } from "react";
-import { useTheme } from "@mui/material";
 import {
   Box,
   TextField,
@@ -31,7 +30,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 const RestaurantMenu = () => {
-  const currentTheme = useTheme();
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
   const [categoryInView, setCategoryInView] = useState(0);
@@ -124,40 +122,31 @@ const RestaurantMenu = () => {
             }}
           />
         </Box>
-
         <Box display="flex" sx={{}} gap="1em" justifyContent="space-between">
           <div
-            style={{ display: "flex", flexDirection: "column", gap: ".5em" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              fontSize: "1.2em",
+              gap: ".5em",
+            }}
           >
             <span>Order {orderInView}</span>
-            {orders[orderInView - 1]?.items?.length > 0 && !preview ? (
-              <Button
-                onClick={showPreview}
-                sx={{
-                  cursor: "pointer",
-                  borderRadius: ".5em",
-                  padding: ".2em .8em",
-                  color: "grey",
-                  border: "1px solid var(--primary-red)",
-                }}
-              >
-                {" "}
-                Preview{" "}
-              </Button>
-            ) : null}{" "}
           </div>
           {/* eat-in and takeaway buttons */}
           {!isOTD ? (
             <div
               style={{
                 display: "grid",
-                gap: ".5em",
+                gap: ".1em",
+                height: "fit-content",
                 gridTemplateColumns: "1fr 1fr",
               }}
             >
               <span
                 style={{
                   width: "100%",
+                  textAlign: "center",
                   color:
                     orders[orderInView - 1]?.orderType === "eat-in"
                       ? "white"
@@ -167,7 +156,7 @@ const RestaurantMenu = () => {
                     orders[orderInView - 1]?.orderType === "eat-in"
                       ? "var(--cart-deep-red)"
                       : "#EDEDED",
-                  padding: ".5em .8em",
+                  padding: ".3em .5em",
                   borderRadius: ".5em",
                 }}
                 onClick={() => handleOrderType("eat-in")}
@@ -186,7 +175,7 @@ const RestaurantMenu = () => {
                     orders[orderInView - 1]?.orderType === "eat-out"
                       ? "var(--cart-deep-red)"
                       : "#EDEDED",
-                  padding: ".5em .8em",
+                  padding: ".3em .5em",
                   borderRadius: " .5em .5em ",
                 }}
                 onClick={() => handleOrderType("eat-out")}
@@ -197,10 +186,27 @@ const RestaurantMenu = () => {
             </div>
           ) : null}{" "}
         </Box>
-
+        {orders[orderInView - 1]?.items?.length > 0 && !preview ? (
+          <Button
+            onClick={showPreview}
+            sx={{
+              cursor: "pointer",
+              borderRadius: ".5em",
+              textTransform: "none",
+              whiteSpace: "nowrap",
+              padding: ".2em .8em",
+              margin: "1em 0",
+              color: "grey",
+              border: "1px solid var(--primary-red)",
+            }}
+          >
+            {" "}
+            Preview Items{" "}
+          </Button>
+        ) : null}{" "}
         {/* Category List   */}
         {!preview ? (
-          <Box>
+          <Box sx={{marginTop:'.5em'}} >
             <List
               sx={{
                 display: "flex",
@@ -277,10 +283,7 @@ const RestaurantMenu = () => {
         {/* save button and amounnt */}
         <Box
           sx={{
-            background:
-              currentTheme.palette.type === "light"
-                ? "var(--grey-cart-btn)"
-                : "#eeee",
+            background: "var(--grey-cart-btn)",
             display: "flex",
             insetInline: "0",
             alignItems: "center",
@@ -295,13 +298,7 @@ const RestaurantMenu = () => {
           }}
           bottom="0"
         >
-          <Typography
-            sx={{
-              fontWeight: "700",
-              fontSize: "2em",
-              color: currentTheme.palette.type === "ligth" ? "#fff" : "#000",
-            }}
-          >
+          <Typography sx={{ fontWeight: "700", fontSize: "2em" }}>
             {orders[orderInView - 1]?.amount}
           </Typography>
           <Button

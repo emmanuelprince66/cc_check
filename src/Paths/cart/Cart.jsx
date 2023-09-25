@@ -191,21 +191,6 @@ const Cart = () => {
                   <CartItem item={item} key={item.id} />
                 ))
               )}
-              {merchantDetails.restaurant ? (
-                <Button
-                  onClick={() => setOTD()}
-                  sx={{
-                    backgroundColor: "var(--primary-red)",
-                    color: "white",
-                    width: "80%",
-                    margin: "auto",
-                    textTransform: "none",
-                    padding: "10px 5px",
-                  }}
-                >
-                  Make a Delivery Order or Pick-up{" "}
-                </Button>
-              ) : null}
             </Box>
             {/* Card end */}
 

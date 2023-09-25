@@ -132,11 +132,11 @@ const Restaurant = () => {
           alignItems: "center",
         }}
       >
-        {(isOTD && location.pathname === "/cart") || !isOTD ? (
+        {( location.pathname === "/cart") ? (
           <h1 className="h1-text">My Cart</h1>
         ) : null}
 
-        {(isOTD && location.pathname === "/cart") || !isOTD ? (
+        {(isOTD && location.pathname === "/cart")  ? (
           <Box>
             <span
               style={{

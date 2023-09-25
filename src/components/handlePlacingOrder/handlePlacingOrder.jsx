@@ -160,6 +160,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     (order) => order.orderType === "delivery"
   );
   const ordersPickUp = orders.filter((order) => order.orderType === "pick-up");
+  const ordersEatIn = orders.filter((order) => order.orderType === "eat-in");
+  const ordersTakeaway = orders.filter(
+    (order) => order.orderType === "eat-out"
+  );
   const itemInCart = orders?.some((order) => order.items.length > 0);
 
   const handleOpen = () => {
@@ -167,7 +171,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     // chechandleOpendisabledking if there are any items in cart...
     if (restaurant || isOTD) {
       if (location.pathname === "/cart") {
-        ordersDelivery.length > 0 && landmarkCost.amount !== undefined
+        !itemInCart
+          ? notify("No Item in Cart!")
+          : ordersDelivery.length > 0 && landmarkCost.amount !== undefined
           ? navigate("/restaurant-checkout")
           : landmarkCost.amount === undefined
           ? notify("Choose a Landmark!")
@@ -425,14 +431,14 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       ? takeAwayPrice * ordersDelivery.length
       : ordersPickUp.length > 0
       ? takeAwayPrice * ordersPickUp.length
-      : takeAwayPrice;
+      : takeAwayPrice * ordersTakeaway.length;
 
   let restaurantAmount =
     ordersDelivery.length > 0
-      ? totalAmount + packCost + (Number(landmarkCost?.amount) || 0)
-      : OTDtype == "pick-up"
-      ? totalAmount + packCost
-      : totalAmount;
+      ? totalAmount + Number(packCost) + (Number(landmarkCost?.amount) || 0)
+      : ordersEatIn.length > 0
+      ? totalAmount
+      : totalAmount + Number(packCost);
 
   let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2));
   const totalPrice =
@@ -637,7 +643,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           padding: "1.5rem",
           gap: ".5rem",
           justifyContent: "start",
-          background: "white",
+          backgroundColor: "white",
           right: { xs: "1px", sm: "19%", lg: "35%" },
           // background:
           //   currentTheme.palette.type === "light" ? "" : "#2C2C2E",
@@ -651,23 +657,25 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           marginBottom: "5rem",
         }}
       >
-        <Box>
-          {restaurant || isOTD ? (
+{
+  merchantDetails?.restaurant?
+          <Box>
+          {(restaurant && ordersTakeaway.length > 0) || isOTD ? (
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography> Take-Away Pack(+1) </Typography>
               <Typography>
                 {" "}
-                {OTDtype === "delivery"
-                  ? (takeAwayPrice || 0) +
-                    " " +
-                    "x" +
-                    " " +
-                    ordersDelivery.length
-                  : (takeAwayPrice || 0) +
-                    " " +
-                    "x" +
-                    " " +
-                    ordersPickUp.length}
+                {(takeAwayPrice || 0) +
+                  " " +
+                  "x" +
+                  " " +
+                  (ordersDelivery.length > 0
+                    ? ordersDelivery.length
+                    : ordersPickUp.length > 0
+                    ? ordersPickUp.length
+                    : ordersTakeaway.length > 0
+                    ? ordersTakeaway.length
+                    : 0)}
               </Typography>
             </Box>
           ) : null}
@@ -725,8 +733,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             </Box>
           ) : null}{" "}
         </Box>
-
-        {/* 
+        : null
+}
         <Box
           sx={{
             display: "flex",
@@ -752,11 +760,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               fontSize: "16px",
             }}
           >
-            <FormattedPrice amount={totalPrice || 0 } />
+            <FormattedPrice amount={totalPrice || 0} />
           </Typography>
         </Box>
-
-
 
         <Box>
           <Button
@@ -781,7 +787,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               ? "Checkout"
               : "Proceed to payment"}
           </Button>
-        </Box> */}
+        </Box>
       </Box>
       {supermarketCart.length !== 0 && (
         <Box

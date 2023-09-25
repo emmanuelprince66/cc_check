@@ -54,7 +54,6 @@ const merchantSlice = createSlice({
         takeAwayPrice:0,
         myLocation:{},
         landmarks:null,
-        isOTD:false,
         OTDtype:'delivery',
         OTDOrderOnClickId:0,
       }
