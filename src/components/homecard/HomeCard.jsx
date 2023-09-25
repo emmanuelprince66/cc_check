@@ -7,7 +7,6 @@ import walletIcon from "../../images/walletIcon.png";
 import locationIcon from "../../images/locationIcon.png";
 import { Box } from "@mui/material";
 import bookIcon from "../../images/bookIcon.png";
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material";

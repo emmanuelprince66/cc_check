@@ -19,13 +19,13 @@ import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { useLocation } from "react-router-dom";
 
 import exclamgreen from "../../images/practise/exclamgreen.svg";
-
+import { useMyLocation } from "../../hooks/useLocation";
 import { useTheme } from "@mui/material";
 import { AuthProvider } from "../../util/AuthContext";
 import useUser from "../../hooks/useUser";
 import Scanner from "../../components/scanner/Scanner";
 import Qrscanner from "../../components/Qrscanner";
-import { fillUserDetails } from "../../util/slice/merchantSlice";
+import { fillUserDetails,setLocation } from "../../util/slice/merchantSlice";
 import { Link } from "react-router-dom";
 import Acctbox from "../../components/acctbox/Acctbox";
 import { useDispatch } from "react-redux";
@@ -43,6 +43,11 @@ const Home = () => {
     dispatch(fillUserDetails(user.data));
   }, [user, dispatch]);
 
+  const mylocation = useMyLocation()
+
+  useEffect(()=>{
+setLocation(mylocation)
+  },[mylocation])
   useEffect(() => {
     setTimeout(() => {
       setShowScanner(true);
