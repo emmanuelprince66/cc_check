@@ -1,0 +1,13 @@
+.gpt3__home-card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+.home-card-img {
+  max-width: 70px;
+  max-height: 70px;
+}

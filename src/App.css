@@ -1,0 +1,111 @@
+.checkLogo {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+.gif-img {
+  width: 50%;
+  height: 50%;
+}
+
+.no-trans-img {
+  width: 350px;
+  height: 350px;
+}
+
+* {
+  font-family: "Raleway", "Montserrat";
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  --cart-bg-color: #f2f2f2;
+  --primary-red: #dc0019;
+  --cart-deep-red: #eb001b;
+  --grey-cart-btn: #e8e5e5;
+  --currency-green: #008000;
+  --text-gold: hsla(36, 100%, 39%, 1);
+  --box-gold: rgba(197, 118, 0, 0.1);
+}
+.max_width {
+  display: flex;
+  width: 31%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  margin-top: 4rem;
+  margin-bottom: 7rem;
+}
+
+/* .scale-in-center {
+	-webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+} */
+.cart_img {
+  width: 6.6rem;
+  height: 5.5rem;
+  border-radius: 4px;
+}
+#email-input::placeholder,
+#last-name::placeholder,
+#first-name::placeholder,
+#address-input::placeholder,
+#phone-number::placeholder,
+#password-input::placeholder {
+  font-family: raleWay;
+}
+#email-input,
+#first-name,
+#address-input,
+#phone-number,
+#password-input {
+  font-family: raleWay;
+  font-weight: 550;
+}
+/* .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border:2px solid #C57600 !important;
+} */
+
+@media screen and (min-width: 320px) and (max-width: 820px) {
+  .max_width {
+    min-width: 85%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .cart_img {
+    width: 5.2rem;
+    height: 5.5rem;
+    border-radius: 4px;
+  }
+}
+
+.MuiFormHelperText-root {
+  color: #dc0019 !important ;
+  margin-left: 1px !important;
+}
