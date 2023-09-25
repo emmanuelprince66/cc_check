@@ -25,7 +25,7 @@ import { AuthProvider } from "../../util/AuthContext";
 import useUser from "../../hooks/useUser";
 import Scanner from "../../components/scanner/Scanner";
 import Qrscanner from "../../components/Qrscanner";
-import { fillUserDetails,setLocation } from "../../util/slice/merchantSlice";
+import { fillUserDetails, setLocation } from "../../util/slice/merchantSlice";
 import { Link } from "react-router-dom";
 import Acctbox from "../../components/acctbox/Acctbox";
 import { useDispatch } from "react-redux";
@@ -43,11 +43,17 @@ const Home = () => {
     dispatch(fillUserDetails(user.data));
   }, [user, dispatch]);
 
-  const mylocation = useMyLocation()
-
-  useEffect(()=>{
-setLocation(mylocation)
-  },[mylocation])
+  const mylocation = useMyLocation();
+  console.log(mylocation);
+  useEffect(() => {
+    mylocation
+      .then((res) => {
+        dispatch(
+          setLocation({ latitude: res.latitude, longitude: res.longitude })
+        );
+      })
+      .catch((err) => console.log(err));
+  }, [mylocation]);
   useEffect(() => {
     setTimeout(() => {
       setShowScanner(true);
