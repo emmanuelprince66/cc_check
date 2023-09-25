@@ -19,6 +19,7 @@ import { useRef, useCallback, useState, useEffect } from "react";
 import TestScanner from "../TestScanner";
 import { Link } from "react-router-dom";
 import "./Scanner.css";
+import { Skeleton } from "@mui/material";
 const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
   const cart = useSelector((state) => state.cart);
   const [result, setResult] = useState("");
@@ -307,7 +308,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
                   borderRadius: "8px",
                 }}
               >
-                <img
+                {/* <img
                   className="product_img"
                   src={
                     superMarketP ? (
@@ -321,7 +322,20 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
                     )
                   }
                   alt="always"
-                />
+                /> */}
+                {superMarketP ? (
+                  superMarketP.image === "" ? (
+                    <Skeleton variant="rectangular" width={100} height={100} />
+                  ) : (
+                    <img
+                      src={superMarketP.image}
+                      className="product_img"
+                      alt="product-img"
+                    />
+                  )
+                ) : (
+                  <CircularProgress size="10px" />
+                )}
               </Box>
             </Box>
 

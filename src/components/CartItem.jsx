@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import alwaysp from "../images/alwaysp.svg";
 import { removeFromCart } from "../util/slice/CartSlice";
 import { useSelector } from "react-redux";
+import { Skeleton } from "@mui/material";
 import xFlow from "../images/xFlow.svg";
 
 import {
@@ -34,6 +35,7 @@ const CartItem = ({ item }) => {
     const foundItem = state.cart.find((cartItem) => cartItem.id === item.id);
     return foundItem ? foundItem.counter : 0;
   });
+
   const handleIncrement = (cardId) => {
     dispatch(incrementCounter(cardId));
   };
@@ -57,11 +59,16 @@ const CartItem = ({ item }) => {
       >
         <Box sx={{ display: "flex", gap: "6px" }}>
           <Box sx={{ marginBottom: "-0.3rem" }}>
-            <img
+            {/* <img
               className="cart_img"
               src={item.productImage === null ? alwaysp : item.image}
               alt="ap"
-            />
+            /> */}
+            {item.image === "" ? (
+              <Skeleton variant="rectangular" width={106} height={80} />
+            ) : (
+              <img src={item.image} className="cart_img" alt="cart-image" />
+            )}
           </Box>
 
           <Box
