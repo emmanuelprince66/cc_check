@@ -159,7 +159,7 @@ const Restaurant = () => {
                   OTDtype === "pick-up" ? "var(--cart-deep-red)" : "#EDEDED",
                 color: OTDtype === "pick-up" ? "white" : "black",
                 padding: ".5em .8em",
-                borderRadius: "0em .5em .5em 0",
+                borderRadius: " .5em .5em ",
               }}
               onClick={() => handleOrderType("pick-up")}
             >

@@ -53,6 +53,7 @@ const merchantSlice = createSlice({
         receiptInView:null,
         takeAwayPrice:0,
         myLocation:{},
+        isOTD:false,
         landmarks:null,
         OTDtype:'delivery',
         OTDOrderOnClickId:0,
@@ -266,6 +267,10 @@ state.totalAmount -= state.orders[action.payload - 1]?.amount
 ,
     setOTDRestaurants:(state,action)=>{
       state.OTDRestaurants  = action.payload
+    },
+    clearStateForOTD:(state,action)=>{
+     return { ...state ,data:[],orders:[],landmark:0,landmarks:null,previewOrders:[],deliveryDetails:{} }
+
     }
 
   },
@@ -274,6 +279,7 @@ state.totalAmount -= state.orders[action.payload - 1]?.amount
 export const {
   populateMerchantDetails,
   addOrders,
+  clearStateForOTD,
   fillUserDetails,
   removeOrder,
   setDeliveryDetails,

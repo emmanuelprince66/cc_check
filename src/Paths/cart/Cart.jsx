@@ -101,9 +101,11 @@ const Cart = () => {
           maxWidth: { xs: "100%", sm: "100%", md: "31%" },
         }}
       >
-        {merchantDetails?.restaurant || isOTD ? (
-          <Restaurant />
-        ) : (
+      {/* using supermarket to render cart  */}
+        {merchantDetails.restaurant || isOTD ? (
+          <Restaurant/>
+
+         ) : (
           <Container
             sx={{
               display: "flex",
@@ -137,7 +139,7 @@ const Cart = () => {
                 My Cart
               </Typography>
 
-              {supermarketCart.length != 0 && (
+              {supermarketCart.length !== 0 && (
                 <Button
                   onClick={() => setDeleteAllCart(true)}
                   sx={{
@@ -198,13 +200,15 @@ const Cart = () => {
           </Container>
         )}
 
-        {merchantDetails.restaurant || supermarketCart.length !== 0 ? (
-          <PlaceOrder
+      
+{
+  merchantDetails.restaurant  || isOTD || supermarketCart.length > 0 ?
+            <PlaceOrder
             restaurant={merchantDetails.restaurant}
             supermarketCart={supermarketCart}
           />
-        ) : null}
-
+          : null
+}
         {/* NAVBAR */}
 
         {/* Modal 6* clear cart modal */}

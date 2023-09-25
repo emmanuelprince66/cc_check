@@ -18,7 +18,7 @@ import { getLandmarks } from "../../hooks/useGetLandMarks";
 import {
   setOTDRestaurants,
   setOTDOrderOnClickId,
-  initOTD,clearMerchantState, clearRestaurantCart
+  initOTD,clearStateForOTD, clearRestaurantCart
 } from "../../util/slice/merchantSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -84,7 +84,7 @@ const OTDMainPage = () => {
     navigate(`/restaurant/${id}`);
     dispatch(setOTDOrderOnClickId(id));
     dispatch(initOTD(true))
-    dispatch(clearMerchantState())
+    dispatch(clearStateForOTD())
   }
   return (
     <div className="gpt3__restaurant">

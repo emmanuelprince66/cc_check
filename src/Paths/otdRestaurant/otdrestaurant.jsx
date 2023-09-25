@@ -21,15 +21,22 @@ import card2 from "../../assets/card2.svg";
 
 const RestaurantPage = () => {
   const params = useParams();
+  const [restaurant,setRestaurant] = useState({})
   const { OTDRestaurants, myLocation } = useSelector(
     (state) => state.merchantReducer
   );
-  const restaurant = OTDRestaurants?.find(
+
+useEffect(() => {
+ 
+  const filteredRestaurant = OTDRestaurants?.find(
     (item) => item?.restaurant?.id == params.id
   );
+  setRestaurant(filteredRestaurant)
+}, [OTDRestaurants,params.id])
+
   const menu = useMenu(params.id);
   const [data, setData] = useState({});
-
+console.log(restaurant,OTDRestaurants,params.id)
   useEffect(() => {
     const resCoords = {
       lat: restaurant?.latitude,
@@ -58,6 +65,8 @@ const RestaurantPage = () => {
         }}
       >
         <Box sx={{ height: "20vh" }}>
+
+{restaurant?.image?
           <Avatar
             sx={{
               width: "100%",
@@ -69,8 +78,9 @@ const RestaurantPage = () => {
             alt="Menu Item Image"
             src={restaurant?.image}
           />
-        </Box>
-        <Card
+          :                   <Skeleton variant="rectangular" width={"100%"} height={'100%'} />
+        }  </Box>
+       <Card
           sx={{
             padding: ".5em ",
             width: { xs: "90%", md: "90%" },

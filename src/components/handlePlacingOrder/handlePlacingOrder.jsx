@@ -175,7 +175,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           ? notify("No Item in Cart!")
           : ordersDelivery.length > 0 && landmarkCost.amount !== undefined
           ? navigate("/restaurant-checkout")
-          : landmarkCost.amount === undefined
+          : landmarkCost.amount === undefined && ordersDelivery.length > 0
           ? notify("Choose a Landmark!")
           : itemInCart
           ? setOpen(true)
@@ -633,6 +633,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   return (
     <>
       <ToastContainer />
+      {
+  merchantDetails?.restaurant !== undefined || isOTD  ?
       <Box
         sx={{
           display: "flex",
@@ -657,8 +659,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           marginBottom: "5rem",
         }}
       >
-{
-  merchantDetails?.restaurant?
+
           <Box>
           {(restaurant && ordersTakeaway.length > 0) || isOTD ? (
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -733,8 +734,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             </Box>
           ) : null}{" "}
         </Box>
-        : null
-}
+    
+
         <Box
           sx={{
             display: "flex",
@@ -788,7 +789,11 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               : "Proceed to payment"}
           </Button>
         </Box>
+
       </Box>
+
+      : null
+    }
       {supermarketCart.length !== 0 && (
         <Box
           sx={{
