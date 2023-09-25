@@ -32,16 +32,16 @@ const RestaurantPage = () => {
 
   useEffect(() => {
     const resCoords = {
-      lat: restaurant.latitude,
-      long: restaurant.longitude,
+      lat: restaurant?.latitude,
+      long: restaurant?.longitude,
     };
     const userCoords = {
-      lat: myLocation.latitude,
-      long: myLocation.longitude,
+      lat: myLocation?.latitude,
+      long: myLocation?.longitude,
     };
     getLandmarks({ resCoords, userCoords }).then((res) => {
-      if (res && res.data) {
-        setData(res.data);
+      if (res && res?.data) {
+        setData(res?.data);
       }
     });
   }, []);
