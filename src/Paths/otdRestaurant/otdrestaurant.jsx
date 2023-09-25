@@ -46,12 +46,15 @@ console.log(restaurant,OTDRestaurants,params.id)
       lat: myLocation?.latitude,
       long: myLocation?.longitude,
     };
-    getLandmarks({ resCoords, userCoords }).then((res) => {
+    async function getData(){
+      const res = await getLandmarks({ resCoords, userCoords })
       if (res && res?.data) {
         setData(res?.data);
       }
-    });
-  }, []);
+
+    }
+getData()
+  }, [restaurant?.latitude,restaurant?.longitude, myLocation?.latitude,myLocation?.longitude,]);
 
   return (
     <div className="gpt3__restaurant">

@@ -447,7 +447,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       : calculateTotalPrice();
   const commissionCal = (1 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
-  const superMarketId = superMarket.data ? superMarket.data.id : "";
+  const superMarketId = superMarket?.data ? superMarket?.data?.id : "";
 
   const restaurantPayLoad = {
     commission: restaurantCommission,
@@ -794,7 +794,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
       : null
     }
-      {supermarketCart.length !== 0 && (
+      { merchantDetails?.restaurant === undefined || !isOTD  && supermarketCart?.length !== 0 && (
         <Box
           sx={{
             display: "flex",
@@ -864,7 +864,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 fontFamily: "raleWay",
               }}
             >
-              {ordersDelivery.length > 0 && location.pathname === "/cart"
+              {ordersDelivery?.length > 0 && location.pathname === "/cart"
                 ? "Checkout"
                 : "Proceed to payment"}
             </Button>
