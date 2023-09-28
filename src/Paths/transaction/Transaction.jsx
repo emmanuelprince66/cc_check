@@ -28,6 +28,8 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import NoResult from "../../components/NoResult";
 import FormattedPrice from "../../components/FormattedPrice";
+import { ToastContainer, toast } from "react-toastify";
+import ClipboardJS from "clipboard";
 
 const Transaction = () => {
   const transaction = useTransactions();
@@ -42,8 +44,8 @@ const Transaction = () => {
     );
 
     setModalItem(itemFromId);
-    // console.log(modalItem);
   };
+  console.log(modalItem);
 
   const handleClose = () => setOpen(false);
 
@@ -68,14 +70,49 @@ const Transaction = () => {
 
     return formattedString;
   };
-
+  const copyToClipboard = async (id) => {
+    try {
+      if (id) {
+        await navigator.clipboard.writeText(id);
+        notify("Account Number Copied To Clipboard");
+      }
+    } catch (err) {
+      console.error("Copy to clipboard failed:", err);
+    }
+  };
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
   const handleDownload = () => {
+    // Select the element with ID "receipt"
     const receipt = document.querySelector("#reciept");
+    console.log(receipt);
 
-    html2canvas(receipt).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 277);
+    // Convert the element to a JPEG image using html2canvas and lower quality setting
+    html2canvas(receipt, { useCORS: true, dpi: 150 }).then((canvas) => {
+      // Get the image data URL from the canvas with JPEG format and lower quality (adjust quality as needed)
+      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Adjust the quality (0.0 to 1.0)
+
+      // Create a new jsPDF instance with a customized page size (use "pt" for points)
+      const pdf = new jsPDF({
+        orientation: "portrait", // "portrait" or "landscape"
+        unit: "pt", // Points as the unit of measurement
+        format: [canvas.width * 0.75, canvas.height * 0.75], // Reduce page size to 75% of the canvas size
+      });
+
+      // Add the image to the PDF at the top-left corner
+      pdf.addImage(imgData, "JPEG", 0, 0);
+
+      // Save the PDF with the name "receipt.pdf"
       pdf.save("receipt.pdf");
     });
   };
@@ -297,6 +334,9 @@ const Transaction = () => {
                     </Typography>
 
                     <Box
+                      onClick={() =>
+                        copyToClipboard(modalItem && modalItem?.id)
+                      }
                       sx={{
                         padding: "4px 8px 4px 8px",
                         background: "#DC00191A",
@@ -399,7 +439,7 @@ const Transaction = () => {
                               : "#000",
                         }}
                       >
-                        {modalItem ? modalItem.transferTo.firstName : ""}
+                        {modalItem && modalItem.approvedBy.firstName}
                       </Typography>
                     </Box>
 
@@ -437,7 +477,7 @@ const Transaction = () => {
                               : "#000",
                         }}
                       >
-                        {modalItem ? modalItem.transferFrom.firstName : ""}
+                        {modalItem && modalItem.transferTo.firstName}
                       </Typography>
                     </Box>
                     <Box
@@ -491,6 +531,7 @@ const Transaction = () => {
         {/* NAVBAR */}
 
         <Navbar />
+        <ToastContainer />
       </Box>
     </AuthProvider>
   );

@@ -187,7 +187,7 @@
 }
 
 .gpt3__password-strength-div :nth-child(2) {
-  background: rgb(123, 123, 251);
+  background: #ff6e41;
   opacity: 0.3;
   border-radius: 8px;
 }
@@ -198,7 +198,7 @@
 }
 .medium {
   opacity: 1 !important;
-  background: #0000ff !important;
+  background: #ff6e41 !important;
 }
 .weak {
   opacity: 1 !important;

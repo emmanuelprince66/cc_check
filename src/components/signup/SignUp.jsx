@@ -43,7 +43,8 @@ const SignUp = ({ setIsShown, setActive }) => {
   const [medium, setMedium] = useState(false);
   const [strong, setStrong] = useState(false);
 
-  const weakPassword = new RegExp("(?=.{8,})");
+  const weakPassword = new RegExp("(?=.{3,})");
+  const weakPasswordIcon = new RegExp("(?=.{7,})");
   const mediumPassword = new RegExp("(?=.*[A-Z])(?=.*[a-z])");
   const strongPassword = new RegExp(
     "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})"
@@ -270,9 +271,13 @@ const SignUp = ({ setIsShown, setActive }) => {
 
     if (weakPassword.test(passwordInput)) {
       setWeakP(true);
-      setWeak(true);
     } else {
       setWeakP(false);
+    }
+
+    if (weakPasswordIcon.test(passwordInput)) {
+      setWeak(true);
+    } else {
       setWeak(false);
     }
 

@@ -15,6 +15,7 @@ import {
   removeOrder,
   clearRestaurantCart,
   setOrderInView,
+  clearMerchantState,
   setOTDtype,
 } from "../../util/slice/merchantSlice";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
@@ -70,6 +71,7 @@ const Restaurant = () => {
   }
   function clearCart() {
     dispatch(clearRestaurantCart());
+    dispatch(clearMerchantState());
     setAllCartOptions(false);
   }
   function handleClickMenu(id) {
@@ -106,7 +108,7 @@ const Restaurant = () => {
             alignItems: "center",
           }}
         >
-          <BackArrow />
+          <BackArrow destination="/home" />
           <Button
             sx={{
               border: "1px solid #CDCDCD",
@@ -132,11 +134,11 @@ const Restaurant = () => {
           alignItems: "center",
         }}
       >
-        {( location.pathname === "/cart") ? (
+        {location.pathname === "/cart" ? (
           <h1 className="h1-text">My Cart</h1>
         ) : null}
 
-        {(isOTD && location.pathname === "/cart")  ? (
+        {isOTD && location.pathname === "/cart" ? (
           <Box>
             <span
               style={{

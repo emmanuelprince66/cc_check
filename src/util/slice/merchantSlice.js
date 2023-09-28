@@ -5,21 +5,21 @@ const merchantSlice = createSlice({
     data: [],
     orderCart: [],
     orders: [],
-    userDetails:null,
-    deliveryDetails:{},
-    previewOrders:[],
-    OTDRestaurants:null,
+    userDetails: null,
+    deliveryDetails: {},
+    previewOrders: [],
+    OTDRestaurants: null,
     orderInView: 0,
     categoryNameInView: "",
     totalAmount: 0,
     landmarkCost: 0,
-    receiptInView:null,
-    takeAwayPrice:0,
-    myLocation:{},
-    landmarks:null,
-    isOTD:false,
-    OTDtype:'delivery',
-    OTDOrderOnClickId:0,
+    receiptInView: null,
+    takeAwayPrice: 0,
+    myLocation: {},
+    landmarks: null,
+    isOTD: false,
+    OTDtype: "delivery",
+    OTDOrderOnClickId: 0,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
@@ -27,46 +27,45 @@ const merchantSlice = createSlice({
     },
     setOTDOrderOnClickId: (state, action) => {
       state.OTDOrderOnClickId = action.payload;
-      if (state.OTDOrderOnClickId === action.payload){
-        console.log('same restaurant')
-      }
-      else{
-        state.orders = []
+      if (state.OTDOrderOnClickId === action.payload) {
+        console.log("same restaurant");
+      } else {
+        state.orders = [];
       }
     },
     setLandmarkCost: (state, action) => {
       state.landmarkCost = action.payload;
     },
-   clearMerchantState: (state, action) => {
+    clearMerchantState: (state, action) => {
       return {
         data: [],
         orderCart: [],
         orders: [],
-        userDetails:null,
-        deliveryDetails:{},
-        previewOrders:[],
-        OTDRestaurants:null,
+        userDetails: null,
+        deliveryDetails: {},
+        previewOrders: [],
+        OTDRestaurants: null,
         orderInView: 0,
         categoryNameInView: "",
         totalAmount: 0,
         landmarkCost: 0,
-        receiptInView:null,
-        takeAwayPrice:0,
-        myLocation:{},
-        isOTD:false,
-        landmarks:null,
-        OTDtype:'delivery',
-        OTDOrderOnClickId:0,
-      }
+        receiptInView: null,
+        takeAwayPrice: 0,
+        myLocation: {},
+        isOTD: false,
+        landmarks: null,
+        OTDtype: "delivery",
+        OTDOrderOnClickId: 0,
+      };
     },
     setDeliveryDetails: (state, action) => {
       state.deliveryDetails = action.payload;
     },
     setOTDtype: (state, action) => {
       state.OTDtype = action.payload;
-      state.orders =  state.orders.map((item)=>{
-        return {...item, orderType:action.payload}
-      })
+      state.orders = state.orders.map((item) => {
+        return { ...item, orderType: action.payload };
+      });
     },
     setCategoryNameInView: (state, action) => {
       state.categoryNameInView = action.payload;
@@ -87,13 +86,19 @@ const merchantSlice = createSlice({
       let existingItem = state.orders[orderIndex]?.items?.find(
         (item) => item.name === action.payload.order.name
       );
-      state.orders[orderIndex].menu = state.orders[orderIndex].menu.map((item)=>{
-        if(item.id === action.payload.order.menuId ){
-          return {...item,'added':true ,canPreview:true,canEditPreview:true}
-
+      state.orders[orderIndex].menu = state.orders[orderIndex].menu.map(
+        (item) => {
+          if (item.id === action.payload.order.menuId) {
+            return {
+              ...item,
+              added: true,
+              canPreview: true,
+              canEditPreview: true,
+            };
+          }
+          return item;
         }
-        return item;
-      })
+      );
 
       if (existingItem) {
         const updatedItem = { ...existingItem };
@@ -109,24 +114,23 @@ const merchantSlice = createSlice({
 
       if (state.orders[orderIndex]?.items.length > 0) {
         const amount = state.orders.reduce((acc, curr) => {
-          const subTotal = curr?.items?.reduce(
-            (subTotal, item) =>{
-
-              return subTotal += item.subTotal
-            },
-            0
-          );
+          const subTotal = curr?.items?.reduce((subTotal, item) => {
+            return (subTotal += item.subTotal);
+          }, 0);
           return acc + subTotal;
         }, 0);
 
         // Update the amount and totalAmount
         const subTotal = state.orders[orderIndex]?.items?.reduce(
-          (subTotal, item) =>{
-            return subTotal += item.subTotal
+          (subTotal, item) => {
+            return (subTotal += item.subTotal);
           },
           0
         );
-        state.orders[orderIndex] = {...state.orders[orderIndex],amount:subTotal} ;
+        state.orders[orderIndex] = {
+          ...state.orders[orderIndex],
+          amount: subTotal,
+        };
 
         state.totalAmount = amount;
       } else {
@@ -164,21 +168,18 @@ const merchantSlice = createSlice({
         (item) => {
           if (item.id === action.payload.id) {
             // Update the count when the condition is met
-            if(action.payload.type === 'add'){
+            if (action.payload.type === "add") {
               return {
                 ...item,
                 count: item.count + 1,
-                subTotal:Number(item.price) * (item.count + 1)
+                subTotal: Number(item.price) * (item.count + 1),
               };
-  
-            }
-            else{
+            } else {
               return {
                 ...item,
                 count: item.count - 1,
-                subTotal:Number(item.price) * (item.count - 1)
+                subTotal: Number(item.price) * (item.count - 1),
               };
-
             }
           }
           // Return the original item if the condition isn't met
@@ -188,91 +189,102 @@ const merchantSlice = createSlice({
       return state;
     },
     removeOrder: (state, action) => {
-      state.orders = state.orders.filter(
-        (order) => order.id !== action.payload
-      )
-.map((item,i)=>{
-  return{
-    ...item,id:i + 1
-  }
-})
-console.log(action.payload)
+      state.orders = state.orders
+        .filter((order) => order.id !== action.payload)
+        .map((item, i) => {
+          return {
+            ...item,
+            id: i + 1,
+          };
+        });
 
-state.totalAmount -= state.orders[action.payload - 1]?.amount
+      state.totalAmount -= state.orders[action.payload - 1]?.amount;
     },
     clearRestaurantCart: (state, action) => {
-      state.orders = state.orders.filter(
-        (order) => order.id === 1
-      )
-      state.orders =  []
-      state.orderInView =  0
-      state.categoryNameInView = ""
-      state.totalAmount = 0
-      state.landmarkCost = {}
+      state.orders = state.orders.filter((order) => order.id === 1);
+      state.orders = [];
+      state.orderInView = 0;
+      state.categoryNameInView = "";
+      state.totalAmount = 0;
+      state.landmarkCost = {};
     },
     editStatusUpdate: (state, action) => {
-      let neil = state.orders[state.orderInView - 1].menu
+      let neil = state.orders[state.orderInView - 1].menu;
 
-      state.orders[state.orderInView - 1].menu = state.orders[state.orderInView - 1].menu.map(
-(item)=>{
-  if(item.id === action.payload){
-    return{...item,added:false,canEditPreview:false}
-  }
-  return item
-}
-      )
-    },
-    removeItemFromCart:(state,action)=>{
-      state.orders[state.orderInView - 1].items = state.orders[state.orderInView - 1].items.filter((item)=> item.id !== action.payload.id )
-      state.orders[state.orderInView - 1].menu = state.orders[state.orderInView - 1].menu.map((item)=> {
-        if (item.id === action.payload.id){
-          return {
-            ...item,count:1, added:false, subTotal:item.price
-          }
+      state.orders[state.orderInView - 1].menu = state.orders[
+        state.orderInView - 1
+      ].menu.map((item) => {
+        if (item.id === action.payload) {
+          return { ...item, added: false, canEditPreview: false };
         }
-        return item
-      } )
+        return item;
+      });
+    },
+    removeItemFromCart: (state, action) => {
+      state.orders[state.orderInView - 1].items = state.orders[
+        state.orderInView - 1
+      ].items.filter((item) => item.id !== action.payload.id);
+      state.orders[state.orderInView - 1].menu = state.orders[
+        state.orderInView - 1
+      ].menu.map((item) => {
+        if (item.id === action.payload.id) {
+          return {
+            ...item,
+            count: 1,
+            added: false,
+            subTotal: item.price,
+          };
+        }
+        return item;
+      });
 
-      state.orders[state.orderInView - 1].amount -= action.payload.subTotal
+      state.orders[state.orderInView - 1].amount -= action.payload.subTotal;
     },
-    resetState:(state,action)=>{
-       state.orders =  []
-        state.orderInView =  0
-        state.categoryNameInView = ""
-        state.totalAmount = 0
-              state.landmarkCost = {}
+    resetState: (state, action) => {
+      state.orders = [];
+      state.orderInView = 0;
+      state.categoryNameInView = "";
+      state.totalAmount = 0;
+      state.landmarkCost = {};
     },
 
-    handlePreview:(state,action)=>{
-      state.previewOrders  = state.orders[state.orderInView - 1]?.menu?.filter(item=>item.canPreview)
+    handlePreview: (state, action) => {
+      state.previewOrders = state.orders[state.orderInView - 1]?.menu?.filter(
+        (item) => item.canPreview
+      );
     },
-    showReceiptInView:(state,action)=>{
-      state.receiptInView  = action.payload
+    showReceiptInView: (state, action) => {
+      state.receiptInView = action.payload;
     },
-    fillUserDetails:(state,action)=>{
-      state.userDetails  = action.payload
+    fillUserDetails: (state, action) => {
+      state.userDetails = action.payload;
     },
-    setTakeAwayPrice:(state,action)=>{
-      state.takeAwayPrice  = action.payload
+    setTakeAwayPrice: (state, action) => {
+      state.takeAwayPrice = action.payload;
     },
-    setLocation:(state,action)=>{
-      state.myLocation  = action.payload
+    setLocation: (state, action) => {
+      state.myLocation = action.payload;
     },
-    setLandmarks:(state,action)=>{
-      state.landmarks  = action.payload
+    setLandmarks: (state, action) => {
+      state.landmarks = action.payload;
     },
-    initOTD:(state,action)=>{
-      state.isOTD  = action.payload
-    }
-,
-    setOTDRestaurants:(state,action)=>{
-      state.OTDRestaurants  = action.payload
+    initOTD: (state, action) => {
+      state.isOTD = action.payload;
     },
-    clearStateForOTD:(state,action)=>{
-     return { ...state ,data:[],orders:[],landmark:0,landmarks:null,previewOrders:[],deliveryDetails:{} }
-
-    }
-
+    setOTDRestaurants: (state, action) => {
+      state.OTDRestaurants = action.payload;
+    },
+    clearStateForOTD: (state, action) => {
+      return {
+        ...state,
+        data: [],
+        orders: [],
+        landmark: 0,
+        landmarks: null,
+        previewOrders: [],
+        deliveryDetails: {},
+      };
+    },
   },
 });
 

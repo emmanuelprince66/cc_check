@@ -368,7 +368,7 @@ const Login = () => {
               </div>
 
               <div className="gpt3__check-forget">
-                <Link to="/forgetpassword">Forget Password?</Link>
+                <Link to="">Forget Password?</Link>
               </div>
 
               <div className="gpt3__check-button">

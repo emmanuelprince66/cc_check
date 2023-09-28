@@ -15,8 +15,8 @@ import { Box } from "@mui/material";
 
 const Navbar = () => {
   const currentTheme = useTheme();
-  const cartItem = useSelector((state) => state.cart);
-  const {orders} = useSelector((state) => state.merchantReducer);
+  const cartItem = useSelector((state) => state.cart.data);
+  const { orders } = useSelector((state) => state.merchantReducer);
   const [numOfItem, setNumOfItem] = useState("");
   const [noOfResItem, setNoOfResItem] = useState(0);
 
@@ -37,16 +37,16 @@ const Navbar = () => {
   const profileMatch = useMatch("/profile");
 
   useEffect(() => {
-    const val = cartItem.length;
-    const restaurantOrders  = orders
-    .filter((order) => order.items.length > 0)
-    .map((item) => {
-      const { menu, ...rest } = item;
-      return rest;
-    });
-setNoOfResItem(restaurantOrders.length)
+    const val = Array.isArray(cartItem) && cartItem.length;
+    const restaurantOrders = orders
+      .filter((order) => order.items.length > 0)
+      .map((item) => {
+        const { menu, ...rest } = item;
+        return rest;
+      });
+    setNoOfResItem(restaurantOrders.length);
     setNumOfItem(val);
-  }, [cartItem,orders]);
+  }, [cartItem, orders]);
 
   return (
     <div className="gpt3__nav">
@@ -54,25 +54,28 @@ setNoOfResItem(restaurantOrders.length)
         sx={{
           boxShadow: "0px 2px 40px rgba(0, 0, 0, 0.1)",
 
-          width: { md: "33%", sm: "100%", xs: "100%" },
+          width: { md: "31%", sm: "100%", xs: "100%" },
           padding: "10px",
           position: "fixed",
-          left: { xs: 0, sm: 0, md: "33.5%" },
+          left: { xs: 0, sm: "0", md: "34.5%" },
           bottom: 0,
           fontSize: "10px",
           paddingTop: "1rem",
           paddingBottom: "1rem",
+          display: "flex",
+          justifyContent: "center",
         }}
       >
-        <ul
+        <Box
           style={{
-            display: "flex",
-            justifyContent: "space-around",
             listStyleType: "none",
-            // paddingX: "1rem ",
+            display: "flex",
+            justifyItems: "center",
+            justifyContent: "space-around",
+            width: "100%",
           }}
         >
-          <li>
+          <Box>
             <Link
               to="/home"
               className={
@@ -85,8 +88,8 @@ setNoOfResItem(restaurantOrders.length)
                 <MyTypography>Home</MyTypography>
               </div>
             </Link>
-          </li>
-          <li>
+          </Box>
+          <Box>
             <Link
               to="/transactions"
               className={transactionsMatch ? "active-link" : ""}
@@ -97,9 +100,9 @@ setNoOfResItem(restaurantOrders.length)
                 <MyTypography>Transaction</MyTypography>
               </div>
             </Link>
-          </li>
+          </Box>
 
-          <li>
+          <Box>
             <Link
               sx={{
                 fontWeight: scanMatch ? "1000" : ",",
@@ -110,24 +113,15 @@ setNoOfResItem(restaurantOrders.length)
             >
               <div className="gpt3__navbar">
                 <img src={scan} alt="scan-logo" />
-                <MyTypography
-                  sx={
-                    {
-                      // marginX: "3px",
-                    }
-                  }
-                >
-                  Scan
-                </MyTypography>
+                <MyTypography>Scan</MyTypography>
               </div>
             </Link>
-          </li>
+          </Box>
 
-          <li>
+          <Box>
             <Box
               sx={{
                 position: "absolute",
-                // bottom: "2.5rem",
                 left: "72%",
                 color: "#fff",
                 top: "0.6rem",
@@ -138,14 +132,26 @@ setNoOfResItem(restaurantOrders.length)
                 alignItems: "center",
                 padding: "8px",
                 fontSize: "9px",
-                background:  orders.length > 0 ?(noOfResItem === 0 ? "" : "#dc0019") : (numOfItem === 0 ? "" : "#dc0019"),
+                background:
+                  orders.length > 0
+                    ? noOfResItem === 0
+                      ? ""
+                      : "#dc0019"
+                    : numOfItem === 0
+                    ? ""
+                    : "#dc0019",
                 width: "15px",
                 height: "15px",
                 zIndex: "1",
               }}
             >
-{ orders.length > 0 ?(noOfResItem === 0 ? "" : noOfResItem) : (numOfItem === 0 ? "" : numOfItem)
-}
+              {orders.length > 0
+                ? noOfResItem === 0
+                  ? ""
+                  : noOfResItem
+                : numOfItem === 0
+                ? ""
+                : numOfItem}
             </Box>
             <Link
               to="/cart"
@@ -154,35 +160,12 @@ setNoOfResItem(restaurantOrders.length)
             >
               <div className="gpt3__navbar">
                 <img src={cart} alt="cart-logo" />
-                <MyTypography
-                  sx={{
-                    marginTop: "1px",
-                  }}
-                >
-                  Cart
-                </MyTypography>
+                <MyTypography>Cart</MyTypography>
               </div>
             </Link>
-          </li>
-          {/* <li>
-            <Link
-              to="/orders"
-              className={ordersMatch ? "active-link" : ""}
-              style={{ color: "black", textDecoration: "none" }}
-            > */}
-          {/* <div className="gpt3__navbar"> */}
-          {/* <img src={cart} alt="cart-logo" /> */}
-          {/* <BookmarkAddRoundedIcon
-                  sx={{
-                    color: "#7F7F7F",
-                  }}
-                /> */}
-          {/* <MyTypography>Status</MyTypography> */}
-          {/* </div> */}
-          {/* </Link>
-          </li>
-           */}
-          <li>
+          </Box>
+
+          <Box>
             <Link
               to="/profile"
               className={profileMatch ? "active-link" : ""}
@@ -193,8 +176,8 @@ setNoOfResItem(restaurantOrders.length)
                 <MyTypography>Profile</MyTypography>
               </div>
             </Link>
-          </li>
-        </ul>
+          </Box>
+        </Box>
       </Card>
     </div>
   );

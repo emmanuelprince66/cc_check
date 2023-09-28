@@ -34,7 +34,7 @@ const walletItems = [
     title: "Transfer",
     small: "Pay merchant/Transfer funds to friends",
     direction: leftArrow,
-    pathname: "/wtransfer",
+    pathname: "",
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ const walletItems = [
     title: "Withdraw",
     small: "Get money back to your bank account",
     direction: leftArrow,
-    pathname: "/fwithdraw",
+    pathname: "",
   },
   {
     id: 4,
@@ -50,7 +50,7 @@ const walletItems = [
     title: "Airtime & Data",
     small: "Top your line",
     direction: leftArrow,
-    pathname: "/frecharge",
+    pathname: "",
   },
   {
     id: 5,
@@ -58,7 +58,7 @@ const walletItems = [
     title: "Pay your bills",
     small: "Pay utility bills",
     direction: leftArrow,
-    pathname: "/paybills",
+    pathname: "",
   },
 ];
 

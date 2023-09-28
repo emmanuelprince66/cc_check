@@ -7,11 +7,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useTheme } from "@mui/material/styles";
 
 export const CreateTable = ({ order }) => {
+  const currentTheme = useTheme();
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      color: theme.palette.common.black,
+      color: currentTheme.palette.type === "light" ? "#000" : "#eeee",
       fontWeight: "700",
     },
     [`&.${tableCellClasses.body}`]: {

@@ -12,13 +12,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
 }
-li {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+
 .gpt3__navbar img {
   filter: invert(44%) sepia(0%) saturate(0%) hue-rotate(142deg) brightness(101%)
     contrast(92%);

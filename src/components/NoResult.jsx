@@ -3,7 +3,7 @@ import { Typography, Box, Card } from "@mui/material";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
-import notrans from "../images/practise/notrans.svg";
+import notrans from "../images/practise/anime-empty.gif";
 
 const NoResult = ({
   notification,
@@ -36,12 +36,12 @@ const NoResult = ({
       <Box
         sx={{
           maxWidth: "100%",
-          minHeight: "60vh",
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
+          marginTop: "-2rem",
         }}
       >
         <img src={notrans} className="no-trans-img" alt="no-trans-image" />
@@ -51,7 +51,7 @@ const NoResult = ({
             display: "flex",
             flexDirection: "column",
             gap: "1rem",
-            marginTop: "-60px",
+            marginTop: "-30px",
           }}
         >
           <Typography
@@ -86,7 +86,7 @@ const NoResult = ({
             sx={{
               background:
                 currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
-              width: "327px",
+              minWidth: "100%",
               height: "48px",
               textTransform: "capitalize",
               padding: "10px",

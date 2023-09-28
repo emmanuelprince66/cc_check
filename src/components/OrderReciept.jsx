@@ -29,10 +29,11 @@ import FormattedPrice from "./FormattedPrice";
 import { useNavigate } from "react-router-dom";
 
 const OrderReciept = ({ handleClose2, orderId, orders }) => {
-  const orderItem = orders.find((data) => data.id === orderId);
-  console.log(orderItem.orders);
-  const value = JSON.stringify(orderItem.orders, null, 2);
   const navigate = useNavigate();
+  console.log(orderId);
+  const orderItem = orders.find((data) => data.id === orderId);
+  console.log(orderItem);
+  const value = JSON.stringify(orderItem.orders, null, 2);
 
   const handleDownload2 = () => {
     // Select the element with ID "receipt"
@@ -602,7 +603,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
           </Button>
 
           <Button
-            onClick={() => navigate("/scan")}
+            onClick={() => handleClose2(true)}
             sx={{
               width: "95%",
               padding: "10px",
@@ -617,7 +618,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
             }}
             variant="outlined"
           >
-            Back to Scan
+            Back
           </Button>
         </Box>
       </Card>

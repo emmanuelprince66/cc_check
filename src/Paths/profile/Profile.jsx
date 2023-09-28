@@ -148,7 +148,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
               Security
             </Typography>
 
-            <Link to="/cpass">
+            <Link to="">
               <Card
                 sx={{
                   background:
@@ -408,7 +408,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
               Others
             </Typography>
 
-            <Link to="/support">
+            <Link to="">
               <Card
                 sx={{
                   background:
@@ -459,7 +459,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
               </Card>
             </Link>
 
-            <Link to="/referral">
+            <Link to="">
               <Card
                 sx={{
                   background:
