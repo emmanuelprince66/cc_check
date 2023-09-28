@@ -128,7 +128,7 @@ const Home = () => {
             sx={{
               maxheight: "125px",
               height: "125px",
-              width: "341px",
+              width: { xs: "341px", sm: "341px" },
               borderRadius: "16px",
               marginY: "1rem",
               backgroundColor:

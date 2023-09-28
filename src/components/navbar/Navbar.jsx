@@ -71,7 +71,7 @@ const Navbar = () => {
             listStyleType: "none",
             display: "flex",
             justifyItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
             width: "100%",
           }}
         >
