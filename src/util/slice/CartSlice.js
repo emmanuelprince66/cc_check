@@ -2,29 +2,34 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: [],
+  initialState: {
+    data: [],
+  },
   reducers: {
     clearCart: (state) => {
-      return [];
+      return {
+        data: [],
+      };
     },
     addToCart: (state, action) => {
       const newItem = action.payload;
-      const existingItem = state.find((item) => item.id === newItem.id);
+      const existingItem = state.data.find((item) => item.id === newItem.id);
 
       if (existingItem) {
         existingItem.counter += 1;
         existingItem.price += newItem.price;
       } else {
-        state.push({ ...newItem, quantity: newItem.counter }); // Initialize counter with 1
+        state.data.push({ ...newItem, quantity: newItem.counter }); // Initialize counter with 1
       }
     },
     removeFromCart: (state, action) => {
       const itemId = action.payload;
-      return state.filter((item) => item.id !== itemId);
+      console.log(itemId);
+      state.data = state.data.filter((item) => item.id !== itemId);
     },
     incrementCounter: (state, action) => {
       const itemId = action.payload;
-      const itemToIncrement = state.find((item) => item.id === itemId);
+      const itemToIncrement = state.data.find((item) => item.id === itemId);
 
       if (itemToIncrement) {
         itemToIncrement.counter += 1;
@@ -34,7 +39,7 @@ const cartSlice = createSlice({
     },
     decrementCounter: (state, action) => {
       const itemId = action.payload;
-      const itemToDecrement = state.find((item) => item.id === itemId);
+      const itemToDecrement = state.data.find((item) => item.id === itemId);
 
       if (itemToDecrement && itemToDecrement.counter > 1) {
         itemToDecrement.counter -= 1;

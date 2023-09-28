@@ -64,8 +64,7 @@ const Cart = () => {
   const { AuthAxios } = axiosInstance();
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart);
-  const supermarketCart = useSelector((state) => state.cart);
+  const supermarketCart = useSelector((state) => state.cart.data);
 
   const [text, setText] = useState(false);
   const [phoneNo, setPhoneNo] = useState("");
@@ -101,11 +100,10 @@ const Cart = () => {
           maxWidth: { xs: "100%", sm: "100%", md: "31%" },
         }}
       >
-      {/* using supermarket to render cart  */}
+        {/* using supermarket to render cart  */}
         {merchantDetails.restaurant || isOTD ? (
-          <Restaurant/>
-
-         ) : (
+          <Restaurant />
+        ) : (
           <Container
             sx={{
               display: "flex",
@@ -139,32 +137,33 @@ const Cart = () => {
                 My Cart
               </Typography>
 
-              {supermarketCart.length !== 0 && (
-                <Button
-                  onClick={() => setDeleteAllCart(true)}
-                  sx={{
-                    width: "35%",
-                    textTransform: "capitalize",
-                    fontWeight: "1000",
-                    background:
-                      currentTheme.palette.type === "light"
-                        ? "#dc0019"
-                        : "#dc0019",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor:
-                        currentTheme.palette === "light"
+              {Array.isArray(supermarketCart) &&
+                supermarketCart.length !== 0 && (
+                  <Button
+                    onClick={() => setDeleteAllCart(true)}
+                    sx={{
+                      width: "35%",
+                      textTransform: "capitalize",
+                      fontWeight: "1000",
+                      background:
+                        currentTheme.palette.type === "light"
                           ? "#dc0019"
                           : "#dc0019",
-                    },
-                    fontFamily: "raleWay",
-                  }}
-                >
-                  Clear Cart
-                </Button>
-              )}
+                      padding: "10px",
+                      borderRadius: "8px",
+                      color: "#fff",
+                      "&:hover": {
+                        backgroundColor:
+                          currentTheme.palette === "light"
+                            ? "#dc0019"
+                            : "#dc0019",
+                      },
+                      fontFamily: "raleWay",
+                    }}
+                  >
+                    Clear Cart
+                  </Button>
+                )}
             </Box>
 
             {/*Card  */}
@@ -177,10 +176,14 @@ const Cart = () => {
                 width: "100%",
                 paddingY: "10px",
                 maxHeight: "22rem",
-                overflowY: supermarketCart.length !== 0 && "scroll",
+                overflowY:
+                  Array.isArray(supermarketCart) &&
+                  supermarketCart.length !== 0 &&
+                  "scroll",
               }}
             >
-              {supermarketCart.length === 0 ? (
+              {Array.isArray(supermarketCart) &&
+              supermarketCart?.length === 0 ? (
                 <NoResult
                   notification="Your cart is empty!"
                   smallText="proceed to scan to start new order"
@@ -189,7 +192,8 @@ const Cart = () => {
                   linkText="/mainScanner"
                 />
               ) : (
-                supermarketCart.map((item) => (
+                Array.isArray(supermarketCart) &&
+                supermarketCart?.map((item) => (
                   <CartItem item={item} key={item.id} />
                 ))
               )}
@@ -200,15 +204,14 @@ const Cart = () => {
           </Container>
         )}
 
-      
-{
-  merchantDetails.restaurant  || isOTD || supermarketCart.length > 0 ?
-            <PlaceOrder
+        {merchantDetails.restaurant ||
+        isOTD ||
+        (Array.isArray(supermarketCart) && supermarketCart.length > 0) ? (
+          <PlaceOrder
             restaurant={merchantDetails.restaurant}
             supermarketCart={supermarketCart}
           />
-          : null
-}
+        ) : null}
         {/* NAVBAR */}
 
         {/* Modal 6* clear cart modal */}

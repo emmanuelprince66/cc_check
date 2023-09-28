@@ -29,6 +29,7 @@ import CartBox from "../../components/cartBox/cartBox";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTheme } from "@mui/material";
 const RestaurantMenu = () => {
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
@@ -108,7 +109,9 @@ const RestaurantMenu = () => {
     <div className="gpt3__restaurant">
       <Container>
         <Box display="flex" gap="1em">
-          <BackArrow />
+          <div onClick={() => navigate(-1)}>
+            <BackArrow />
+          </div>
           <TextField
             label="Search Items"
             sx={{ "& .MuiInputBase-root": { height: "44px" } }}
@@ -195,7 +198,7 @@ const RestaurantMenu = () => {
               textTransform: "none",
               whiteSpace: "nowrap",
               padding: ".2em .8em",
-              margin: "1em 0",
+              margin: "1em",
               color: "grey",
               border: "1px solid var(--primary-red)",
             }}
@@ -206,7 +209,7 @@ const RestaurantMenu = () => {
         ) : null}{" "}
         {/* Category List   */}
         {!preview ? (
-          <Box sx={{marginTop:'.5em'}} >
+          <Box sx={{ marginTop: ".5em" }}>
             <List
               sx={{
                 display: "flex",
@@ -224,6 +227,7 @@ const RestaurantMenu = () => {
                     style={{
                       whiteSpace: "noWrap",
                       cursor: "pointer",
+                      margin: "0rem 0.5rem 0rem 0.5rem ",
                       listStyleType: " none",
                       color: categoryInView === i ? "var(--cart-deep-red)" : "",
                       borderBottom:

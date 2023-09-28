@@ -29,11 +29,13 @@ import { fillUserDetails, setLocation } from "../../util/slice/merchantSlice";
 import { Link } from "react-router-dom";
 import Acctbox from "../../components/acctbox/Acctbox";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const currentTheme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cart = useSelector((state) => state);
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
 
@@ -44,7 +46,6 @@ const Home = () => {
   }, [user, dispatch]);
 
   const mylocation = useMyLocation();
-  console.log(mylocation);
   useEffect(() => {
     mylocation
       .then((res) => {
@@ -281,7 +282,7 @@ const Home = () => {
                   marginTop: "1rem",
                 }}
               >
-                <Link to="/wtransfer">
+                <Link to="">
                   <Typography
                     sx={{
                       color: "#fff",
@@ -315,70 +316,6 @@ const Home = () => {
         <HomeCard />
 
         {/* Header */}
-
-        {/* CARD */}
-        {/* 
-        <Card
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0.3rem",
-            gap: "7px",
-            borderRadius: "11px",
-            width: { xs: "95%", sm: "48%", md: "70%", lg: "70%" },
-            mx: "auto",
-            marginBottom: "2rem",
-            marginTop: "0.5rem",
-            backgroundColor:
-              currentTheme.palette.type === "light"
-                ? "rgba(232, 229, 229, 1)"
-                : "#2C2C2E",
-          }}
-        >
-          <img src={exclamgreen} alt="ex" />
-          <Typography
-            sx={{
-              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-              paddingTop: "1px",
-              fontFamily: "raleWay",
-              fontWeight: "400",
-              fontSize: "16px",
-            }}
-          >
-            Scan Qr code to start shopping.
-          </Typography>
-        </Card> */}
-
-        {/* Scanner*/}
-
-        {/* <Box
-          sx={{
-            maxHeight: "19rem",
-            overflow: "hidden",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "20px",
-            marginBottom: "20%",
-
-            padding: "1rem",
-          }}
-        >
-          {showScanner ? (
-            <Qrscanner />
-          ) : (
-            <CircularProgress
-              size="3.5rem"
-              sx={{
-                marginTop: "3rem",
-              }}
-              color="error"
-            />
-          )}
-        </Box> */}
-
-        {/* Scanner */}
 
         {/* NAVBAR */}
         <Navbar />

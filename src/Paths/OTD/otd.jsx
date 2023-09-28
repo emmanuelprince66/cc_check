@@ -18,7 +18,9 @@ import { getLandmarks } from "../../hooks/useGetLandMarks";
 import {
   setOTDRestaurants,
   setOTDOrderOnClickId,
-  initOTD,clearStateForOTD, clearRestaurantCart
+  initOTD,
+  clearStateForOTD,
+  clearRestaurantCart,
 } from "../../util/slice/merchantSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -35,6 +37,7 @@ const OTDMainPage = () => {
   const { OTDRestaurants, myLocation } = useSelector(
     (state) => state.merchantReducer
   );
+
   const dispatch = useDispatch();
   const currentTheme = useTheme();
 
@@ -60,6 +63,7 @@ const OTDMainPage = () => {
             })
           );
           // return restaurants not more than 20km around.
+
           const filteredResults = results?.filter((item) => {
             const distance = parseInt(
               item?.data?.rows[0].elements[0]?.distance?.text
@@ -70,6 +74,7 @@ const OTDMainPage = () => {
           // Dispatch the filtered results to the store
           if (filteredResults.length > 0) {
             dispatch(setOTDRestaurants(filteredResults));
+            console.log(filteredResults[0]);
           }
         } catch (error) {
           console.error("Error fetching results:", error);
@@ -83,8 +88,8 @@ const OTDMainPage = () => {
   function handleClick(id) {
     navigate(`/restaurant/${id}`);
     dispatch(setOTDOrderOnClickId(id));
-    dispatch(initOTD(true))
-    dispatch(clearStateForOTD())
+    dispatch(initOTD(true));
+    dispatch(clearStateForOTD());
   }
   return (
     <div className="gpt3__restaurant">
@@ -96,7 +101,7 @@ const OTDMainPage = () => {
           gap: "1em",
         }}
       >
-        <BackArrow />
+        <BackArrow destination="/home" />
 
         <Typography fontWeight={700} fontSize={"1.6em"}>
           Order to Doorstep{" "}

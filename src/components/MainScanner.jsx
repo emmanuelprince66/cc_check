@@ -11,9 +11,12 @@ import {
   Button,
 } from "@mui/material";
 import BackArrow from "./backArrow/BackArrow";
+import { useNavigate } from "react-router-dom";
 
 const MainScanner = () => {
   const currentTheme = useTheme();
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -26,7 +29,9 @@ const MainScanner = () => {
           margin: "auto",
         }}
       >
-        <BackArrow />
+        <Box onClick={() => navigate(-1)}>
+          <BackArrow />
+        </Box>
       </Box>
 
       <Box

@@ -8,6 +8,8 @@ import Navbar from "../../components/navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material";
 import { AuthProvider } from "../../util/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import ClipboardJS from "clipboard";
 
 import useUser from "../../hooks/useUser";
 
@@ -16,7 +18,35 @@ const Fwallet = () => {
   const currentTheme = useTheme();
 
   const user = useUser();
-  console.log(user.data);
+
+  const copyToClipboard = async () => {
+    try {
+      if (user.data) {
+        await navigator.clipboard.writeText(
+          user.data
+            ? user.data.virtualAccountNumber === null
+              ? "NIL"
+              : user.data.virtualAccountNumber
+            : "NIL"
+        );
+        notify("Account Number Copied To Clipboard");
+      }
+    } catch (err) {
+      console.error("Copy to clipboard failed:", err);
+    }
+  };
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
 
   return (
     <AuthProvider>
@@ -135,21 +165,43 @@ const Fwallet = () => {
               Your Acct Name
             </Typography>
 
-            <Typography
-              variant="h6"
+            <Box
               sx={{
-                fontWeight: 400,
-                fontSize: "14px",
-                lineHeight: "16px",
                 display: "flex",
-                alignItems: "center",
-                color: "#727272",
-                marginBottom: "1rem",
-                fontFamily: "raleWay",
+                gap: "4px",
               }}
             >
-              {user.data ? user.data.firstName : ""}
-            </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  lineHeight: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#727272",
+                  marginBottom: "1rem",
+                  fontFamily: "raleWay",
+                }}
+              >
+                {user.data ? user.data.firstName : ""}
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  lineHeight: "16px",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#727272",
+                  marginBottom: "1rem",
+                  fontFamily: "raleWay",
+                }}
+              >
+                {user.data ? user.data.lastName : ""}
+              </Typography>
+            </Box>
           </Box>
 
           <Typography
@@ -169,7 +221,7 @@ const Fwallet = () => {
           <Box
             sx={{
               display: "flex",
-              gap: "3px",
+              gap: "10px",
             }}
           >
             <Typography
@@ -184,7 +236,15 @@ const Fwallet = () => {
                   : user.data.virtualAccountNumber
                 : "NIL"}
             </Typography>
-            <img src={copyIcon} alt="" />
+
+            <Box
+              onClick={() => copyToClipboard()}
+              sx={{
+                paddingTop: "0.2rem",
+              }}
+            >
+              <img src={copyIcon} alt="" />
+            </Box>
           </Box>
         </Card>
 
@@ -214,6 +274,7 @@ const Fwallet = () => {
         </Typography>
 
         <Navbar />
+        <ToastContainer />
       </div>
     </AuthProvider>
   );

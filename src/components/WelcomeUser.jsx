@@ -8,9 +8,12 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useSuperMarket from "../hooks/useSuperMarket";
 import useRestaurant from "../hooks/useRestaurant";
-import { clearCart } from "../util/slice/CartSlice";
-import { clearMerchantState, populateMerchantDetails } from "../util/slice/merchantSlice";
+import {
+  clearMerchantState,
+  populateMerchantDetails,
+} from "../util/slice/merchantSlice";
 import { ToastContainer, toast } from "react-toastify";
+import { clearCart } from "../util/slice/CartSlice";
 
 const WelcomeUser = () => {
   const navigate = useNavigate();
@@ -45,6 +48,7 @@ const WelcomeUser = () => {
     } else if (restaurant.data) {
       setInfo(restaurant.data);
       dispatch(clearMerchantState());
+      dispatch(clearCart());
       dispatch(populateMerchantDetails(restaurant?.data));
       setTimeout(() => {
         navigate("/cart");

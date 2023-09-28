@@ -32,7 +32,8 @@ import useUser from "../../hooks/useUser";
 import Acctbox from "../../components/acctbox/Acctbox";
 
 const Scan = () => {
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state);
+  console.log(cart);
   const user = useUser();
 
   const navigate = useNavigate();
@@ -53,9 +54,10 @@ const Scan = () => {
 
     let totalPrice = 0;
 
-    cart.forEach((cartItem) => {
-      totalPrice += cartItem.price;
-    });
+    Array.isArray(cart) &&
+      cart.forEach((cartItem) => {
+        totalPrice += cartItem.price;
+      });
 
     return totalPrice;
   };

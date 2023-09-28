@@ -45,6 +45,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Orders = () => {
   const orders = useOrders();
   const restaurantOrders = useRestaurantOrders();
+
   const { data: merchantDetails, userDetails } = useSelector(
     (state) => state.merchantReducer
   );
@@ -79,11 +80,13 @@ const Orders = () => {
     } else {
       setOpen(true);
     }
-    // const ordersFromId = orders.data.find((data) => data.id === item);
 
-    // setOrdersItem(ordersFromId.id);
+    const ordersFromId = orders.data.find((data) => data.id === item);
+
+    setOrdersItem(ordersFromId.id);
   };
   const { AuthAxios } = axiosInstance();
+
   async function confirmOrder() {
     const token = getCookie("authToken");
     try {
@@ -109,6 +112,7 @@ const Orders = () => {
       throw new Error(error.response);
     }
   }
+
   async function cancelOrder() {
     const token = getCookie("authToken");
     try {
@@ -222,7 +226,7 @@ const Orders = () => {
               fontWeight: 600,
               fontSize: "24px",
               lineHeight: "23.18px",
-              marginBottom: "1rem",
+              margin: "1rem 0 2rem 0",
             }}
           >
             My Status
@@ -230,41 +234,57 @@ const Orders = () => {
 
           <Box
             sx={{
-              borderBottom: "1px solid grey",
-              justifyContent: "center",
               display: "flex",
-              gap: "2em",
-              marginBottom: "1em",
+              marginBottom: "1rem",
+              display: "flex",
+              width: "100%",
+              textAlign: "center",
             }}
           >
-            <Button
-              onClick={() => setView("restaurant")}
+            {/* restaurant button */}
+            <Box
               sx={{
-                color: view === "restaurant" ? "  var(--primary-red)" : "grey",
                 borderBottom:
-                  view === "restaurant" ? "2px solid var(--primary-red)" : "",
-                fontSize: "1.2em",
-                fontWeight: "600",
-                textTransform: "none",
-                "&:focus": { borderBottom: "2px solid var(--primary-red)" },
+                  view === "restaurant"
+                    ? "2px solid var(--primary-red)"
+                    : "2px solid grey",
+                width: "100%",
               }}
             >
-              Restaurant
-            </Button>
-            <Button
-              onClick={() => setView("supermarket")}
+              <Button
+                onClick={() => setView("restaurant")}
+                sx={{
+                  color:
+                    view === "restaurant" ? "  var(--primary-red)" : "grey",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                }}
+              >
+                Restaurant
+              </Button>
+            </Box>
+
+            {/* supermarket button */}
+            <Box
               sx={{
-                color: view === "supermarket" ? "var(--primary-red)" : "grey",
                 borderBottom:
-                  view === "supermarket" ? "2px solid var(--primary-red)" : "",
-                textTransform: "none",
-                fontSize: "1.2em",
-                fontWeight: "600",
-                "&:focus": { borderBottom: "2px solid var(--primary-red)" },
+                  view === "supermarket"
+                    ? "2px solid var(--primary-red)"
+                    : "2px solid grey",
+                width: "100%",
               }}
             >
-              Supermarket{" "}
-            </Button>
+              <Button
+                onClick={() => setView("supermarket")}
+                sx={{
+                  color: view === "supermarket" ? "var(--primary-red)" : "grey",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                }}
+              >
+                Supermarket{" "}
+              </Button>
+            </Box>
           </Box>
 
           <Box
@@ -276,12 +296,13 @@ const Orders = () => {
             }}
           >
             {orders?.data ? (
-              orders.data == 0 ? (
+              orders.data == 0 && view === "supermarket" ? (
                 <NoResult
                   notification="You currenty have no orders!"
                   smallText="Proceed to scan to add more orders"
                   buttonText="Scan to add new orders"
-                  linkText="/home"
+                  linkText="/mainScanner"
+                  btn="true"
                 />
               ) : (
                 view === "supermarket" &&
@@ -441,17 +462,18 @@ const Orders = () => {
                   marginTop: "10rem",
                 }}
               >
-                <CircularProgress size="4rem" color="error" />
+                {/* <CircularProgress size="4rem" color="error" /> */}
               </Box>
             )}
 
             {restaurantOrders?.data ? (
-              restaurantOrders.data.length === 0 ? (
+              restaurantOrders.data.length === 0 && view === "restaurant" ? (
                 <NoResult
                   notification="You currenty have no orders!"
                   smallText="Proceed to scan to add more orders"
                   buttonText="Scan to add new orders"
-                  linkText="/home"
+                  linkText="/mainScanner"
+                  btn="true"
                 />
               ) : (
                 view === "restaurant" &&
@@ -672,7 +694,7 @@ const Orders = () => {
                   width: "100%",
                   display: "flex",
                   justifyContent: "center",
-                  marginTop: "10rem",
+                  marginTop: "",
                 }}
               >
                 <CircularProgress size="4rem" color="error" />
@@ -874,7 +896,7 @@ const Orders = () => {
                   </Button>
                 )}{" "}
                 <Button
-                  onClick={() => handleOpen2(ordersItem ? ordersItem.id : "")}
+                  // onClick={() => handleOpen2(ordersItem ? ordersItem.id : "")}
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -973,7 +995,7 @@ const Orders = () => {
               <OrderReciept
                 handleClose2={handleClose2}
                 orderId={ordersItem ? ordersItem : ""}
-                // orders={orders.data ? orders.data : ""}
+                orders={orders.data ? orders.data : ""}
               />
             </Dialog>
             <Dialog

@@ -11,8 +11,12 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material";
+import FormattedPrice from "../../components/FormattedPrice";
 
 const RestaurantReceipt = () => {
+  const currentTheme = useTheme();
+
   // const value = JSON.stringify(orderLoad, null, 2);
   // const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,14 +32,14 @@ const RestaurantReceipt = () => {
     const blob = dataURLtoBlob(imgData);
     setPdfBlob(blob);
   };
-  useEffect(() => {
-    const val = localStorage.getItem("myData");
-    if (val) {
-      generatePDF();
-    } else {
-      navigate("/home");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const val = localStorage.getItem("myData");
+  //   if (val) {
+  //     generatePDF();
+  //   } else {
+  //     navigate("/home");
+  //   }
+  // }, []);
 
   const dataURLtoBlob = (dataURL) => {
     const parts = dataURL.split(",");
@@ -82,7 +86,9 @@ const RestaurantReceipt = () => {
   );
   return (
     <Container id="receipt" sx={{ padding: "1em 1em" }}>
-      <BackArrow />
+      <Box onClick={() => navigate(-1)}>
+        <BackArrow />
+      </Box>
 
       <Container
         sx={{
@@ -96,12 +102,18 @@ const RestaurantReceipt = () => {
       >
         <Box
           sx={{
-            backgroundColor: "#EAEAEA",
+            background:
+              currentTheme.palette.type === "light" ? "#EAEAEA" : "#2C2C2E",
             padding: "1em",
             borderRadius: "1em",
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Typography fontWeight={700}> PURCHASE RECEIPT</Typography>
             <Typography> ID</Typography>
           </Box>
@@ -130,7 +142,10 @@ const RestaurantReceipt = () => {
         {receiptInView.orders.map((item, i) => {
           return (
             <Box key={i}>
-              <Typography fontWeight={600} sx={{ textDecoration: "underline" }}>
+              <Typography
+                fontWeight={600}
+                sx={{ textDecoration: "underline", marginBottom: "10px" }}
+              >
                 {" "}
                 Order {i + 1} ({item.orderType}){" "}
               </Typography>
@@ -150,8 +165,7 @@ const RestaurantReceipt = () => {
         >
           <Typography> TOTAL </Typography>
           <Typography fontWeight={600} sx={{ color: "var(--currency-green)" }}>
-            {" "}
-            {receiptInView.totalAmount}{" "}
+            <FormattedPrice amount={receiptInView.totalAmount} />
           </Typography>
         </Box>
         <Box
@@ -167,7 +181,7 @@ const RestaurantReceipt = () => {
             sx={{
               backgroundColor: "var(--primary-red)",
               textTransform: "none",
-              '&:hover,&:focus':{backgroundColor: "var(--primary-red)"},
+              "&:hover,&:focus": { backgroundColor: "var(--primary-red)" },
               padding: "1em 0",
               color: "white",
             }}

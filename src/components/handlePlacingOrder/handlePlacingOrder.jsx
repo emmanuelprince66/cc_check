@@ -633,189 +633,106 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   return (
     <>
       <ToastContainer />
-      {
-  merchantDetails?.restaurant !== undefined || isOTD  ?
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          position: "fixed",
-          bottom: "0px",
-          width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
-          padding: "1.5rem",
-          gap: ".5rem",
-          justifyContent: "start",
-          backgroundColor: "white",
-          right: { xs: "1px", sm: "19%", lg: "35%" },
-          // background:
-          //   currentTheme.palette.type === "light" ? "" : "#2C2C2E",
-          borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
-          textAlign: "center",
-          background: currentTheme.palette.type === "light" ? "" : "#3E3E3E",
-          boxShadow:
-            currentTheme.palette.type === "light"
-              ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
-              : "",
-          marginBottom: "5rem",
-        }}
-      >
-
-          <Box>
-          {(restaurant && ordersTakeaway.length > 0) || isOTD ? (
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography> Take-Away Pack(+1) </Typography>
-              <Typography>
-                {" "}
-                {(takeAwayPrice || 0) +
-                  " " +
-                  "x" +
-                  " " +
-                  (ordersDelivery.length > 0
-                    ? ordersDelivery.length
-                    : ordersPickUp.length > 0
-                    ? ordersPickUp.length
-                    : ordersTakeaway.length > 0
-                    ? ordersTakeaway.length
-                    : 0)}
-              </Typography>
-            </Box>
-          ) : null}
-          {ordersDelivery.length > 0 ? (
-            <Box
-              sx={{
-                display: "flex",
-                gap: ".4em",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography sx={{ whiteSpace: "nowrap", fontSize: ".8em" }}>
-                {" "}
-                Delivery Fee{" "}
-              </Typography>
-              {!landmarkCost.amount ? (
-                <Button
-                  onClick={handleOpenLocationOptions}
-                  sx={{
-                    color: "var(--currency-green)",
-                    minWidth: "30px",
-                    padding: "0",
-                    textTransform: "none",
-                    fontSize: ".75em",
-                    fontWeight: "600",
-                  }}
-                >
-                  {" "}
-                  Tap to Select your nearest location
-                </Button>
-              ) : (
-                <Typography
-                  onClick={() => setOpenLocationOptions(true)}
-                  sx={{
-                    color: "var(--currency-green)",
-                    fontSize: "1em",
-                    fontWeight: "600",
-                  }}
-                >
-                  {" "}
-                  {landmarkCost.amount}{" "}
-                </Typography>
-              )}{" "}
-            </Box>
-          ) : null}{" "}
-          {itemInCart ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography> Service Charge </Typography>
-              <Typography> {restaurantCommission} </Typography>
-            </Box>
-          ) : null}{" "}
-        </Box>
-    
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            sx={{
-              fontFamily: "raleWay",
-              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-              fomtWeight: "900",
-              fontSize: "16px",
-            }}
-          >
-            Grand Total
-          </Typography>
-          <Typography
-            sx={{
-              fontFamily: "raleWay",
-              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-              fomtWeight: "900",
-              fontSize: "16px",
-            }}
-          >
-            <FormattedPrice amount={totalPrice || 0} />
-          </Typography>
-        </Box>
-
-        <Box>
-          <Button
-            onClick={handleOpen}
-            sx={{
-              background:
-                currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
-              padding: "10px",
-              fontWeight: "1000",
-              width: "100%",
-              textTransform: "capitalize",
-              borderRadius: "8px",
-              color: "#fff",
-              "&:hover": {
-                backgroundColor:
-                  currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-              },
-              fontFamily: "raleWay",
-            }}
-          >
-            {ordersDelivery.length > 0 && location.pathname === "/cart"
-              ? "Checkout"
-              : "Proceed to payment"}
-          </Button>
-        </Box>
-
-      </Box>
-
-      : null
-    }
-      { merchantDetails?.restaurant === undefined || !isOTD  && supermarketCart?.length !== 0 && (
+      {merchantDetails?.restaurant !== undefined || isOTD ? (
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             position: "fixed",
-            bottom: "10px",
+            bottom: "0px",
             width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
             padding: "1.5rem",
-            gap: "2rem",
+            gap: ".5rem",
             justifyContent: "start",
+            backgroundColor: "white",
             right: { xs: "1px", sm: "19%", lg: "35%" },
-            background: currentTheme.palette.type === "light" ? "" : "#2C2C2E",
+            // background:
+            //   currentTheme.palette.type === "light" ? "" : "#2C2C2E",
             borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
             textAlign: "center",
+            background: currentTheme.palette.type === "light" ? "" : "#3E3E3E",
             boxShadow:
               currentTheme.palette.type === "light"
                 ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
-                : "#2C2C2E",
+                : "",
             marginBottom: "5rem",
           }}
         >
+          <Box>
+            {(restaurant && ordersTakeaway.length > 0) || isOTD ? (
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography> Take-Away Pack(+1) </Typography>
+                <Typography>
+                  {" "}
+                  {(takeAwayPrice || 0) +
+                    " " +
+                    "x" +
+                    " " +
+                    (ordersDelivery.length > 0
+                      ? ordersDelivery.length
+                      : ordersPickUp.length > 0
+                      ? ordersPickUp.length
+                      : ordersTakeaway.length > 0
+                      ? ordersTakeaway.length
+                      : 0)}
+                </Typography>
+              </Box>
+            ) : null}
+            {ordersDelivery.length > 0 ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: ".4em",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography sx={{ whiteSpace: "nowrap", fontSize: ".8em" }}>
+                  {" "}
+                  Delivery Fee{" "}
+                </Typography>
+                {!landmarkCost.amount ? (
+                  <Button
+                    onClick={handleOpenLocationOptions}
+                    sx={{
+                      color: "var(--currency-green)",
+                      minWidth: "30px",
+                      padding: "0",
+                      textTransform: "none",
+                      fontSize: ".75em",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {" "}
+                    Tap to Select your nearest location
+                  </Button>
+                ) : (
+                  <Typography
+                    onClick={() => setOpenLocationOptions(true)}
+                    sx={{
+                      color: "var(--currency-green)",
+                      fontSize: "1em",
+                      fontWeight: "600",
+                    }}
+                  >
+                    {" "}
+                    {landmarkCost.amount}{" "}
+                  </Typography>
+                )}{" "}
+              </Box>
+            ) : null}{" "}
+            {itemInCart ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography> Service Charge </Typography>
+                <Typography> {restaurantCommission} </Typography>
+              </Box>
+            ) : null}{" "}
+          </Box>
+
           <Box
             sx={{
               display: "flex",
@@ -841,7 +758,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 fontSize: "16px",
               }}
             >
-              <FormattedPrice amount={totalPrice} />
+              <FormattedPrice amount={totalPrice || 0} />
             </Typography>
           </Box>
 
@@ -864,13 +781,98 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 fontFamily: "raleWay",
               }}
             >
-              {ordersDelivery?.length > 0 && location.pathname === "/cart"
+              {ordersDelivery.length > 0 && location.pathname === "/cart"
                 ? "Checkout"
                 : "Proceed to payment"}
             </Button>
           </Box>
         </Box>
-      )}
+      ) : null}
+
+      {!isOTD &&
+        !merchantDetails.restaurant &&
+        supermarketCart?.length !== 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              position: "fixed",
+              bottom: "10px",
+              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
+              padding: "1.5rem",
+              gap: "2rem",
+              justifyContent: "start",
+              right: { xs: "1px", sm: "19%", lg: "35%" },
+              background:
+                currentTheme.palette.type === "light" ? "" : "#2C2C2E",
+              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
+              textAlign: "center",
+              boxShadow:
+                currentTheme.palette.type === "light"
+                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
+                  : "#2C2C2E",
+              marginBottom: "5rem",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fomtWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                Grand Total
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fomtWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                <FormattedPrice amount={totalPrice} />
+              </Typography>
+            </Box>
+
+            <Box>
+              <Button
+                onClick={handleOpen}
+                sx={{
+                  background:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  padding: "10px",
+                  fontWeight: "1000",
+                  width: "100%",
+                  textTransform: "capitalize",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                  fontFamily: "raleWay",
+                }}
+              >
+                {ordersDelivery?.length > 0 && location.pathname === "/cart"
+                  ? "Checkout"
+                  : "Proceed to payment"}
+              </Button>
+            </Box>
+          </Box>
+        )}
 
       {/* Modal 1  modal for purchase*/}
       <Modal
@@ -1199,7 +1201,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                       fontFamily: "raleWay",
                       fontSize: "13px",
                       fontWeight: 1000,
-                      color: "#000",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#000"
+                          : "#eeee",
                     }}
                   >
                     Don't have a pin yet?
