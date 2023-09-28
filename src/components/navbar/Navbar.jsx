@@ -71,7 +71,7 @@ const Navbar = () => {
             listStyleType: "none",
             display: "flex",
             justifyItems: "center",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -102,7 +102,7 @@ const Navbar = () => {
             </Link>
           </Box>
 
-          <Box>
+          <Box sx={{}}>
             <Link
               sx={{
                 fontWeight: scanMatch ? "1000" : ",",
