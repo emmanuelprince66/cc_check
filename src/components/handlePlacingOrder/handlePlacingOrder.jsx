@@ -44,7 +44,6 @@ import FormattedPrice from "../../components/FormattedPrice";
 import { useRef } from "react";
 import InsufficientFund from "../../components/InsufficientFund";
 import checkLogo from "../../images/checkLogo.svg";
-import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Restaurant from "../../components/restaurant";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
@@ -56,6 +55,7 @@ import {
 } from "../../util/slice/merchantSlice";
 import { useMyLocation } from "../../hooks/useLocation";
 import { useLocation } from "react-router-dom";
+import LandmarkModal from "../landmarksModal";
 export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -630,6 +630,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     dispatch(setLandmarkCost({ amount, location }));
     setOpenLocationOptions(false);
   }
+  useEffect(()=>{
+console.log(openLocationOptions)
+  },[openLocationOptions])
   return (
     <>
       <ToastContainer />
@@ -692,11 +695,12 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 </Typography>
                 {!landmarkCost.amount ? (
                   <Button
-                    onClick={handleOpenLocationOptions}
+                    onClick={()=>handleOpenLocationOptions()}
                     sx={{
                       color: "var(--currency-green)",
                       minWidth: "30px",
                       padding: "0",
+                      cursor:'pointer',
                       textTransform: "none",
                       fontSize: ".75em",
                       fontWeight: "600",
@@ -713,6 +717,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                       color: "var(--currency-green)",
                       fontSize: "1em",
                       fontWeight: "600",
+                      textOverflow:'ellipsis',
+                                            cursor:'pointer',
                     }}
                   >
                     {" "}
@@ -1821,105 +1827,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
       {/* Dialog for Location Options   */}
 
-      {openLocationOptions ? (
-        <Dialog
-          sx={{
-            "& .MuiPaper-root": {
-              width: "100%",
-              position: "absolute",
-              bottom: "0",
-              margin: "0",
-              padding: "1em 0",
-            },
-          }}
-          open={true}
-          onClose={closeLocationOptions}
-          TransitionComponent={Transition}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              height: "100%",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: "1rem",
-            }}
-          >
-            <Box
-              sx={{
-                marginBottom: "1rem",
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-              }}
-            >
-              <Typography
-                variant="h2"
-                sx={{
-                  fontFamily: "raleWay",
-                  padding: "0 1em",
-                  letterSpacing: "0.2em",
-                  lineHeight: "2em",
-                  fontWeight: "600",
-                  textAlign: "left",
-
-                  color:
-                    currentTheme.palette.type === "light"
-                      ? "#000000"
-                      : "#EEEEEE",
-                  fontSize: "18px",
-                }}
-              >
-                Select Landmark
-              </Typography>
-              <TextField
-                label="Search Items"
-                sx={{
-                  "& .MuiInputBase-root": { height: "44px" },
-                  padding: "0 1em",
-                }}
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <Box
-                sx={{
-                  display: "flex",
-                  padding: "0 1em",
-                  width: "100%",
-                  flexDirection: "column",
-                  gap: "0em",
-                }}
-              >
-                {OTDLandmarks?.landmarks?.map((item, i) => {
-                  return (
-                    <Typography
-                      onClick={() =>
-                        handleSaveDeliveryCost(item.amount, item.location)
-                      }
-                      sx={{ borderBottom: "1px solid #80808029" , paddingTop:".5em",cursor:'pointer', '&:hover': {background:'#80808029'} }}
-                      key={i}
-                    >
-                      {" "}
-                      {item.location}{" "}
-                    </Typography>
-                  );
-                })}
-              </Box>
-            </Box>
-          </Box>
-        </Dialog>
-      ) : null}
-      {/* insufficient funds modal 8  start */}
+{ openLocationOptions ? <LandmarkModal handleCost={handleSaveDeliveryCost} OTDLandmarks={OTDLandmarks} close={closeLocationOptions}  />: null     
+}      {/* insufficient funds modal 8  start */}
 
       <InsufficientFund
         totalPrice={totalPrice}
