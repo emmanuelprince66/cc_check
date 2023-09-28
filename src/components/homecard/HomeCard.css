@@ -2,8 +2,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
-
-  margin-bottom: 6rem;
+  margin-bottom: 5rem;
 }
 a {
   text-decoration: none;
@@ -13,3 +12,5 @@ a {
   max-width: 70px;
   max-height: 70px;
 }
+
+/* MEDIA QUERY FOR SCREEN */
