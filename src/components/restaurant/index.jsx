@@ -147,7 +147,8 @@ const Restaurant = () => {
                   OTDtype === "delivery" ? "var(--cart-deep-red)" : "#EDEDED",
                 color: OTDtype === "delivery" ? "white" : "black",
                 padding: ".5em .8em",
-                borderRadius: " .5em ",
+                zIndex:'2',
+                borderRadius:  ` .0em ${OTDtype === 'delivery' ? '.5em':'0em' } .5em .5em` ,
               }}
               onClick={() => handleOrderType("delivery")}
             >
@@ -161,7 +162,8 @@ const Restaurant = () => {
                   OTDtype === "pick-up" ? "var(--cart-deep-red)" : "#EDEDED",
                 color: OTDtype === "pick-up" ? "white" : "black",
                 padding: ".5em .8em",
-                borderRadius: " .5em .5em ",
+                borderRadius: " 0 .5em 0 .5em  ",
+                marginLeft:'-5px',
               }}
               onClick={() => handleOrderType("pick-up")}
             >

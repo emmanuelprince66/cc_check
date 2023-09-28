@@ -534,9 +534,9 @@ const Orders = () => {
                         </Typography>
                       </Box>
                       <MoreVertRoundedIcon />
-                    </Box>
-
-                    <Box
+                     </Box>
+   
+{  item.status !==  'CANCELLED'         ?           <Box
                       sx={{
                         display: "flex",
                         width: "100%",
@@ -685,7 +685,11 @@ const Orders = () => {
                         </Box>
                       </Box>
                     </Box>
-                  </Card>
+                    :
+                    <Box sx={{ display:'flex',width:'100%', justifyContent:'start'}} > 
+                    <Typography sx={{color:'#DC2A12',fontSize:'10px',fontWeight:'600'}} > Cancelled  </Typography>
+                     </Box>
+}                  </Card>
                 ))
               )
             ) : (

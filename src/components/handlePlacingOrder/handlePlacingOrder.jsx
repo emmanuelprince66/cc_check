@@ -440,7 +440,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       ? totalAmount
       : totalAmount + Number(packCost);
 
-  let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2));
+  let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2)) || 0;
   const totalPrice =
     restaurant || isOTD
       ? restaurantAmount + restaurantCommission
@@ -639,7 +639,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             display: "flex",
             flexDirection: "column",
             position: "fixed",
-            bottom: "0px",
+            bottom: "-5px",
             width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
             padding: "1.5rem",
             gap: ".5rem",
@@ -686,7 +686,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ whiteSpace: "nowrap", fontSize: ".8em" }}>
+                <Typography sx={{ whiteSpace: "nowrap", fontSize: ".9em" }}>
                   {" "}
                   Delivery Fee{" "}
                 </Typography>
@@ -700,6 +700,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                       textTransform: "none",
                       fontSize: ".75em",
                       fontWeight: "600",
+                      textAlign:'right'
                     }}
                   >
                     {" "}
@@ -715,7 +716,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     }}
                   >
                     {" "}
-                    {landmarkCost.amount}{" "}
+                    { landmarkCost.location + '|' + landmarkCost.amount }{" "}
                   </Typography>
                 )}{" "}
               </Box>
@@ -728,7 +729,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 }}
               >
                 <Typography> Service Charge </Typography>
-                <Typography> {restaurantCommission} </Typography>
+                <Typography> ₦{restaurantCommission} </Typography>
               </Box>
             ) : null}{" "}
           </Box>
@@ -1831,7 +1832,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               padding: "1em 0",
             },
           }}
-          open={openLocationOptions}
+          open={true}
           onClose={closeLocationOptions}
           TransitionComponent={Transition}
         >
@@ -1896,7 +1897,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                   padding: "0 1em",
                   width: "100%",
                   flexDirection: "column",
-                  gap: ".8em",
+                  gap: "0em",
                 }}
               >
                 {OTDLandmarks?.landmarks?.map((item, i) => {
@@ -1905,7 +1906,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                       onClick={() =>
                         handleSaveDeliveryCost(item.amount, item.location)
                       }
-                      sx={{ borderBottom: "1px solid grey" }}
+                      sx={{ borderBottom: "1px solid #80808029" , paddingTop:".5em",cursor:'pointer', '&:hover': {background:'#80808029'} }}
                       key={i}
                     >
                       {" "}

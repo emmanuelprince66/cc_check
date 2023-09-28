@@ -168,13 +168,14 @@ const merchantSlice = createSlice({
         (item) => {
           if (item.id === action.payload.id) {
             // Update the count when the condition is met
+
             if (action.payload.type === "add") {
               return {
                 ...item,
                 count: item.count + 1,
                 subTotal: Number(item.price) * (item.count + 1),
               };
-            } else {
+            } else if (action.payload.type !== 'add' && item.count > 1  ) {
               return {
                 ...item,
                 count: item.count - 1,
@@ -189,6 +190,7 @@ const merchantSlice = createSlice({
       return state;
     },
     removeOrder: (state, action) => {
+state.totalAmount -= state.orders[(action.payload - 1)].amount
       state.orders = state.orders
         .filter((order) => order.id !== action.payload)
         .map((item, i) => {
@@ -198,7 +200,6 @@ const merchantSlice = createSlice({
           };
         });
 
-      state.totalAmount -= state.orders[action.payload - 1]?.amount;
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter((order) => order.id === 1);
