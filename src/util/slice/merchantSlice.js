@@ -234,6 +234,7 @@ state.totalAmount -= state.orders[(action.payload - 1)].amount
             count: 1,
             added: false,
             subTotal: item.price,
+            canEditPreview:false,
           };
         }
         return item;
