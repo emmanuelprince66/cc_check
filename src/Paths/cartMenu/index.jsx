@@ -305,7 +305,7 @@ const RestaurantMenu = () => {
           bottom="0"
         >
           <Typography sx={{ fontWeight: "700", fontSize: "2em" }}>
-            {orders[orderInView - 1]?.amount}
+            {orders[orderInView - 1]?.totalAmount}
           </Typography>
           <Button
             onClick={handleSaveToCart}

@@ -52,7 +52,7 @@ const Restaurant = () => {
   useEffect(() => {
     let firstOrder = {
       id: 1,
-      amount: 0.0,
+      totalAmount: 0.0,
       orderType: isOTD ? "delivery" : "eat-in",
       items: [],
     };
@@ -63,7 +63,7 @@ const Restaurant = () => {
     const maxId = orders.length + 1;
     let newOrder = {
       id: maxId,
-      amount: 0.0,
+      totalAmount: 0.0,
       orderType: isOTD ? "delivery" : "eat-in",
       items: [],
     };
@@ -235,7 +235,7 @@ const Restaurant = () => {
                       fontWeight: "600",
                     }}
                   >
-                    N {orders[order?.id - 1]?.amount}{" "}
+                    N {orders[order?.id - 1]?.totalAmount}{" "}
                   </div>
 
                   {orders[order?.id - 1]?.items.length === 0 ? (

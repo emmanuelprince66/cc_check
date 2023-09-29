@@ -129,7 +129,7 @@ const merchantSlice = createSlice({
         );
         state.orders[orderIndex] = {
           ...state.orders[orderIndex],
-          amount: subTotal,
+          totalAmount: subTotal,
         };
 
         state.totalAmount = amount;
