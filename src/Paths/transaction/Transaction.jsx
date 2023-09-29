@@ -74,7 +74,7 @@ const Transaction = () => {
     try {
       if (id) {
         await navigator.clipboard.writeText(id);
-        notify("Account Number Copied To Clipboard");
+        notify("Transaction ID Copied To Clipboard");
       }
     } catch (err) {
       console.error("Copy to clipboard failed:", err);

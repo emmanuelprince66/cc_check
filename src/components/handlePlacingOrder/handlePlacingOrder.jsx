@@ -200,10 +200,19 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const handleClose2 = () => setOpen2(false);
   const handleClose3 = () => setOpen3(false);
   const handleClose4 = () => setOpen4(false);
+
   const handleClose5 = () => {
     setSuccessResponse(false);
     setOpen2(false);
     setOpen(false);
+    dispatch(resetState());
+    navigate("/orders");
+  };
+
+  const handleNavigateToOrders = () => {
+    dispatch(resetState());
+
+    navigate("/orders");
   };
 
   const handleClose7 = () => {
@@ -521,13 +530,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       console.log(response);
       setOrderData(response);
       setSuccessResponse(true);
-
-      setTimeout(() => {
-        setSuccessResponse(false);
-        // setOpenReceipt(true);
-        navigate("/orders");
-        dispatch(resetState());
-      }, 3000);
     },
     onError: (response) => {
       console.log(response);
@@ -1687,62 +1689,86 @@ console.log(openLocationOptions)
       {/* Modal 4 ends*/}
 
       {/* Modal 5* success response */}
-      <Dialog
-        fullScreen
+      <Modal
+        className="scale-in-center"
         open={successResponse}
         onClose={handleClose5}
-        TransitionComponent={Transition}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <Box
+        <Card
           sx={{
-            flexDirection: "column",
+            position: "absolute",
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+            bottom: 0,
+            width: { xs: "100%", sm: "70%", lg: "31%" },
+            left: { xs: "0", sm: "14%", lg: "34%" },
+            padding: "1rem",
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
             justifyContent: "center",
-            width: "100%",
-            height: "100% ",
+            alignItems: "center",
+            minHeight: "60%",
           }}
         >
-          {/* <img className="gif-img" src={successGif} alt="gif" /> */}
-          <CheckRoundedIcon
+          <Box
             sx={{
-              fontSize: "4rem",
-              background: "#008000",
-              borderRadius: "50% ",
-              padding: "1rem",
-              color: "white",
-              marginBottom: "1.7rem",
+              flexDirection: "column",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100% ",
             }}
-          />
-          <Typography
-            sx={{
-              fontFamily: "raleWay",
-              fontWeight: 900,
-              fontSize: "16px",
-              lineHeight: "18.78px",
-              marginY: "1rem",
-              textAlign: "center",
-              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-            }}
-            id="modal-modal-title"
           >
-            Payment Successful!
-          </Typography>
-          <Typography
-            sx={{
-              fontFamily: "raleWay",
-              fontWeight: 600,
-              fontSize: "13px",
-              lineHeight: "18.78px",
-              textAlign: "center",
-              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-            }}
-            id="modal-modal-title"
-          >
-            Generating Receipt.....
-          </Typography>
-        </Box>
-      </Dialog>
+            <Box
+              sx={{
+                width: "70%",
+                margin: "auto",
+                marginTop: "-6rem",
+              }}
+            >
+              <img className="gif-img" src={successGif} alt="gif" />
+            </Box>
+
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                fontWeight: 600,
+                fontSize: "20px",
+                textAlign: "center",
+                color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+                marginTop: "-2rem",
+                marginBottom: "2rem",
+              }}
+              id="modal-modal-title"
+            >
+              Your Order has been placed sucessfully
+            </Typography>
+
+            <Button
+              onClick={() => handleNavigateToOrders()}
+              sx={{
+                background: "#dc0019",
+                padding: "10px",
+                fontWeight: "1000",
+                width: "100%",
+                textTransform: "capitalize",
+                borderRadius: "8px",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor: "#dc0019",
+                },
+                fontFamily: "raleWay",
+              }}
+            >
+              Okay
+            </Button>
+          </Box>
+        </Card>
+      </Modal>
+
       {/* Modal 5  ends*/}
 
       {/* Modal 7 receipt dialog */}
