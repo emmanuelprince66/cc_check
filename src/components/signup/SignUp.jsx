@@ -253,6 +253,7 @@ const SignUp = ({ setIsShown, setActive }) => {
 
   const handleAddressChange = (event) => {
     const value = event.target.value;
+    console.log(value);
     setAddress(value);
     if (!value) {
       setAddressError("Address is required");
@@ -266,6 +267,15 @@ const SignUp = ({ setIsShown, setActive }) => {
   const handlePasswordChange = (event) => {
     const value = event.target.value;
     setPasswordInput(value);
+
+    if (strongPassword.test(value || passwordInput)) {
+      setStrongP(true);
+      setMediumP(false);
+      setStrong(true);
+    } else {
+      setStrongP(false);
+      setStrong(false);
+    }
 
     weakPassword.test(passwordInput) ? setWeakP(true) : setWeakP(false);
 
@@ -288,15 +298,6 @@ const SignUp = ({ setIsShown, setActive }) => {
     } else {
       setMediumP(false);
       setMedium(false);
-    }
-
-    if (strongPassword.test(passwordInput)) {
-      setStrongP(true);
-      setMediumP(false);
-      setStrong(true);
-    } else {
-      setStrongP(false);
-      setStrong(false);
     }
 
     if (!value) {
