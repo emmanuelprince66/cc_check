@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios } from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
 import { queryClient } from "../../helpers/queryClient";
 import useSuperMarket from "../../hooks/useSuperMarket";
@@ -61,7 +61,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-  const { AuthAxios } = axiosInstance();
   const dispatch = useDispatch();
 
   const [text, setText] = useState(false);
@@ -473,7 +472,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     phoneNumber: deliveryDetails.phoneNumber,
     address: deliveryDetails.deliveryAddress,
     category: "restaurant",
-    deliveryFee: `${landmarkCost.location} | ${landmarkCost.amount} `,
+    deliveryFee: `${landmarkCost.amount} `,
     restaurantId: OTDOrderOnClickId,
     totalAmount: totalPrice,
     paymentType: "WALLET",
@@ -706,7 +705,8 @@ console.log(openLocationOptions)
                       textTransform: "none",
                       fontSize: ".75em",
                       fontWeight: "600",
-                      textAlign:'right'
+                      textAlign:'right',
+                      textOverflow:'ellipsis',
                     }}
                   >
                     {" "}
@@ -724,7 +724,7 @@ console.log(openLocationOptions)
                     }}
                   >
                     {" "}
-                    { landmarkCost.location + '|' + landmarkCost.amount }{" "}
+                    { landmarkCost.location + ' ' + '|' + ' ' +landmarkCost.amount }{" "}
                   </Typography>
                 )}{" "}
               </Box>

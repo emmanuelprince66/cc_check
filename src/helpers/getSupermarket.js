@@ -1,10 +1,8 @@
-import axios from "axios";
-
+import { AuthAxios } from "./axiosInstance";
 export const getSuperMarket = async (superMarketId) => {
-  const url = `https://check-server-api-staging.herokuapp.com/api/v1/supermarket/${superMarketId}`;
-  const superMarket = axios({
-    url,
-  }).then((res) => res.data);
+  const superMarket = await AuthAxios({
+    url:`/supermarket/${superMarketId}`
+  })
 
-  return superMarket;
+  return superMarket.data;
 };

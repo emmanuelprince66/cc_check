@@ -36,7 +36,7 @@ import useRestaurantOrders from "../../hooks/useRestaurantOrders";
 import { useSelector } from "react-redux";
 import { showReceiptInView } from "../../util/slice/merchantSlice";
 import { useMutation } from "@tanstack/react-query";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios} from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -87,7 +87,6 @@ const Orders = () => {
     setOrdersItem(ordersFromId.id);
   };
 
-  const { AuthAxios } = axiosInstance();
 
   async function confirmOrder() {
     const token = getCookie("authToken");

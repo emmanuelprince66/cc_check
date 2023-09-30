@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AuthAxios } from "./axiosInstance";
 // import Cookies from "js-cookie";
 
 
@@ -20,9 +21,10 @@ import axios from "axios";
 
 export const getMenu= async (MenuId) => {
   const url = `https://check-server-api-staging.herokuapp.com/api/v1/restaurant/${MenuId}`;
-  const Menu = axios({
-    url,
-  }).then((res) => res.data);
-
-  return Menu;
+  const Menu = await AuthAxios({
+    url: `/restaurant/${MenuId}`,
+    method:'GET',
+  })
+console.log(Menu.data)
+  return Menu?.data;
 };

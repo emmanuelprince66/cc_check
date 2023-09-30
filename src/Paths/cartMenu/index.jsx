@@ -54,6 +54,7 @@ const RestaurantMenu = () => {
     ? merchantDetails?.restaurant?.id
     : null;
   const menu = useMenu(idToUse);
+  console.log(menu)
   const category = useRestaurantCategory(idToUse);
   const navigate = useNavigate();
   // this adds the menu as the orderCart which can be used subsequently

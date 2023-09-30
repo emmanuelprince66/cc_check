@@ -33,7 +33,7 @@ import { ToastContainer, toast } from "react-toastify";
 import phoneLogo from "../../images/phoneLogo.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios } from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
 import { queryClient } from "../../helpers/queryClient";
 import useSuperMarket from "../../hooks/useSuperMarket";
@@ -61,7 +61,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Cart = () => {
-  const { AuthAxios } = axiosInstance();
   const dispatch = useDispatch();
 
   const supermarketCart = useSelector((state) => state.cart.data);

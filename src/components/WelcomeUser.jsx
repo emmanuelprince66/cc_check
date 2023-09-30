@@ -24,7 +24,7 @@ const WelcomeUser = () => {
 
   const superMarket = useSuperMarket(key);
   const restaurant = useRestaurant(key);
-
+console.log(restaurant)
   const notifyErr = (message) => {
     toast.error(message, {
       position: "top-center",

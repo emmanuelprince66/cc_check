@@ -1,10 +1,8 @@
-import axios from "axios";
-
+import { AuthAxios } from "./axiosInstance";
 export const getOTDRestaurants = async () => {
-  const url = `https://check-server-api-staging.herokuapp.com/api/v1/otd`;
-  const response = axios({
-    url,
-  }).then((res) => res.data);
+  const response = await AuthAxios({
+    url:'/otd'
+  })
 
-  return response;
+  return response?.data;
 };

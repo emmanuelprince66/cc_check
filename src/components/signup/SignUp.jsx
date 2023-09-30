@@ -11,7 +11,7 @@ import addressLogo from "../../images/addressLogo.svg";
 import exLogo from "../../images/exLogo.svg";
 import rightLogo from "../../images/rightLogo.svg";
 import wrongLogo from "../../images/wrongLogo.svg";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios } from "../../helpers/axiosInstance";
 
 import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "../../util/cookieAuth";
@@ -27,7 +27,6 @@ import Typography from "@mui/material/Typography";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const { AuthAxios } = axiosInstance();
 
 const SignUp = ({ setIsShown, setActive }) => {
   const navigate = useNavigate();
