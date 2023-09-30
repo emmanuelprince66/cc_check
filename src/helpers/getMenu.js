@@ -25,6 +25,5 @@ export const getMenu= async (MenuId) => {
     url: `/restaurant/${MenuId}`,
     method:'GET',
   })
-console.log(Menu.data)
   return Menu?.data;
 };

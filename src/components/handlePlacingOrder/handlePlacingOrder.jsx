@@ -631,9 +631,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     dispatch(setLandmarkCost({ amount, location }));
     setOpenLocationOptions(false);
   }
-  useEffect(()=>{
-console.log(openLocationOptions)
-  },[openLocationOptions])
   return (
     <>
       <ToastContainer />

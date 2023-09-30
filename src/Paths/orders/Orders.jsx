@@ -44,7 +44,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Orders = () => {
   const orders = useOrders();
-  console.log(orders.data);
   const restaurantOrders = useRestaurantOrders();
 
   const { data: merchantDetails, userDetails } = useSelector(

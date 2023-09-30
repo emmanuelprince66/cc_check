@@ -4,6 +4,5 @@ export const getRestaurantOrders = async () => {
     url:'/cart/user?limit=50',
     method:'GET'
   })
-console.log(orders)
   return orders?.data;
 };

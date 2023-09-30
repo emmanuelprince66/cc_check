@@ -114,6 +114,7 @@ const merchantSlice = createSlice({
 
       if (state.orders[orderIndex]?.items.length > 0) {
         const amount = state.orders.reduce((acc, curr) => {
+
           const subTotal = curr?.items?.reduce((subTotal, item) => {
             return (subTotal += item.subTotal);
           }, 0);
@@ -175,7 +176,7 @@ const merchantSlice = createSlice({
                 count: item.count + 1,
                 subTotal: Number(item.price) * (item.count + 1),
               };
-            } else if (action.payload.type !== 'add' && item.count > 1  ) {
+            } else if (action.payload.type !== "add" && item.count > 1) {
               return {
                 ...item,
                 count: item.count - 1,
@@ -190,7 +191,9 @@ const merchantSlice = createSlice({
       return state;
     },
     removeOrder: (state, action) => {
-state.totalAmount -= state.orders[(action.payload - 1)].amount
+      let index =state.orderInView - 1
+
+      state.totalAmount -= state.orders[index]?.totalAmount;
       state.orders = state.orders
         .filter((order) => order.id !== action.payload)
         .map((item, i) => {
@@ -199,7 +202,6 @@ state.totalAmount -= state.orders[(action.payload - 1)].amount
             id: i + 1,
           };
         });
-
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter((order) => order.id === 1);
@@ -222,11 +224,16 @@ state.totalAmount -= state.orders[(action.payload - 1)].amount
       });
     },
     removeItemFromCart: (state, action) => {
-      state.orders[state.orderInView - 1].items = state.orders[
-        state.orderInView - 1
+      let index = state.orderInView - 1
+      // state.orders[index].totalAmount =
+      state.orders[index].totalAmount  = state.orders[index].totalAmount - action.payload.subTotal;
+
+console.log(JSON.parse(JSON.stringify('moot')))
+      state.orders[index].items = state.orders[
+        index
       ].items.filter((item) => item.id !== action.payload.id);
-      state.orders[state.orderInView - 1].menu = state.orders[
-        state.orderInView - 1
+      state.orders[index].menu = state.orders[
+        index
       ].menu.map((item) => {
         if (item.id === action.payload.id) {
           return {
@@ -234,13 +241,15 @@ state.totalAmount -= state.orders[(action.payload - 1)].amount
             count: 1,
             added: false,
             subTotal: item.price,
-            canEditPreview:false,
+            canPreview:false,
+            canEditPreview: false,
           };
         }
         return item;
       });
 
-      state.orders[state.orderInView - 1].amount -= action.payload.subTotal;
+
+
     },
     resetState: (state, action) => {
       state.orders = [];

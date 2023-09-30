@@ -74,7 +74,6 @@ const OTDMainPage = () => {
           // Dispatch the filtered results to the store
           if (filteredResults.length > 0) {
             dispatch(setOTDRestaurants(filteredResults));
-            console.log(filteredResults[0]);
           }
         } catch (error) {
           console.error("Error fetching results:", error);

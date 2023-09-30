@@ -28,7 +28,6 @@ AuthAxios.interceptors.response.use(
    },
   (error)=>{
       const originalRequest = error.config;
-      console.log(originalRequest)
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         return RefreshToken().then(res => {

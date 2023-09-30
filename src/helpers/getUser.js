@@ -6,6 +6,5 @@ export const getUser = async (token) => {
     url:'/user',
     method:'GET',
   })
-console.log(user)
   return user?.data;
 };
