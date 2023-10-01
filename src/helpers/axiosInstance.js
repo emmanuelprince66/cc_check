@@ -25,7 +25,7 @@ AuthAxios.interceptors.response.use(
   (res) => {
     return res;
   },
-  (error) => {
+  async(error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
