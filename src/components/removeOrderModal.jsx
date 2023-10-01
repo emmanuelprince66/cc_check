@@ -53,7 +53,7 @@ navigate("/restaurant/menu");
           onClick={onRemoveClick}
           sx={{
             backgroundColor: "var(--primary-red)",
-            '& .:hover':{backgroundColor:'var(--primary-red)'},
+            '&:hover ,&:focus':{backgroundColor:'var(--primary-red)'},
             textTransform: "none",
             padding: ".5em 1em",
             fontSize:'1em',

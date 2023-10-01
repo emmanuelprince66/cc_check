@@ -5,7 +5,7 @@ import checkLogo from "../../images/checkLogo.svg";
 import emailLogo from "../../images/emailIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios } from "../../helpers/axiosInstance";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../util/cookieAuth";
 import { useTheme } from "@emotion/react";
 
-const { AuthAxios } = axiosInstance();
+
 
 const Login = () => {
   const currentTheme = useTheme();
@@ -82,17 +82,20 @@ const Login = () => {
           return response.data;
         } catch (error) {
           setTimeout(() => {
-            notify(error.response.data.message);
+            notify(error.response?.data?.message);
           }, 1000);
         }
       }
     },
     onSuccess: (data) => {
-      const authToken = data.access_token;
+      const authToken = data?.access_token;
+      const refreshToken = data?.refreshToken
       const currentTime = new Date();
+      console.log(authToken,refreshToken)
 
       // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
       setCookie("authToken", authToken);
+      setCookie("refreshToken", refreshToken);
       navigate("/home");
     },
     onError(err) {

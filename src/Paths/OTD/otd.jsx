@@ -74,7 +74,6 @@ const OTDMainPage = () => {
           // Dispatch the filtered results to the store
           if (filteredResults.length > 0) {
             dispatch(setOTDRestaurants(filteredResults));
-            console.log(filteredResults[0]);
           }
         } catch (error) {
           console.error("Error fetching results:", error);
@@ -180,9 +179,11 @@ const OTDMainPage = () => {
                   key={i}
                   sx={{
                     padding: ".3em .3em",
+                    cursor:'pointer',
+                    '&:hover':{ background:'#80808014'},
                     boxShadow:
-                      " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
-                    height: "15vh",
+                    '2px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 2px 2px 3px 3px hsla(0, 0%, 0%, 0.05)',
+                                        height: "17vh",
                     display: "flex",
                   }}
                 >

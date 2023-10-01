@@ -35,7 +35,6 @@ const Home = () => {
   const currentTheme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cart = useSelector((state) => state);
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
 

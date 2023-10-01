@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios } from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
 import { queryClient } from "../../helpers/queryClient";
 import useSuperMarket from "../../hooks/useSuperMarket";
@@ -44,7 +44,6 @@ import FormattedPrice from "../../components/FormattedPrice";
 import { useRef } from "react";
 import InsufficientFund from "../../components/InsufficientFund";
 import checkLogo from "../../images/checkLogo.svg";
-import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Restaurant from "../../components/restaurant";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
@@ -56,12 +55,12 @@ import {
 } from "../../util/slice/merchantSlice";
 import { useMyLocation } from "../../hooks/useLocation";
 import { useLocation } from "react-router-dom";
+import LandmarkModal from "../landmarksModal";
 export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-  const { AuthAxios } = axiosInstance();
   const dispatch = useDispatch();
 
   const [text, setText] = useState(false);
@@ -449,7 +448,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       ? totalAmount
       : totalAmount + Number(packCost);
 
-  let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2));
+  let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2)) || 0;
   const totalPrice =
     restaurant || isOTD
       ? restaurantAmount + restaurantCommission
@@ -473,7 +472,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     phoneNumber: deliveryDetails.phoneNumber,
     address: deliveryDetails.deliveryAddress,
     category: "restaurant",
-    deliveryFee: `${landmarkCost.location} | ${landmarkCost.amount} `,
+    deliveryFee: `${landmarkCost.amount} `,
     restaurantId: OTDOrderOnClickId,
     totalAmount: totalPrice,
     paymentType: "WALLET",
@@ -641,7 +640,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             display: "flex",
             flexDirection: "column",
             position: "fixed",
-            bottom: "0px",
+            bottom: "-5px",
             width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
             padding: "1.5rem",
             gap: ".5rem",
@@ -688,20 +687,23 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Typography sx={{ whiteSpace: "nowrap", fontSize: ".8em" }}>
+                <Typography sx={{ whiteSpace: "nowrap", fontSize: ".9em" }}>
                   {" "}
                   Delivery Fee{" "}
                 </Typography>
                 {!landmarkCost.amount ? (
                   <Button
-                    onClick={handleOpenLocationOptions}
+                    onClick={()=>handleOpenLocationOptions()}
                     sx={{
                       color: "var(--currency-green)",
                       minWidth: "30px",
                       padding: "0",
+                      cursor:'pointer',
                       textTransform: "none",
                       fontSize: ".75em",
                       fontWeight: "600",
+                      textAlign:'right',
+                      textOverflow:'ellipsis',
                     }}
                   >
                     {" "}
@@ -714,10 +716,12 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                       color: "var(--currency-green)",
                       fontSize: "1em",
                       fontWeight: "600",
+                      textOverflow:'ellipsis',
+                                            cursor:'pointer',
                     }}
                   >
                     {" "}
-                    {landmarkCost.amount}{" "}
+                    { landmarkCost.location + ' ' + '|' + ' ' +landmarkCost.amount }{" "}
                   </Typography>
                 )}{" "}
               </Box>
@@ -730,7 +734,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 }}
               >
                 <Typography> Service Charge </Typography>
-                <Typography> {restaurantCommission} </Typography>
+                <Typography> ₦{restaurantCommission} </Typography>
               </Box>
             ) : null}{" "}
           </Box>
@@ -1846,105 +1850,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
       {/* Dialog for Location Options   */}
 
-      {openLocationOptions ? (
-        <Dialog
-          sx={{
-            "& .MuiPaper-root": {
-              width: "100%",
-              position: "absolute",
-              bottom: "0",
-              margin: "0",
-              padding: "1em 0",
-            },
-          }}
-          open={openLocationOptions}
-          onClose={closeLocationOptions}
-          TransitionComponent={Transition}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              height: "100%",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: "1rem",
-            }}
-          >
-            <Box
-              sx={{
-                marginBottom: "1rem",
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-              }}
-            >
-              <Typography
-                variant="h2"
-                sx={{
-                  fontFamily: "raleWay",
-                  padding: "0 1em",
-                  letterSpacing: "0.2em",
-                  lineHeight: "2em",
-                  fontWeight: "600",
-                  textAlign: "left",
-
-                  color:
-                    currentTheme.palette.type === "light"
-                      ? "#000000"
-                      : "#EEEEEE",
-                  fontSize: "18px",
-                }}
-              >
-                Select Landmark
-              </Typography>
-              <TextField
-                label="Search Items"
-                sx={{
-                  "& .MuiInputBase-root": { height: "44px" },
-                  padding: "0 1em",
-                }}
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-
-              <Box
-                sx={{
-                  display: "flex",
-                  padding: "0 1em",
-                  width: "100%",
-                  flexDirection: "column",
-                  gap: ".8em",
-                }}
-              >
-                {OTDLandmarks?.landmarks?.map((item, i) => {
-                  return (
-                    <Typography
-                      onClick={() =>
-                        handleSaveDeliveryCost(item.amount, item.location)
-                      }
-                      sx={{ borderBottom: "1px solid grey" }}
-                      key={i}
-                    >
-                      {" "}
-                      {item.location}{" "}
-                    </Typography>
-                  );
-                })}
-              </Box>
-            </Box>
-          </Box>
-        </Dialog>
-      ) : null}
-      {/* insufficient funds modal 8  start */}
+{ openLocationOptions ? <LandmarkModal handleCost={handleSaveDeliveryCost} OTDLandmarks={OTDLandmarks} close={closeLocationOptions}  />: null     
+}      {/* insufficient funds modal 8  start */}
 
       <InsufficientFund
         totalPrice={totalPrice}

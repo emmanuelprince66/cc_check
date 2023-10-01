@@ -5,7 +5,7 @@ import { getOTDRestaurants } from '../helpers/getRestaurantsOTD'
 export default function useGetRestaurantsOTD() {
   const token = getCookie("authToken");
 
-  const fetcher = () => getOTDRestaurants(token);
+  const fetcher = () => getOTDRestaurants();
 
   const enabled = token !== undefined && token !== null;
 

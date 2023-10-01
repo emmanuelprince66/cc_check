@@ -1,15 +1,9 @@
-import axios from "axios";
-import { getCookie } from "../util/cookieAuth";
-
+import { AuthAxios } from "./axiosInstance";
 export const getSuperMarketP = async (eAN, companyName, companylocation) => {
-  const token = getCookie("authToken");
-  const url = `https://check-server-api-staging.herokuapp.com/api/v1/supermarket/${eAN}/${companyName}/${companylocation}`;
-  const superMarketP = axios({
-    url,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((res) => res.data);
+  const superMarketP = await AuthAxios({
+    url: `/supermarket/${eAN}/${companyName}/${companylocation}`,
+    method:'GET'
+  });
 
-  return superMarketP;
+  return superMarketP.data;
 };

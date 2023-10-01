@@ -5,7 +5,7 @@ import { getRestaurantOrders } from "../helpers/getRestaurantCarts";
 export default function useRestaurantOrders() {
   const token = getCookie("authToken");
 
-  const fetcher = () => getRestaurantOrders(token);
+  const fetcher = () => getRestaurantOrders();
 
   const enabled = token !== undefined && token !== null;
 

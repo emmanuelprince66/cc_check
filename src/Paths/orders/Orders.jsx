@@ -36,7 +36,7 @@ import useRestaurantOrders from "../../hooks/useRestaurantOrders";
 import { useSelector } from "react-redux";
 import { showReceiptInView } from "../../util/slice/merchantSlice";
 import { useMutation } from "@tanstack/react-query";
-import { axiosInstance } from "../../helpers/axiosInstance";
+import { AuthAxios} from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -44,7 +44,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Orders = () => {
   const orders = useOrders();
-  console.log(orders.data);
   const restaurantOrders = useRestaurantOrders();
 
   const { data: merchantDetails, userDetails } = useSelector(
@@ -87,7 +86,6 @@ const Orders = () => {
     setOrdersItem(ordersFromId.id);
   };
 
-  const { AuthAxios } = axiosInstance();
 
   async function confirmOrder() {
     const token = getCookie("authToken");
@@ -536,9 +534,9 @@ const Orders = () => {
                         </Typography>
                       </Box>
                       <MoreVertRoundedIcon />
-                    </Box>
-
-                    <Box
+                     </Box>
+   
+{  item.status !==  'CANCELLED'         ?           <Box
                       sx={{
                         display: "flex",
                         width: "100%",
@@ -687,7 +685,11 @@ const Orders = () => {
                         </Box>
                       </Box>
                     </Box>
-                  </Card>
+                    :
+                    <Box sx={{ display:'flex',width:'100%', justifyContent:'start'}} > 
+                    <Typography sx={{color:'#DC2A12',fontSize:'10px',fontWeight:'600'}} > Cancelled  </Typography>
+                     </Box>
+}                  </Card>
                 ))
               )
             ) : (

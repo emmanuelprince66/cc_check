@@ -36,7 +36,6 @@ useEffect(() => {
 
   const menu = useMenu(params.id);
   const [data, setData] = useState({});
-console.log(restaurant,OTDRestaurants,params.id)
   useEffect(() => {
     const resCoords = {
       lat: restaurant?.latitude,

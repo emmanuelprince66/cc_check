@@ -160,7 +160,8 @@ const RestaurantMenu = () => {
                       ? "var(--cart-deep-red)"
                       : "#EDEDED",
                   padding: ".3em .5em",
-                  borderRadius: ".5em",
+                  zIndex:'2',
+                  borderRadius: " 0 .5em 0 .5em  ",
                 }}
                 onClick={() => handleOrderType("eat-in")}
               >
@@ -179,7 +180,8 @@ const RestaurantMenu = () => {
                       ? "var(--cart-deep-red)"
                       : "#EDEDED",
                   padding: ".3em .5em",
-                  borderRadius: " .5em .5em ",
+                  borderRadius: " 0 .5em 0 .5em  ",
+                  marginLeft:'-5px',
                 }}
                 onClick={() => handleOrderType("eat-out")}
               >
@@ -198,7 +200,7 @@ const RestaurantMenu = () => {
               textTransform: "none",
               whiteSpace: "nowrap",
               padding: ".2em .8em",
-              margin: "1em",
+              marginBlock: "1em",
               color: "grey",
               border: "1px solid var(--primary-red)",
             }}
@@ -303,7 +305,7 @@ const RestaurantMenu = () => {
           bottom="0"
         >
           <Typography sx={{ fontWeight: "700", fontSize: "2em" }}>
-            {orders[orderInView - 1]?.amount}
+            {orders[orderInView - 1]?.totalAmount}
           </Typography>
           <Button
             onClick={handleSaveToCart}

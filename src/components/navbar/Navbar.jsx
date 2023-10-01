@@ -102,7 +102,9 @@ const Navbar = () => {
             </Link>
           </Box>
 
-          <Box sx={{}}>
+          <Box sx={{                marginLeft:'-2em',
+          width: { md: "20%", sm: "20%", xs: "15%" },
+}}>
             <Link
               sx={{
                 fontWeight: scanMatch ? "1000" : ",",
