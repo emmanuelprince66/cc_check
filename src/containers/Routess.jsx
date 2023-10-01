@@ -33,6 +33,7 @@ import OTDMainPage from "../Paths/OTD/otd";
 import RestaurantPage from "../Paths/otdRestaurant/otdrestaurant";
 import MainScanner from "../components/MainScanner";
 import ScrollToTop from "../components/scrollToTop";
+import ForgetPassword from "../Paths/forgetp/ForgetPassword";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -77,6 +78,7 @@ const Routess = () => {
             <Route index path="/cart" element={<Cart />} />
             <Route path="/paybills" element={<PayBills />} />
             <Route index path="/mainScanner" element={<MainScanner />} />
+            <Route index path="/forget-password" element={<ForgetPassword />} />
 
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/fwallet" element={<Fwallet />} />
@@ -106,7 +108,8 @@ const Routess = () => {
           </Routes>
 
           {location.pathname !== "/" &&
-          location.pathname !== "/restaurant/menu" ? (
+          location.pathname !== "/restaurant/menu" &&
+          location.pathname !== "/forget-password" ? (
             <Navbar />
           ) : null}
         </CssBaseline>
