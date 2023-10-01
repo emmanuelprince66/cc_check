@@ -96,8 +96,11 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
   const [open4, setOpen4] = React.useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   const [superMarketKey, setSuperMarketKey] = useState("");
   const [successResponse, setSuccessResponse] = useState(false);
+  const [superMarketSuccessResponse, setSuperMarketSuccessResponse] =
+    useState(false);
   const [openReceipt, setOpenReceipt] = useState(false);
   const [orderData, setOrderData] = useState();
   const pinRef = [useRef(), useRef(), useRef(), useRef()];
@@ -206,6 +209,11 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     setOpen(false);
     dispatch(resetState());
     navigate("/orders");
+  };
+  const handleClose8 = () => {
+    superMarketSuccessResponse(false);
+    setOpen2(false);
+    setOpen(false);
   };
 
   const handleNavigateToOrders = () => {
@@ -448,7 +456,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       ? totalAmount
       : totalAmount + Number(packCost);
 
-  let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2)) || 0;
+  let restaurantCommission =
+    Number(((1 / 100) * restaurantAmount).toFixed(2)) || 0;
   const totalPrice =
     restaurant || isOTD
       ? restaurantAmount + restaurantCommission
@@ -478,6 +487,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     paymentType: "WALLET",
     orders: ordersToSend,
   };
+
   const pickUpPayload = {
     commission: restaurantCommission,
     isHomeDelivery: true,
@@ -508,17 +518,16 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   });
   const mutationData = useMutation(sendDataToEndpoint, {
     onSuccess: (response) => {
-      console.log(response);
       setOrderData(response);
-      setSuccessResponse(true);
-
+      setSuperMarketSuccessResponse(true);
+      setButtonDisabled(false);
       setTimeout(() => {
-        setSuccessResponse(false);
+        setSuperMarketSuccessResponse(false);
         setOpenReceipt(true);
       }, 3000);
     },
     onError: (response) => {
-      console.log(response);
+      setButtonDisabled(false);
 
       setNewPins(["", "", "", ""]);
       setConfirmNewPins(["", "", "", ""]);
@@ -539,15 +548,18 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   });
 
   const handleSubmit = () => {
+    setButtonDisabled(true);
     // Check if all the PINs have been entered
     const allPinsEntered = pins.every((pin) => pin !== "");
 
     if (allPinsEntered) {
+      setButtonDisabled(true);
       const matchedPins = pins.join("");
       // Api for verify pin
       mutationOrder.mutate(matchedPins);
     } else {
       notify("Please enter all four PIN digits.");
+      setButtonDisabled(false);
     }
   };
 
@@ -693,17 +705,17 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 </Typography>
                 {!landmarkCost.amount ? (
                   <Button
-                    onClick={()=>handleOpenLocationOptions()}
+                    onClick={() => handleOpenLocationOptions()}
                     sx={{
                       color: "var(--currency-green)",
                       minWidth: "30px",
                       padding: "0",
-                      cursor:'pointer',
+                      cursor: "pointer",
                       textTransform: "none",
                       fontSize: ".75em",
                       fontWeight: "600",
-                      textAlign:'right',
-                      textOverflow:'ellipsis',
+                      textAlign: "right",
+                      textOverflow: "ellipsis",
                     }}
                   >
                     {" "}
@@ -716,12 +728,16 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                       color: "var(--currency-green)",
                       fontSize: "1em",
                       fontWeight: "600",
-                      textOverflow:'ellipsis',
-                                            cursor:'pointer',
+                      textOverflow: "ellipsis",
+                      cursor: "pointer",
                     }}
                   >
                     {" "}
-                    { landmarkCost.location + ' ' + '|' + ' ' +landmarkCost.amount }{" "}
+                    {landmarkCost.location +
+                      " " +
+                      "|" +
+                      " " +
+                      landmarkCost.amount}{" "}
                   </Typography>
                 )}{" "}
               </Box>
@@ -794,7 +810,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           </Box>
         </Box>
       ) : null}
-
       {!isOTD &&
         !merchantDetails.restaurant &&
         supermarketCart?.length !== 0 && (
@@ -879,7 +894,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             </Box>
           </Box>
         )}
-
       {/* Modal 1  modal for purchase*/}
       <Modal
         className="scale-in-center"
@@ -1003,7 +1017,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         </Card>
       </Modal>
       {/* Modal 1 ends*/}
-
       {/* Modal 2*  modal for complete order */}
       <Modal
         className="scale-in-center"
@@ -1117,7 +1130,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
               <Button
                 onClick={handleSubmit}
-                disabled={mutationData.isLoading}
+                disabled={mutationData.isLoading || buttonDisabled}
                 sx={{
                   background:
                     currentTheme.palette.type === "light"
@@ -1144,7 +1157,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                   fontFamily: "raleWay",
                 }}
               >
-                {mutationData.isLoading ? (
+                {mutationData.isLoading || buttonDisabled ? (
                   <CircularProgress size="1.2rem" sx={{ color: "white" }} />
                 ) : (
                   "Complete Order"
@@ -1234,7 +1247,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         </Card>
       </Modal>
       {/* Modal 2 ends*/}
-
       {/* Modal 3   modal for forget pin*/}
       <Modal
         className="scale-in-center"
@@ -1431,7 +1443,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         </Card>
       </Modal>
       {/* Modal 3 ends*/}
-
       {/* Modal 4*   modal for create pin */}
       <Modal
         className="scale-in-center"
@@ -1684,30 +1695,94 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         </Card>
       </Modal>
       {/* Modal 4 ends*/}
+      {/* Modal 5* success response for restaurant & supermarket*/}
+      {supermarketCart.length === 0 ? (
+        <Modal
+          className="scale-in-center"
+          open={successResponse}
+          onClose={handleClose5}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Card
+            sx={{
+              position: "absolute",
+              borderTopLeftRadius: "10px",
+              borderTopRightRadius: "10px",
+              bottom: 0,
+              width: { xs: "100%", sm: "70%", lg: "31%" },
+              left: { xs: "0", sm: "14%", lg: "34%" },
+              padding: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: "60%",
+            }}
+          >
+            <Box
+              sx={{
+                flexDirection: "column",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                height: "100% ",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "70%",
+                  margin: "auto",
+                  marginTop: "-6rem",
+                }}
+              >
+                <img className="gif-img" src={successGif} alt="gif" />
+              </Box>
 
-      {/* Modal 5* success response */}
-      <Modal
-        className="scale-in-center"
-        open={successResponse}
-        onClose={handleClose5}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Card
-          sx={{
-            position: "absolute",
-            borderTopLeftRadius: "10px",
-            borderTopRightRadius: "10px",
-            bottom: 0,
-            width: { xs: "100%", sm: "70%", lg: "31%" },
-            left: { xs: "0", sm: "14%", lg: "34%" },
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "60%",
-          }}
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  fontWeight: 600,
+                  fontSize: "20px",
+                  textAlign: "center",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  marginTop: "-2rem",
+                  marginBottom: "2rem",
+                }}
+                id="modal-modal-title"
+              >
+                Your Order has been placed sucessfully
+              </Typography>
+
+              <Button
+                onClick={() => handleNavigateToOrders()}
+                sx={{
+                  background: "#dc0019",
+                  padding: "10px",
+                  fontWeight: "1000",
+                  width: "100%",
+                  textTransform: "capitalize",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor: "#dc0019",
+                  },
+                  fontFamily: "raleWay",
+                }}
+              >
+                Okay
+              </Button>
+            </Box>
+          </Card>
+        </Modal>
+      ) : (
+        <Dialog
+          fullScreen
+          open={superMarketSuccessResponse}
+          onClose={handleClose8}
+          TransitionComponent={Transition}
         >
           <Box
             sx={{
@@ -1719,55 +1794,48 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               height: "100% ",
             }}
           >
-            <Box
+            {/* <img className="gif-img" src={successGif} alt="gif" /> */}
+            <CheckRoundedIcon
               sx={{
-                width: "70%",
-                margin: "auto",
-                marginTop: "-6rem",
+                fontSize: "4rem",
+                background: "#008000",
+                borderRadius: "50% ",
+                padding: "1rem",
+                color: "white",
+                marginBottom: "1.7rem",
               }}
+            />
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                fontWeight: 900,
+                fontSize: "16px",
+                lineHeight: "18.78px",
+                marginY: "1rem",
+                textAlign: "center",
+                color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+              }}
+              id="modal-modal-title"
             >
-              <img className="gif-img" src={successGif} alt="gif" />
-            </Box>
-
+              Payment Successful!
+            </Typography>
             <Typography
               sx={{
                 fontFamily: "raleWay",
                 fontWeight: 600,
-                fontSize: "20px",
+                fontSize: "13px",
+                lineHeight: "18.78px",
                 textAlign: "center",
                 color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-                marginTop: "-2rem",
-                marginBottom: "2rem",
               }}
               id="modal-modal-title"
             >
-              Your Order has been placed sucessfully
+              Generating Receipt.....
             </Typography>
-
-            <Button
-              onClick={() => handleNavigateToOrders()}
-              sx={{
-                background: "#dc0019",
-                padding: "10px",
-                fontWeight: "1000",
-                width: "100%",
-                textTransform: "capitalize",
-                borderRadius: "8px",
-                color: "#fff",
-                "&:hover": {
-                  backgroundColor: "#dc0019",
-                },
-                fontFamily: "raleWay",
-              }}
-            >
-              Okay
-            </Button>
           </Box>
-        </Card>
-      </Modal>
-
+        </Dialog>
+      )}
       {/* Modal 5  ends*/}
-
       {/* Modal 7 receipt dialog */}
       <Dialog
         fullScreen
@@ -1794,7 +1862,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         </Box>
       </Dialog>
       {/* Modal 7 receipt dialog  ends*/}
-
       {/* Modal 9 create pin success */}
       <Dialog
         fullScreen
@@ -1847,12 +1914,15 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         </Box>
       </Dialog>
       {/* Modal 9  create pin success  ends*/}
-
       {/* Dialog for Location Options   */}
-
-{ openLocationOptions ? <LandmarkModal handleCost={handleSaveDeliveryCost} OTDLandmarks={OTDLandmarks} close={closeLocationOptions}  />: null     
-}      {/* insufficient funds modal 8  start */}
-
+      {openLocationOptions ? (
+        <LandmarkModal
+          handleCost={handleSaveDeliveryCost}
+          OTDLandmarks={OTDLandmarks}
+          close={closeLocationOptions}
+        />
+      ) : null}{" "}
+      {/* insufficient funds modal 8  start */}
       <InsufficientFund
         totalPrice={totalPrice}
         showInsufficientBalance={showInsufficientBalance}

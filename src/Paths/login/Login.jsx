@@ -369,9 +369,8 @@ const Login = () => {
                   />
                 </FormControl>
               </div>
-
               <div className="gpt3__check-forget">
-                <Link to="">Forget Password?</Link>
+                <Link to="/forget-password">Forget Password?</Link>
               </div>
 
               <div className="gpt3__check-button">

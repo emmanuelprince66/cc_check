@@ -38,6 +38,7 @@ import { showReceiptInView } from "../../util/slice/merchantSlice";
 import { useMutation } from "@tanstack/react-query";
 import { AuthAxios} from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
+import { isObject } from "formik";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -213,7 +214,7 @@ const Orders = () => {
             mx: "auto",
           }}
         >
-          <div onClick={() => navigate(-1)}>
+          <div onClick={() => navigate("/home")}>
             <BackArrow />
           </div>
 
