@@ -4,7 +4,7 @@ export const RefreshToken = async () => {
   let refreshToken = Cookies.get("refreshToken");
 
   const url = `https://check-server-api-staging.herokuapp.com/api/v1/auth/refresh`;
-  const orders = axios.post(
+  const response = axios.post(
     url,
     { refreshToken: refreshToken },
     {
@@ -14,5 +14,5 @@ export const RefreshToken = async () => {
     }
   );
 
-  return orders;
+  return response;
 };
