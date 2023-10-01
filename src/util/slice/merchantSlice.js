@@ -118,6 +118,7 @@ const merchantSlice = createSlice({
           const subTotal = curr?.items?.reduce((subTotal, item) => {
             return (subTotal += item.subTotal);
           }, 0);
+          console.log(subTotal)
           return acc + subTotal;
         }, 0);
 
@@ -191,9 +192,9 @@ const merchantSlice = createSlice({
       return state;
     },
     removeOrder: (state, action) => {
-      let index =state.orderInView - 1
+      let index =action.payload - 1
+state.totalAmount -= state.orders[index].totalAmount;
 
-      state.totalAmount -= state.orders[index]?.totalAmount;
       state.orders = state.orders
         .filter((order) => order.id !== action.payload)
         .map((item, i) => {
@@ -202,6 +203,8 @@ const merchantSlice = createSlice({
             id: i + 1,
           };
         });
+// console.log(JSON.parse(JSON.stringify(state.orders[index])))
+
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter((order) => order.id === 1);
@@ -226,12 +229,11 @@ const merchantSlice = createSlice({
     removeItemFromCart: (state, action) => {
       let index = state.orderInView - 1
       // state.orders[index].totalAmount =
-      state.orders[index].totalAmount  = state.orders[index].totalAmount - action.payload.subTotal;
 
-console.log(JSON.parse(JSON.stringify('moot')))
-      state.orders[index].items = state.orders[
+      state.orders[index].items  = state.orders[
         index
-      ].items.filter((item) => item.id !== action.payload.id);
+      ].items.filter((item) => item.menuId !== action.payload.id);
+
       state.orders[index].menu = state.orders[
         index
       ].menu.map((item) => {
@@ -248,7 +250,7 @@ console.log(JSON.parse(JSON.stringify('moot')))
         return item;
       });
 
-
+      state.orders[index].totalAmount  -= action.payload.subTotal;
 
     },
     resetState: (state, action) => {
