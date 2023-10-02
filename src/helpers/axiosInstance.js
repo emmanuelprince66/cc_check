@@ -38,7 +38,9 @@ AuthAxios.interceptors.response.use(
         return AuthAxios(originalRequest);
       }).catch(err=>{
         if(err.response.status === 401 || err.response.status === 403 ){
-          window.location.href = '/'
+          // window.location.href = '/'#
+          console.log('refreshToken is wrong mate')
+          alert('refreshToken has expired')
         }}
          )
     }
