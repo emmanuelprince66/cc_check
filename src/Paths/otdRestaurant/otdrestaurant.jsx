@@ -56,18 +56,18 @@ const RestaurantPage = () => {
     myLocation?.latitude,
     myLocation?.longitude,
   ]);
-   function openStatus(openTime, closeTime) {
+  function openStatus(openTime, closeTime) {
     const time = new Date();
     const hrs = time.getHours();
     const mins = time.getMinutes();
 
     const [openHours, openMinutes] = openTime.split(":");
     const [closeHours, closeMinutes] = closeTime.split(":");
-
     const isWithinTimeRange =
-      (hrs > openHours || (hrs === openHours && mins > openMinutes)) &&
-      (hrs < closeHours || (hrs === closeHours && mins <= closeMinutes));
-    if (isWithinTimeRange) {
+      ((hrs > (Number(openHours ) )) ||( (hrs === (Number(openHours ))) && mins > Number(openMinutes))) 
+      &&
+(      (hrs < Number(closeHours) + 12 ) || ((hrs === Number(closeHours) + 12) && mins <= Number(closeMinutes)))  
+  if (isWithinTimeRange) {
       return "Open";
     } else {
       return "Closed";

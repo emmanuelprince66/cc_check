@@ -48,11 +48,11 @@ const OTDMainPage = () => {
 
     const [openHours, openMinutes] = openTime.split(":");
     const [closeHours, closeMinutes] = closeTime.split(":");
-
     const isWithinTimeRange =
-      (hrs > openHours || (hrs === openHours && mins > openMinutes)) &&
-      (hrs < closeHours || (hrs === closeHours && mins <= closeMinutes));
-    if (isWithinTimeRange) {
+      ((hrs > (Number(openHours ) )) ||( (hrs === (Number(openHours ))) && mins > Number(openMinutes))) 
+      &&
+(      (hrs < Number(closeHours) + 12 ) || ((hrs === Number(closeHours) + 12) && mins <= Number(closeMinutes)))  
+  if (isWithinTimeRange) {
       return "Open";
     } else {
       return "Closed";
@@ -184,7 +184,7 @@ const OTDMainPage = () => {
                   key={i}
                   variant="rectangular"
                   width={"100%"}
-                  height={200}
+                  height={'18vh'}
                 />
               );
             })
@@ -200,7 +200,7 @@ const OTDMainPage = () => {
                     "&:hover": { background: "#80808014" },
                     boxShadow:
                       "2px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 2px 2px 3px 3px hsla(0, 0%, 0%, 0.05)",
-                    height: "17vh",
+                    height: "18vh",
                     display: "flex",
                   }}
                 >
