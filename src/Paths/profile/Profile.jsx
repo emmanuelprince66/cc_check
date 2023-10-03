@@ -354,8 +354,8 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
               <Box>
                 <ThemeProvider theme={theme}>
                   <Switch
-                    checked={darkMode}
-                    onChange={onToggleDarkMode}
+                    // checked={darkMode}
+                    // onChange={onToggleDarkMode}
                     sx={{
                       "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                         {
@@ -408,7 +408,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
               Others
             </Typography>
 
-            <Link to="">
+            <Link to="/support">
               <Card
                 sx={{
                   background:

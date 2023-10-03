@@ -124,7 +124,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
   const handleClearCart = () => {
     dispatch(clearCart());
     localStorage.clear();
-    navigate("/home");
+    navigate("/orders");
   };
 
   return (
@@ -628,7 +628,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
             }}
             variant="outlined"
           >
-            Back to Scan
+            Back
           </Button>
         </Box>
 

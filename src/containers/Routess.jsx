@@ -34,6 +34,7 @@ import RestaurantPage from "../Paths/otdRestaurant/otdrestaurant";
 import MainScanner from "../components/MainScanner";
 import ScrollToTop from "../components/scrollToTop";
 import ForgetPassword from "../Paths/forgetp/ForgetPassword";
+import ChangePassWord from "../components/ChangePassWord";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -85,6 +86,7 @@ const Routess = () => {
             <Route path="/fwithdraw" element={<Fwithdraw />} />
             <Route path="/wtransfer" element={<Wtransfer />} />
             <Route path="/frecharge" element={<Frecharge />} />
+            <Route path="/change-password" element={<ChangePassWord />} />
             <Route path="/elect" element={<Elect />} />
             <Route path="/tvsub" element={<Tvsub />} />
             <Route path="/referral" element={<Referral />} />
@@ -109,7 +111,9 @@ const Routess = () => {
 
           {location.pathname !== "/" &&
           location.pathname !== "/restaurant/menu" &&
-          location.pathname !== "/forget-password" ? (
+          location.pathname !== "/forget-password" &&
+          location.pathname !== "/change-password" &&
+          location.pathname !== "/support" ? (
             <Navbar />
           ) : null}
         </CssBaseline>

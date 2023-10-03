@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import InvalidPin from "../InvalidPin";
 import add from "../../assets/add-square.svg";
 import {
+  clearRestaurantCart,
+  clearMerchantState,
+} from "../../util/slice/merchantSlice";
+import {
   Card,
   Box,
   Typography,
@@ -208,6 +212,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     setOpen2(false);
     setOpen(false);
     dispatch(resetState());
+    dispatch(clearRestaurantCart());
+    dispatch(clearMerchantState());
     navigate("/orders");
   };
   const handleClose8 = () => {
@@ -218,6 +224,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
   const handleNavigateToOrders = () => {
     dispatch(resetState());
+    dispatch(clearRestaurantCart());
+    dispatch(clearMerchantState());
 
     navigate("/orders");
   };
