@@ -5,222 +5,285 @@ import { Typography, Container, Card, Box } from "@mui/material";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useTheme } from "@mui/material";
 import phoneColor from "../../images/phoneColor.svg";
+import { ToastContainer, toast } from "react-toastify";
+
+import { AuthProvider } from "../../util/AuthContext";
+import ClipboardJS from "clipboard";
 
 const Suport = () => {
   const currentTheme = useTheme();
 
+  const copyFirstNumber = async (num) => {
+    console.log("hello");
+    try {
+      if (num) {
+        await navigator.clipboard.writeText(num);
+        notify("Copied To Clipboard");
+      }
+    } catch (err) {
+      console.error("Copy to clipboard failed:", err);
+    }
+  };
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
   return (
     <AuthProvider>
-      <div className="gpt3__bills">
-        <BackArrow destination="/profile" />
-
-        <Typography
-          variant="h2"
+      <Box
+        sx={{
+          maxWidth: "31%",
+          mx: "auto",
+          marginTop: "1rem",
+          maxWidth: { xs: "100%", sm: "100%", md: "31%" },
+        }}
+      >
+        <Box
           sx={{
-            fontFamily: "raleWay",
-            color:
-              currentTheme.palette.type === "light" ? "#1E1E1E" : "#EEEEEE",
-            fontWeight: 600,
-            fontSize: "24px",
-            lineHeight: "28.18px",
+            width: "80%",
+            mx: "auto",
             marginBottom: "1rem",
           }}
         >
-          Support
-        </Typography>
+          <BackArrow destination="/profile" />
+        </Box>
 
-        <Typography
-          variant="h6"
+        <Box
           sx={{
-            fontFamily: "raleWay",
-            color:
-              currentTheme.palette.type === "light" ? "#727272" : "#EEEEEE",
-            fontWeight: 400,
-            fontSize: "14px",
-            lineHeight: "16.44px",
-            marginBottom: "1rem",
-          }}
-        >
-          Have your complaints resolved in real-time.
-        </Typography>
-
-        <Container
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "start",
-            alignItems: "center",
-            gap: "1rem",
             width: "100%",
           }}
         >
-          <Card
+          <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "start",
-              alignItems: "start",
-              gap: "1rem",
-              padding: "1rem",
-              width: { xs: "18rem", sm: "100%", lg: "100%" },
+              width: "80%",
+              mx: "auto",
             }}
           >
             <Typography
+              variant="h2"
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#1E1E1E" : "#EEEEEE",
+                fontWeight: 600,
+                fontSize: "24px",
+                lineHeight: "28.18px",
+                marginBottom: "1rem",
+              }}
+            >
+              Support
+            </Typography>
+
+            <Typography
+              variant="h6"
               sx={{
                 fontFamily: "raleWay",
                 color:
                   currentTheme.palette.type === "light" ? "#727272" : "#EEEEEE",
                 fontWeight: 400,
-                fontSize: "16px",
+                fontSize: "14px",
                 lineHeight: "16.44px",
+                marginBottom: "1rem",
               }}
             >
-              Call Us
+              Have your complaints resolved in real-time.
             </Typography>
+          </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "10px",
-                }}
-              >
-                <img src={phoneColor} alt="call-icon" />
-                <Typography
-                  sx={{
-                    fontFamily: "raleWay",
-                    color:
-                      currentTheme.palette.type === "light"
-                        ? "#727272"
-                        : "#EEEEEE",
-                    fontWeight: 600,
-                    fontSize: "16px",
-                    lineHeight: "16.44px",
-                  }}
-                >
-                  {" "}
-                  08149734622
-                </Typography>
-              </Box>
-
-              <Box>
-                <img src={copy} alt="copy-icon" />
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "10px",
-                }}
-              >
-                <img src={phoneColor} alt="call-icon" />
-                <Typography
-                  sx={{
-                    fontFamily: "raleWay",
-                    color:
-                      currentTheme.palette.type === "light"
-                        ? "#727272"
-                        : "#EEEEEE",
-                    fontWeight: 600,
-                    fontSize: "16px",
-                    lineHeight: "16.44px",
-                  }}
-                >
-                  {" "}
-                  09037716931
-                </Typography>
-              </Box>
-
-              <Box>
-                <img src={copy} alt="copy-icon" />
-              </Box>
-            </Box>
-          </Card>
-
-          <Card
+          <Container
             sx={{
               display: "flex",
               flexDirection: "column",
               justifyContent: "start",
-              alignItems: "start",
+              alignItems: "center",
               gap: "1rem",
-              padding: "1rem",
-              width: { xs: "18rem", sm: "100%", lg: "100%" },
+              width: "100%",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "raleWay",
-                color:
-                  currentTheme.palette.type === "light" ? "#727272" : "#EEEEEE",
-                fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "16.44px",
-              }}
-            >
-              Email us
-            </Typography>
-
-            <Box
+            <Card
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "start",
+                gap: "1rem",
+                padding: "1rem",
+                width: { xs: "18rem", sm: "100%", lg: "100%" },
               }}
             >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light"
+                      ? "#727272"
+                      : "#EEEEEE",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "16.44px",
+                }}
+              >
+                Call Us
+              </Typography>
+
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  gap: "10px",
+                  width: "100%",
                 }}
               >
-                <img src={messColor} alt="call-icon" />
-                <Typography
+                <Box
                   sx={{
-                    fontFamily: "raleWay",
-                    color:
-                      currentTheme.palette.type === "light"
-                        ? "#727272"
-                        : "#EEEEEE",
-                    fontWeight: 600,
-                    fontSize: "16px",
-                    lineHeight: "16.44px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "10px",
                   }}
                 >
-                  {" "}
-                  support@endpoint.ng
-                </Typography>
-              </Box>
+                  <img src={phoneColor} alt="call-icon" />
 
-              <Box>
-                <img src={copy} alt="copy-icon" />
+                  <Typography
+                    id="phone-1"
+                    sx={{
+                      fontFamily: "raleWay",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#727272"
+                          : "#EEEEEE",
+                      fontWeight: 600,
+                      fontSize: "16px",
+                      lineHeight: "16.44px",
+                    }}
+                  >
+                    {" "}
+                    08149734622
+                  </Typography>
+                </Box>
+
+                <Box onClick={() => copyFirstNumber("08149734622")}>
+                  <img src={copy} alt="copy-icon" />
+                </Box>
               </Box>
-            </Box>
-          </Card>
-        </Container>
-      </div>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <img src={phoneColor} alt="call-icon" />
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#727272"
+                          : "#EEEEEE",
+                      fontWeight: 600,
+                      fontSize: "16px",
+                      lineHeight: "16.44px",
+                    }}
+                  >
+                    {" "}
+                    09037716931
+                  </Typography>
+                </Box>
+
+                <Box onClick={() => copyFirstNumber("09037716931")}>
+                  <img src={copy} alt="copy-icon" />
+                </Box>
+              </Box>
+            </Card>
+
+            <Card
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "start",
+                gap: "1rem",
+                padding: "1rem",
+                width: { xs: "18rem", sm: "100%", lg: "100%" },
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light"
+                      ? "#727272"
+                      : "#EEEEEE",
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "16.44px",
+                }}
+              >
+                Email us
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <img src={messColor} alt="call-icon" />
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#727272"
+                          : "#EEEEEE",
+                      fontWeight: 600,
+                      fontSize: "16px",
+                      lineHeight: "16.44px",
+                    }}
+                  >
+                    {" "}
+                    support@endpoint.ng
+                  </Typography>
+                </Box>
+
+                <Box onClick={() => copyFirstNumber("support@endpoint.ng")}>
+                  <img src={copy} alt="copy-icon" />
+                </Box>
+              </Box>
+            </Card>
+          </Container>
+        </Box>
+        <ToastContainer />
+      </Box>
     </AuthProvider>
   );
 };

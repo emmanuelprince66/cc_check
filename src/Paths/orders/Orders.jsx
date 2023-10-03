@@ -36,7 +36,7 @@ import useRestaurantOrders from "../../hooks/useRestaurantOrders";
 import { useSelector } from "react-redux";
 import { showReceiptInView } from "../../util/slice/merchantSlice";
 import { useMutation } from "@tanstack/react-query";
-import { AuthAxios} from "../../helpers/axiosInstance";
+import { AuthAxios } from "../../helpers/axiosInstance";
 import { getCookie } from "../../util/cookieAuth";
 import { isObject } from "formik";
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -74,6 +74,8 @@ const Orders = () => {
   const handleOpen = (item) => {
     // setOpen(true);
 
+    console.log(item);
+
     if (view === "restaurant") {
       setResOptionsOpen(true);
       setOrderToView(item);
@@ -86,7 +88,6 @@ const Orders = () => {
 
     setOrdersItem(ordersFromId.id);
   };
-
 
   async function confirmOrder() {
     const token = getCookie("authToken");
@@ -527,162 +528,178 @@ const Orders = () => {
                         </Typography>
                       </Box>
                       <MoreVertRoundedIcon />
-                     </Box>
-   
-{  item.status !==  'CANCELLED'         ?           <Box
-                      sx={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    </Box>
+                    {item.status !== "CANCELLED" ? (
                       <Box
                         sx={{
                           display: "flex",
-                          justifyContent: "start",
-                          alignItems: "center",
-                          gap: "2px",
+                          width: "100%",
+                          justifyContent: "space-between",
                         }}
                       >
-                        <CheckCircleOutlineRoundedIcon
+                        <Box
                           sx={{
-                            fontSize: "15px",
-                            paddingTop: "2px",
-                            color:
-                              item.status === "COMPLETED"
-                                ? "#727272"
-                                : item.status === "PENDING" ||
-                                  item.status === "PREPARING"
-                                ? "#C57600"
-                                : item.status === "CANCELLED"
-                                ? "red"
-                                : "#727272",
+                            display: "flex",
+                            justifyContent: "start",
+                            alignItems: "center",
+                            gap: "2px",
                           }}
-                        />
+                        >
+                          <CheckCircleOutlineRoundedIcon
+                            sx={{
+                              fontSize: "15px",
+                              paddingTop: "2px",
+                              color:
+                                item.status === "COMPLETED"
+                                  ? "#727272"
+                                  : item.status === "PENDING" ||
+                                    item.status === "PREPARING"
+                                  ? "#C57600"
+                                  : item.status === "CANCELLED"
+                                  ? "red"
+                                  : "#727272",
+                            }}
+                          />
+                          <Typography
+                            sx={{
+                              fontFamily: "raleWay",
+                              fontWeight: "900",
+                              fontSize: "10px",
+                              color:
+                                item.status === "COMPLETED"
+                                  ? "#727272"
+                                  : item.status === "PENDING" ||
+                                    item.status === "PREPARING"
+                                  ? "#C57600"
+                                  : item.status === "CANCELLED"
+                                  ? "red"
+                                  : "#727272",
+                            }}
+                          >
+                            {item.isHomeDelivery ? "Processing" : "Pending"}
+                          </Typography>
+                        </Box>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "end",
+                            gap: "2rem",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "3px",
+                            }}
+                          >
+                            <CheckCircleOutlineRoundedIcon
+                              sx={{
+                                color:
+                                  item.status === "COMPLETED"
+                                    ? "#727272"
+                                    : item.status === "PENDING" ||
+                                      item.status === "PREPARING"
+                                    ? "#727272"
+                                    : item.status === "CANCELLED"
+                                    ? "red"
+                                    : "#727272",
+                                fontSize: "13px",
+                              }}
+                            />
+                            <Typography
+                              sx={{
+                                fontFamily: "raleWay",
+                                fontWeight: "900",
+                                fontSize: "11px",
+                                color:
+                                  item.status === "OUT FOR DELIVERY"
+                                    ? "#C57600"
+                                    : "#727272",
+                              }}
+                            >
+                              {item.orders[0].orderType === "eat-in"
+                                ? "Serving"
+                                : item.orders[0].orderType === "delivery"
+                                ? "Out For Delivery"
+                                : "To be picked up"}
+                            </Typography>
+                          </Box>
+                        </Box>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "end",
+                            gap: "2rem",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "3px",
+                            }}
+                          >
+                            <CheckCircleOutlineRoundedIcon
+                              sx={{
+                                color:
+                                  item.status === "COMPLETED"
+                                    ? "#008000"
+                                    : item.status === "PENDING" ||
+                                      item.status === "PREPARING"
+                                    ? "#727272"
+                                    : item.status === "CANCELLED"
+                                    ? "red"
+                                    : "#727272",
+                                fontSize: "13px",
+                              }}
+                            />
+                            <Typography
+                              sx={{
+                                fontFamily: "raleWay",
+                                fontWeight: "900",
+                                fontSize: "11px",
+                                color:
+                                  item.status === "COMPLETED"
+                                    ? "#008000"
+                                    : item.status === "PENDING" ||
+                                      item.status === "PREPARING"
+                                    ? "#727272"
+                                    : item.status === "CANCELLED"
+                                    ? "red"
+                                    : "#727272",
+                              }}
+                            >
+                              {item.isHomeDelivery ? "Delivered" : "Completed"}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          width: "100%",
+                          justifyContent: "start",
+                        }}
+                      >
                         <Typography
                           sx={{
-                            fontFamily: "raleWay",
-                            fontWeight: "900",
+                            color: "#DC2A12",
                             fontSize: "10px",
-                            color:
-                              item.status === "COMPLETED"
-                                ? "#727272"
-                                : item.status === "PENDING" ||
-                                  item.status === "PREPARING"
-                                ? "#C57600"
-                                : item.status === "CANCELLED"
-                                ? "red"
-                                : "#727272",
+                            fontWeight: "600",
                           }}
                         >
-                          {item.isHomeDelivery ? "Processing" : "Pending"}
+                          {" "}
+                          Cancelled{" "}
                         </Typography>
                       </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "end",
-                          gap: "2rem",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "3px",
-                          }}
-                        >
-                          <CheckCircleOutlineRoundedIcon
-                            sx={{
-                              color:
-                                item.status === "COMPLETED"
-                                  ? "#727272"
-                                  : item.status === "PENDING" ||
-                                    item.status === "PREPARING"
-                                  ? "#727272"
-                                  : item.status === "CANCELLED"
-                                  ? "red"
-                                  : "#727272",
-                              fontSize: "13px",
-                            }}
-                          />
-                          <Typography
-                            sx={{
-                              fontFamily: "raleWay",
-                              fontWeight: "900",
-                              fontSize: "11px",
-                              color:
-                                item.status === "OUT FOR DELIVERY"
-                                  ? "#C57600"
-                                  : "#727272",
-                            }}
-                          >
-                            {item.orders[0].orderType === "eat-in"
-                              ? "Serving"
-                              : item.orders[0].orderType === "delivery"
-                              ? "Out For Delivery"
-                              : "To be picked up"}
-                          </Typography>
-                        </Box>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "end",
-                          gap: "2rem",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "3px",
-                          }}
-                        >
-                          <CheckCircleOutlineRoundedIcon
-                            sx={{
-                              color:
-                                item.status === "COMPLETED"
-                                  ? "#008000"
-                                  : item.status === "PENDING" ||
-                                    item.status === "PREPARING"
-                                  ? "#727272"
-                                  : item.status === "CANCELLED"
-                                  ? "red"
-                                  : "#727272",
-                              fontSize: "13px",
-                            }}
-                          />
-                          <Typography
-                            sx={{
-                              fontFamily: "raleWay",
-                              fontWeight: "900",
-                              fontSize: "11px",
-                              color:
-                                item.status === "COMPLETED"
-                                  ? "#008000"
-                                  : item.status === "PENDING" ||
-                                    item.status === "PREPARING"
-                                  ? "#727272"
-                                  : item.status === "CANCELLED"
-                                  ? "red"
-                                  : "#727272",
-                            }}
-                          >
-                            Completed
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Box>
-                    :
-                    <Box sx={{ display:'flex',width:'100%', justifyContent:'start'}} > 
-                    <Typography sx={{color:'#DC2A12',fontSize:'10px',fontWeight:'600'}} > Cancelled  </Typography>
-                     </Box>
-}                  </Card>
+                    )}{" "}
+                  </Card>
                 ))
               )
             ) : (
