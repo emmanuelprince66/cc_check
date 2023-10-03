@@ -8,10 +8,10 @@ export const AuthAxios = Axios.create({
 });
 
 AuthAxios.interceptors.request.use(
-  function (config) {
-    let token = Cookies.get("authToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async function (config) {
+   let data = await RefreshToken()
+    if (data) {
+      config.headers.Authorization = `Bearer ${data.access_token}`;
     }
 
     return config;
@@ -26,25 +26,6 @@ AuthAxios.interceptors.response.use(
     return res;
   },
   async(error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      return RefreshToken().then((res) => {
-        Cookies.set("authToken", res.data?.access_token);
-        Cookies.set("refreshToken", res.data?.refreshToken);
-        console.log(res.data);
-        AuthAxios.defaults.headers.common["Authorization"] =
-          "Bearer " + res.data?.access_token;
-        return AuthAxios(originalRequest);
-      }).catch(err=>{
-        if(err.response.status === 401 || err.response.status === 403 ){
-          // window.location.href = '/'#
-          console.log('refreshToken is wrong mate')
-          alert('refreshToken has expired')
-        }}
-         )
-    }
-
     return Promise.reject(error);
   }
 );
