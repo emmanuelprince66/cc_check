@@ -38,11 +38,7 @@ const Home = () => {
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
 
-  const user = useUser();
-
-  useEffect(() => {
-    dispatch(fillUserDetails(user.data));
-  }, [user, dispatch]);
+const {userDetails} = useSelector(state=>state.merchantReducer)
 
   const mylocation = useMyLocation();
   useEffect(() => {
@@ -99,8 +95,8 @@ const Home = () => {
                 fontSize: "16px",
               }}
             >
-              {`${user.data ? user.data.firstName : ""} ${
-                user.data ? user.data.lastName : ""
+              {`${ userDetails?.firstName || ""} ${
+                 userDetails?.lastName || ""
               }  `}
             </Typography>
           </Box>
@@ -167,8 +163,8 @@ const Home = () => {
                       fontSize: "18px",
                     }}
                   >
-                    {user.data ? (
-                      <FormattedPrice amount={user.data.balance} />
+                    {userDetails ? (
+                      <FormattedPrice amount={userDetails?.balance} />
                     ) : (
                       <CircularProgress />
                     )}

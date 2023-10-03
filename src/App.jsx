@@ -12,22 +12,30 @@ import { RefreshToken } from "./helpers/getRefreshToken";
 import "./App.css";
 
 function App() {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   useEffect(() => {
     const getCookieValue = getCookie("authToken");
     if (!getCookieValue) {
       localStorage.clear();
     }
 
-    setInterval( async() => {
-      let data = await RefreshToken()
-      Cookies.set("authToken", data?.access_token);
-      Cookies.set("refreshToken", data?.refreshToken);
-  
+    const refreshInterval = setInterval(async () => {
+      if (!isRefreshing) {
+        setIsRefreshing(true);
+        try {
+          let data = await RefreshToken();
+          Cookies.set("authToken", data?.access_token);
+          Cookies.set("refreshToken", data?.refreshToken);
+        } finally {
+          setIsRefreshing(false);
+        }
+      }
     }, 20000);
-    //remember to return
 
-  }, []);
-  return (
+    return () => clearInterval(refreshInterval); // Clear interval on component unmount
+  }, [isRefreshing]);
+    return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
           <Routess />
