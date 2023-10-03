@@ -1704,7 +1704,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       </Modal>
       {/* Modal 4 ends*/}
       {/* Modal 5* success response for restaurant & supermarket*/}
-      {supermarketCart?.length === 0 ? (
+      {merchantDetails?.restaurant || isOTD ? (
         <Modal
           className="scale-in-center"
           open={successResponse}

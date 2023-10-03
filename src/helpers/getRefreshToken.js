@@ -17,10 +17,10 @@ export const RefreshToken = async () => {
     );
     Cookies.set("authToken", response.data?.access_token);
     Cookies.set("refreshToken", response.data?.refreshToken);
-return response.data
+return response?.data
 
   } catch (error) {
-    if (error.response.status === 401 ||  error.response.status === 403) {
+    if (error?.response?.status === 401 ||  error?.response?.status === 403) {
       console.log(error)
     }
   }
