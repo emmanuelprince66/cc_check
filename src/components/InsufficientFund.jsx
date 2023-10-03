@@ -4,6 +4,7 @@ import { Divider, useTheme } from "@mui/material";
 import { Box, Card, Button, Typography } from "@mui/material";
 import useUser from "../hooks/useUser";
 import FormattedPrice from "./FormattedPrice";
+import { useSelector } from "react-redux";
 import { Modal } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +14,8 @@ const InsufficientFund = ({
   setShowInsufficientBalance,
 }) => {
   const currentTheme = useTheme();
+  const {userDetails} = useSelector(state=>state.merchantReducer)
   const navigate = useNavigate();
-  const user = useUser();
   const remInsufficientBalance = () => setShowInsufficientBalance(false);
 
   return (
@@ -113,7 +114,7 @@ const InsufficientFund = ({
                 }}
                 id="modal-modal-title"
               >
-                {user.data ? <FormattedPrice amount={user.data.balance} /> : ""}
+                { <FormattedPrice amount={userDetails?.balance} /> }
               </Typography>
             </Box>
             <Box
@@ -153,7 +154,7 @@ const InsufficientFund = ({
                 }}
                 id="modal-modal-title"
               >
-                {user.data ? <FormattedPrice amount={totalPrice} /> : ""}
+                {<FormattedPrice amount={totalPrice} /> }
               </Typography>
             </Box>
           </Box>

@@ -6,35 +6,37 @@ import { queryClient } from "./helpers/queryClient";
 import { AuthProvider } from "./util/AuthContext";
 import { Provider } from "react-redux";
 import { getCookie } from "./util/cookieAuth";
-import Cookies from "js-cookie";
-import { RefreshToken } from "./helpers/getRefreshToken";
-
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fillUserDetails } from "./util/slice/merchantSlice";
+import { getUser } from "./helpers/getUser";
 import "./App.css";
 
 function App() {
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
+  // const [isRefreshing, setIsRefreshing] = useState(false);
+const dispatch = useDispatch()
+const {userDetails} = useSelector(state=>state.merchantReducer)
   useEffect(() => {
     const getCookieValue = getCookie("authToken");
     if (!getCookieValue) {
       localStorage.clear();
     }
+  },[] )
+  useEffect( () => {
 
-    const refreshInterval = setInterval(async () => {
-      if (!isRefreshing) {
-        setIsRefreshing(true);
-        try {
-          let data = await RefreshToken();
-          Cookies.set("authToken", data?.access_token);
-          Cookies.set("refreshToken", data?.refreshToken);
-        } finally {
-          setIsRefreshing(false);
-        }
-      }
-    }, 20000);
+    async function getData (){
+      const res = await getUser()
+      return (res)
 
-    return () => clearInterval(refreshInterval); // Clear interval on component unmount
-  }, [isRefreshing]);
+    }
+    if ( !userDetails ){
+      getData().then(res=>{
+        console.log(res)
+        dispatch(fillUserDetails(res));
+      }).catch(err=>console.log(err))
+    }
+  }, [userDetails ]);
+
     return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

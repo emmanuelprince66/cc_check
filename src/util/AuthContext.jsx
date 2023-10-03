@@ -1,6 +1,5 @@
 // AuthContext.js
 import React,{useEffect} from "react";
-import useUser from "../hooks/useUser";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -9,21 +8,14 @@ import { useDispatch } from "react-redux";
 import { fillUserDetails } from "./slice/merchantSlice";
 import { getCookie } from "./cookieAuth";
 import { useSelector } from "react-redux";
-
+import { getUser } from "../helpers/getUser";
 export function AuthProvider({ children }) {
-  const user = useUser();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const authPages = ["/"];
   const isAuthPage = authPages.includes(pathname);
   const getCookieValue = getCookie("authToken");
   const {userDetails} =  useSelector(state=>state.merchantReducer)
-  useEffect(() => {
-
-    if ( !userDetails ){
-      dispatch(fillUserDetails(user.data));
-    }
-  }, [user, dispatch]);
 
 
   if (!userDetails) {

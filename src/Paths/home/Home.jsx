@@ -22,7 +22,6 @@ import exclamgreen from "../../images/practise/exclamgreen.svg";
 import { useMyLocation } from "../../hooks/useLocation";
 import { useTheme } from "@mui/material";
 import { AuthProvider } from "../../util/AuthContext";
-import useUser from "../../hooks/useUser";
 import Scanner from "../../components/scanner/Scanner";
 import Qrscanner from "../../components/Qrscanner";
 import { fillUserDetails, setLocation } from "../../util/slice/merchantSlice";
