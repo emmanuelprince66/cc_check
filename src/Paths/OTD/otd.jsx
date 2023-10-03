@@ -41,6 +41,23 @@ const OTDMainPage = () => {
   const dispatch = useDispatch();
   const currentTheme = useTheme();
 
+  function openStatus(openTime, closeTime) {
+    const time = new Date();
+    const hrs = time.getHours();
+    const mins = time.getMinutes();
+
+    const [openHours, openMinutes] = openTime.split(":");
+    const [closeHours, closeMinutes] = closeTime.split(":");
+    const isWithinTimeRange =
+      ((hrs > (Number(openHours ) )) ||( (hrs === (Number(openHours ))) && mins > Number(openMinutes))) 
+      &&
+(      (hrs < Number(closeHours) + 12 ) || ((hrs === Number(closeHours) + 12) && mins <= Number(closeMinutes)))  
+  if (isWithinTimeRange) {
+      return "Open";
+    } else {
+      return "Closed";
+    }
+  }
   const navigate = useNavigate();
   useEffect(() => {
     // fetching the nearby OTD restaurants and adding the landmarks distance data to each
@@ -167,7 +184,7 @@ const OTDMainPage = () => {
                   key={i}
                   variant="rectangular"
                   width={"100%"}
-                  height={200}
+                  height={'18vh'}
                 />
               );
             })
@@ -179,11 +196,11 @@ const OTDMainPage = () => {
                   key={i}
                   sx={{
                     padding: ".3em .3em",
-                    cursor:'pointer',
-                    '&:hover':{ background:'#80808014'},
+                    cursor: "pointer",
+                    "&:hover": { background: "#80808014" },
                     boxShadow:
-                    '2px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 2px 2px 3px 3px hsla(0, 0%, 0%, 0.05)',
-                                        height: "17vh",
+                      "2px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 2px 2px 3px 3px hsla(0, 0%, 0%, 0.05)",
+                    height: "18vh",
                     display: "flex",
                   }}
                 >
@@ -238,14 +255,25 @@ const OTDMainPage = () => {
                         }}
                       >
                         {convertTo12HourFormat(item.openingTime) +
+                          "AM" +
                           "-" +
-                          convertTo12HourFormat(item.closingTime)}{" "}
+                          convertTo12HourFormat(item.closingTime) +
+                          "PM"}
                         <span
                           style={{
-                            background: "hsla(120, 100%, 25%, 0.1)",
-                            color: "var(--currency-green)",
+                            background: `${
+                              openStatus(item.openingTime, item.closingTime) ===
+                              "Closed"
+                                ? "#ff000030"
+                                : "hsla(120, 100%, 25%, 0.1)"
+                            } `,
+                            color: `${
+                              openStatus(item.openingTime, item.closingTime) ===
+                              "Closed"
+                                ? "var(--primary-red)"
+                                : "var(--currency-green)"
+                            } `,
                             padding: " 0 .4em",
-                            position: "absolute",
                             right: ".5em",
                             height: "fit-content",
                             borderRadius: ".3em",
@@ -253,7 +281,7 @@ const OTDMainPage = () => {
                           }}
                         >
                           {" "}
-                          Open{" "}
+                          {openStatus(item.openingTime, item.closingTime)}
                         </span>
                       </Typography>
                     </Box>

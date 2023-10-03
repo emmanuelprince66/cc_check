@@ -36,7 +36,13 @@ AuthAxios.interceptors.response.use(
         AuthAxios.defaults.headers.common["Authorization"] =
           "Bearer " + res.data?.access_token;
         return AuthAxios(originalRequest);
-      });
+      }).catch(err=>{
+        if(err.response.status === 401 || err.response.status === 403 ){
+          // window.location.href = '/'#
+          console.log('refreshToken is wrong mate')
+          alert('refreshToken has expired')
+        }}
+         )
     }
 
     return Promise.reject(error);

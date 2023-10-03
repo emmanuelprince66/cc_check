@@ -98,10 +98,7 @@ const Orders = () => {
           status: "COMPLETED",
           userId: userDetails.id,
           transactionRef: orderToView.transactionRef,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        }
       });
 
       return response.data;
@@ -115,19 +112,14 @@ const Orders = () => {
   }
 
   async function cancelOrder() {
-    const token = getCookie("authToken");
     try {
       const response = await AuthAxios({
-        url: `/cart/${orderToView.id}`,
-        method: "PATCH",
+        url: `/cart/cancel`,
+        method: "POST",
         data: {
-          status: "CANCELLED",
-          userId: userDetails.id,
+          cartId: orderToView.id,
           transactionRef: orderToView.transactionRef,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        }
       });
 
       return response.data;
