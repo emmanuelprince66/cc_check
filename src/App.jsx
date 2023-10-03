@@ -6,6 +6,8 @@ import { queryClient } from "./helpers/queryClient";
 import { AuthProvider } from "./util/AuthContext";
 import { Provider } from "react-redux";
 import { getCookie } from "./util/cookieAuth";
+import Cookies from "js-cookie";
+import { RefreshToken } from "./helpers/getRefreshToken";
 
 import "./App.css";
 
@@ -15,6 +17,15 @@ function App() {
     if (!getCookieValue) {
       localStorage.clear();
     }
+
+    setInterval( async() => {
+      let data = await RefreshToken()
+      Cookies.set("authToken", data?.access_token);
+      Cookies.set("refreshToken", data?.refreshToken);
+  
+    }, 20000);
+    //remember to return
+
   }, []);
   return (
     <QueryClientProvider client={queryClient}>

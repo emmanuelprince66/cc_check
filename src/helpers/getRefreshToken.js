@@ -15,8 +15,6 @@ export const RefreshToken = async () => {
         },
       }
     );
-    Cookies.set("authToken", response.data?.access_token);
-    Cookies.set("refreshToken", response.data?.refreshToken);
 return response?.data
 
   } catch (error) {

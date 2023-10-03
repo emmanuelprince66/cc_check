@@ -9,9 +9,9 @@ export const AuthAxios = Axios.create({
 
 AuthAxios.interceptors.request.use(
   async function (config) {
-   let data = await RefreshToken()
-    if (data) {
-      config.headers.Authorization = `Bearer ${data.access_token}`;
+    let token = Cookies.get('authToken')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
