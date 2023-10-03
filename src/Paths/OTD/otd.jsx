@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useTheme } from "@mui/material";
 import searchLogo from "../../images/searchLogo.svg";
+import { clearCart } from "../../util/slice/CartSlice";
 import dashdot from "../../images/dashdot.svg";
 
 import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
@@ -106,6 +107,7 @@ const OTDMainPage = () => {
     dispatch(setOTDOrderOnClickId(id));
     dispatch(initOTD(true));
     dispatch(clearStateForOTD());
+    dispatch(clearCart());
   }
   return (
     <div className="gpt3__restaurant">

@@ -36,6 +36,8 @@ const RestaurantCheckout = () => {
     deliveryDetails,
     orders,
   } = useSelector((state) => state.merchantReducer);
+
+  const supermarketCart = useSelector((state) => state.cart.data);
   const dispatch = useDispatch();
   // orders being sent.
   const ordersToSend = orders
@@ -529,7 +531,7 @@ const RestaurantCheckout = () => {
             </Box>
           </Box>
 {/* handle placing orders here */}
-          <PlaceOrder restaurant={merchantDetails.restaurant} />
+          <PlaceOrder supermarketCart={supermarketCart} restaurant={merchantDetails.restaurant} />
         </Box>
       )}{" "}
     </Container>
