@@ -78,7 +78,7 @@ const Login = () => {
         const currentTime = new Date();
         console.log(authToken, refreshToken);
 
-        const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
+        // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
         setCookie("authToken", authToken);
         setCookie("refreshToken", refreshToken);
         navigate("/home");

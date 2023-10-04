@@ -20,7 +20,10 @@ import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import {
   setOrderCart,
   addMenu,
+  orderCart,
   setTakeAwayPrice,
+  takeAwayPrice,
+  orders,
   updateOrderType,
   setCategoryNameInView,
   handlePreview,
@@ -35,19 +38,23 @@ const RestaurantMenu = () => {
   const [mode, setMode] = useState("eat-in");
   const [categoryInView, setCategoryInView] = useState(0);
   const [preview, setPreview] = useState(false);
+  const [hideTakeAwayPrice, setHideTakeAwayPrice] = useState(false);
+  const [addTakeAwayPrice, setAddTakeAwayPrice] = useState(false);
   const params = useParams();
   const dispatch = useDispatch();
   const {
     data: merchantDetails,
-    orders,
+    orderCart,
     isOTD,
     categoryNameInView,
     orderInView,
-    orderCart,
+    orders,
+    takeAwayPrice,
     OTDOrderOnClickId,
     totalAmount,
     previewOrders,
   } = useSelector((state) => state.merchantReducer);
+
   const idToUse = isOTD
     ? OTDOrderOnClickId
     : merchantDetails.restaurant
@@ -95,11 +102,13 @@ const RestaurantMenu = () => {
     dispatch(setCategoryNameInView(name));
     setCategoryInView(i);
   }
+
   function handleSaveToCart() {
     navigate("/cart");
   }
   function handleOrderType(type) {
     dispatch(updateOrderType(type));
+    type === "eat-in" ? setAddTakeAwayPrice(false) : setAddTakeAwayPrice(true);
   }
   function showPreview() {
     setPreview(true);
@@ -160,7 +169,7 @@ const RestaurantMenu = () => {
                       ? "var(--cart-deep-red)"
                       : "#EDEDED",
                   padding: ".3em .5em",
-                  zIndex:'2',
+                  zIndex: "2",
                   borderRadius: " 0 .5em 0 .5em  ",
                 }}
                 onClick={() => handleOrderType("eat-in")}
@@ -181,7 +190,7 @@ const RestaurantMenu = () => {
                       : "#EDEDED",
                   padding: ".3em .5em",
                   borderRadius: " 0 .5em 0 .5em  ",
-                  marginLeft:'-5px',
+                  marginLeft: "-5px",
                 }}
                 onClick={() => handleOrderType("eat-out")}
               >
@@ -275,6 +284,8 @@ const RestaurantMenu = () => {
               .map((item, i) => {
                 return (
                   <CartBox
+                    setHideTakeAwayPrice={setHideTakeAwayPrice}
+                    hidetakeAwayPrice={hideTakeAwayPrice}
                     key={i}
                     // category={categoryNameInView}
                     preview={true}
@@ -305,7 +316,9 @@ const RestaurantMenu = () => {
           bottom="0"
         >
           <Typography sx={{ fontWeight: "700", fontSize: "2em" }}>
-            {orders[orderInView - 1]?.totalAmount}
+            {addTakeAwayPrice && orders[0].items.length !== 0
+              ? orders[orderInView - 1]?.totalAmount + JSON.parse(takeAwayPrice)
+              : orders[orderInView - 1]?.totalAmount}
           </Typography>
           <Button
             onClick={handleSaveToCart}

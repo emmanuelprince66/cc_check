@@ -8,6 +8,8 @@ import {
   handleCountChange,
   editStatusUpdate,
   removeItemFromCart,
+  setTakeAwayPrice,
+  takeAwayPrice,
 } from "../../util/slice/merchantSlice";
 import RemoveOrderModal from "../removeOrderModal";
 export const CartBox = ({ itemInfo, preview, id, index, category }) => {
@@ -17,6 +19,7 @@ export const CartBox = ({ itemInfo, preview, id, index, category }) => {
   const currentTheme = useTheme();
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const dispatch = useDispatch();
+
   // const [newOrder, setNewOrder] = useState({...itemInfo, subTotal:(Number(itemInfo.unitPrice) * Number(itemInfo.count)),
   // })
 
@@ -28,6 +31,8 @@ export const CartBox = ({ itemInfo, preview, id, index, category }) => {
     dispatch(editStatusUpdate(itemInfo.id));
   }
   function addToCart() {
+    // setHideTakeAwayPrice(true);
+
     let order = {
       menuId: itemInfo.id,
       quantity: itemInfo.count,
