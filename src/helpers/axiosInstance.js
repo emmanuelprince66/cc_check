@@ -42,7 +42,7 @@ AuthAxios.interceptors.response.use(
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-          let res  =    await RefreshToken()
+          let res  =  await RefreshToken()
           console.log(res)
         if (res?.access_token) {
           Cookies.set('authToken', res?.access_token);
@@ -51,7 +51,7 @@ AuthAxios.interceptors.response.use(
           return AuthAxios(originalRequest);
         } else {
           // If there is no new access token, redirect to login page
-          window.location.href = '/login'; // Adjust the URL as needed
+          window.location.href = '/'; // Adjust the URL as needed
           return Promise.reject(error);
         }
   }

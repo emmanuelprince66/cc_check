@@ -1,6 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 export const RefreshToken = async () => {
+  let authToken = Cookies.get("authToken");
   let refreshToken = Cookies.get("refreshToken");
 
   const url = `https://check-server-api-staging.herokuapp.com/api/v1/auth/refresh`;
@@ -11,7 +12,7 @@ export const RefreshToken = async () => {
       { refreshToken: refreshToken },
       {
         headers: {
-          Authorization: `Bearer ${refreshToken}`,
+          Authorization: `Bearer ${authToken}`,
         },
       }
     );
