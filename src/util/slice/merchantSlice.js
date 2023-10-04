@@ -41,7 +41,6 @@ const merchantSlice = createSlice({
         data: [],
         orderCart: [],
         orders: [],
-        userDetails: null,
         deliveryDetails: {},
         previewOrders: [],
         OTDRestaurants: null,
