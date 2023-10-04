@@ -11,6 +11,7 @@ import useRestaurant from "../hooks/useRestaurant";
 import {
   clearMerchantState,
   populateMerchantDetails,
+  initOTD,
 } from "../util/slice/merchantSlice";
 import { ToastContainer, toast } from "react-toastify";
 import { clearCart } from "../util/slice/CartSlice";
@@ -39,6 +40,7 @@ const WelcomeUser = () => {
   useEffect(() => {
     if (superMarket.data) {
       setInfo(superMarket.data);
+      dispatch(clearMerchantState());
       dispatch(clearMerchantState());
       dispatch(populateMerchantDetails(superMarket.data));
       setTimeout(() => {

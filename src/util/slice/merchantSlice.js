@@ -38,10 +38,10 @@ const merchantSlice = createSlice({
     },
     clearMerchantState: (state, action) => {
       return {
+        ...state,
         data: [],
         orderCart: [],
         orders: [],
-        userDetails: null,
         deliveryDetails: {},
         previewOrders: [],
         OTDRestaurants: null,

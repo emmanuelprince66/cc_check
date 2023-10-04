@@ -7,26 +7,31 @@ import { Box, Card, Typography } from "@mui/material";
 import Navbar from "../../components/navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
 import { AuthProvider } from "../../util/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import ClipboardJS from "clipboard";
 
+
+
 import useUser from "../../hooks/useUser";
 
 const Fwallet = () => {
+
+  const {userDetails} = useSelector(state=>state.merchantReducer)
+
   const navigate = useNavigate();
   const currentTheme = useTheme();
 
-  const user = useUser();
 
   const copyToClipboard = async () => {
     try {
-      if (user.data) {
+      if (userDetails) {
         await navigator.clipboard.writeText(
-          user.data
-            ? user.data.virtualAccountNumber === null
+          userDetails
+            ? userDetails.virtualAccountNumber === null
               ? "NIL"
-              : user.data.virtualAccountNumber
+              : userDetails.virtualAccountNumber
             : "NIL"
         );
         notify("Account Number Copied To Clipboard");
@@ -184,7 +189,7 @@ const Fwallet = () => {
                   fontFamily: "raleWay",
                 }}
               >
-                {user.data ? user.data.firstName : ""}
+                {userDetails ? userDetails?.firstName : ""}
               </Typography>
               <Typography
                 variant="h6"
@@ -199,7 +204,7 @@ const Fwallet = () => {
                   fontFamily: "raleWay",
                 }}
               >
-                {user.data ? user.data.lastName : ""}
+                {userDetails ? userDetails.lastName : ""}
               </Typography>
             </Box>
           </Box>
@@ -230,10 +235,10 @@ const Fwallet = () => {
                 fontWeight: "600",
               }}
             >
-              {user.data
-                ? user.data.virtualAccountNumber === null
+              {userDetails
+                ? userDetails.virtualAccountNumber === null
                   ? "NIL"
-                  : user.data.virtualAccountNumber
+                  : userDetails.virtualAccountNumber
                 : "NIL"}
             </Typography>
 

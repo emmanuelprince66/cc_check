@@ -6,17 +6,24 @@ import { queryClient } from "./helpers/queryClient";
 import { AuthProvider } from "./util/AuthContext";
 import { Provider } from "react-redux";
 import { getCookie } from "./util/cookieAuth";
-
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fillUserDetails } from "./util/slice/merchantSlice";
+import { getUser } from "./helpers/getUser";
 import "./App.css";
 
 function App() {
+  // const [isRefreshing, setIsRefreshing] = useState(false);
+const dispatch = useDispatch()
+const {userDetails} = useSelector(state=>state.merchantReducer)
   useEffect(() => {
     const getCookieValue = getCookie("authToken");
     if (!getCookieValue) {
       localStorage.clear();
     }
-  }, []);
-  return (
+  },[] )
+
+    return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
           <Routess />

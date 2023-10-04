@@ -33,7 +33,6 @@ import Acctbox from "../../components/acctbox/Acctbox";
 
 const Scan = () => {
   const cart = useSelector((state) => state);
-  const user = useUser();
 
   const navigate = useNavigate();
   const [superMarketKey, setSuperMarketKey] = useState("");

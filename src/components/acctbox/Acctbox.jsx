@@ -9,12 +9,12 @@ import { useTheme } from "@mui/material";
 import FormattedPrice from "../FormattedPrice";
 import useUser from "../../hooks/useUser";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Acctbox = () => {
   const navigate = useNavigate();
   const currentTheme = useTheme();
-  const user = useUser();
-
+const {userDetails} = useSelector(state=>state.merchantReducer)
   const [isTextVisible, setIsTextVisible] = useState(false);
 
   const handleShowAmount = () => {
@@ -68,8 +68,8 @@ const Acctbox = () => {
                   fontSize: "18px",
                 }}
               >
-                {user.data ? (
-                  <FormattedPrice amount={user.data.balance} />
+                {userDetails ? (
+                  <FormattedPrice amount={userDetails?.balance} />
                 ) : (
                   <CircularProgress />
                 )}

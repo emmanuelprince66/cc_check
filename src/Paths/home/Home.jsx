@@ -22,13 +22,14 @@ import exclamgreen from "../../images/practise/exclamgreen.svg";
 import { useMyLocation } from "../../hooks/useLocation";
 import { useTheme } from "@mui/material";
 import { AuthProvider } from "../../util/AuthContext";
-import useUser from "../../hooks/useUser";
 import Scanner from "../../components/scanner/Scanner";
 import Qrscanner from "../../components/Qrscanner";
 import { fillUserDetails, setLocation } from "../../util/slice/merchantSlice";
 import { Link } from "react-router-dom";
 import Acctbox from "../../components/acctbox/Acctbox";
 import { useDispatch } from "react-redux";
+import useUser from "../../hooks/useUser";
+import { getUser } from "../../helpers/getUser";
 import { useSelector } from "react-redux";
 
 const Home = () => {
@@ -37,12 +38,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
-
-  const user = useUser();
-
-  useEffect(() => {
-    dispatch(fillUserDetails(user.data));
-  }, [user, dispatch]);
+// const user = useUser()
+const {userDetails} = useSelector(state=>state.merchantReducer)
 
   const mylocation = useMyLocation();
   useEffect(() => {
@@ -59,6 +56,21 @@ const Home = () => {
       setShowScanner(true);
     }, 4000);
   }, []);
+  useEffect( () => {
+
+    async function getData (){
+      const res = await getUser()
+      return (res)
+
+    }
+    if ( !userDetails ){
+      getData().then(res=>{
+        console.log(res)
+        dispatch(fillUserDetails(res));
+      }).catch(err=>console.log(err))
+    }
+  }, [userDetails ]);
+
 
   const handleShowAmount = () => {
     !isTextVisible
@@ -99,8 +111,8 @@ const Home = () => {
                 fontSize: "16px",
               }}
             >
-              {`${user.data ? user.data.firstName : ""} ${
-                user.data ? user.data.lastName : ""
+              {`${ userDetails?.firstName || ""} ${
+                 userDetails?.lastName || ""
               }  `}
             </Typography>
           </Box>
@@ -167,8 +179,8 @@ const Home = () => {
                       fontSize: "18px",
                     }}
                   >
-                    {user.data ? (
-                      <FormattedPrice amount={user.data.balance} />
+                    {userDetails ? (
+                      <FormattedPrice amount={userDetails?.balance} />
                     ) : (
                       <CircularProgress />
                     )}

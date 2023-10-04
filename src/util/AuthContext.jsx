@@ -1,20 +1,24 @@
 // AuthContext.js
-import React from "react";
-import useUser from "../hooks/useUser";
+import React,{useEffect} from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import { isCookieExpired } from "./cookieAuth";
+import { useDispatch } from "react-redux";
+import { fillUserDetails } from "./slice/merchantSlice";
 import { getCookie } from "./cookieAuth";
-
+import { useSelector } from "react-redux";
+import { getUser } from "../helpers/getUser";
 export function AuthProvider({ children }) {
-  const user = useUser();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
   const authPages = ["/"];
   const isAuthPage = authPages.includes(pathname);
   const getCookieValue = getCookie("authToken");
+  const {userDetails} =  useSelector(state=>state.merchantReducer)
 
-  if (user.isLoading) {
+
+  if (!userDetails) {
     return (
       <Box
         sx={{
@@ -38,7 +42,7 @@ export function AuthProvider({ children }) {
     );
   }
 
-  if (isAuthPage && user.data) {
+  if (isAuthPage && userDetails) {
     return <Navigate to="/home" />;
   }
 

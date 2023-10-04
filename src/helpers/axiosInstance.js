@@ -6,10 +6,21 @@ export const AuthAxios = Axios.create({
   baseURL: "https://check-server-api-staging.herokuapp.com/api/v1",
   withCredentials: false,
 });
+export const BaseAxios =  Axios.create({
+  baseURL: "https://check-server-api-staging.herokuapp.com/api/v1",
+  withCredentials: false,
+})
 
 AuthAxios.interceptors.request.use(
-  function (config) {
-    let token = Cookies.get("authToken");
+  async (config) => {
+    // let data = await RefreshToken();
+    // if (data){
+    //   Cookies.set("authToken", data?.access_token);
+    //   Cookies.set("refreshToken", data?.refreshToken);
+    // }
+    let token  = Cookies.get('authToken')
+
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,25 +37,23 @@ AuthAxios.interceptors.response.use(
     return res;
   },
   async(error) => {
+
     const originalRequest = error.config;
+
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      return RefreshToken().then((res) => {
-        Cookies.set("authToken", res.data?.access_token);
-        Cookies.set("refreshToken", res.data?.refreshToken);
-        console.log(res.data);
-        AuthAxios.defaults.headers.common["Authorization"] =
-          "Bearer " + res.data?.access_token;
-        return AuthAxios(originalRequest);
-      }).catch(err=>{
-        if(err.response.status === 401 || err.response.status === 403 ){
-          // window.location.href = '/'#
-          console.log('refreshToken is wrong mate')
-          alert('refreshToken has expired')
-        }}
-         )
-    }
-
-    return Promise.reject(error);
+          let res  =    await RefreshToken()
+          console.log(res)
+        if (res?.access_token) {
+          Cookies.set('authToken', res?.access_token);
+          Cookies.set('refreshToken', res?.refreshToken);
+          AuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.access_token;
+          return AuthAxios(originalRequest);
+        } else {
+          // If there is no new access token, redirect to login page
+          window.location.href = '/login'; // Adjust the URL as needed
+          return Promise.reject(error);
+        }
   }
-);
+  }
+)
