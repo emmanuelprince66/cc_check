@@ -5,7 +5,7 @@ const merchantSlice = createSlice({
     data: [],
     orderCart: [],
     orders: [],
-    userDetails: null,
+    userDetails: {},
     deliveryDetails: {},
     previewOrders: [],
     OTDRestaurants: null,
@@ -38,7 +38,7 @@ const merchantSlice = createSlice({
     },
     clearMerchantState: (state, action) => {
       return {
-        ...state,
+        userDetails: {},
         data: [],
         orderCart: [],
         orders: [],
@@ -114,11 +114,10 @@ const merchantSlice = createSlice({
 
       if (state.orders[orderIndex]?.items.length > 0) {
         const amount = state.orders.reduce((acc, curr) => {
-
           const subTotal = curr?.items?.reduce((subTotal, item) => {
             return (subTotal += item.subTotal);
           }, 0);
-          console.log(subTotal)
+          console.log(subTotal);
           return acc + subTotal;
         }, 0);
 
@@ -192,8 +191,8 @@ const merchantSlice = createSlice({
       return state;
     },
     removeOrder: (state, action) => {
-      let index =action.payload - 1
-state.totalAmount -= state.orders[index].totalAmount;
+      let index = action.payload - 1;
+      state.totalAmount -= state.orders[index].totalAmount;
 
       state.orders = state.orders
         .filter((order) => order.id !== action.payload)
@@ -203,8 +202,7 @@ state.totalAmount -= state.orders[index].totalAmount;
             id: i + 1,
           };
         });
-// console.log(JSON.parse(JSON.stringify(state.orders[index])))
-
+      // console.log(JSON.parse(JSON.stringify(state.orders[index])))
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter((order) => order.id === 1);
@@ -227,31 +225,28 @@ state.totalAmount -= state.orders[index].totalAmount;
       });
     },
     removeItemFromCart: (state, action) => {
-      let index = state.orderInView - 1
+      let index = state.orderInView - 1;
       // state.orders[index].totalAmount =
 
-      state.orders[index].items  = state.orders[
-        index
-      ].items.filter((item) => item.menuId !== action.payload.id);
+      state.orders[index].items = state.orders[index].items.filter(
+        (item) => item.menuId !== action.payload.id
+      );
 
-      state.orders[index].menu = state.orders[
-        index
-      ].menu.map((item) => {
+      state.orders[index].menu = state.orders[index].menu.map((item) => {
         if (item.id === action.payload.id) {
           return {
             ...item,
             count: 1,
             added: false,
             subTotal: item.price,
-            canPreview:false,
+            canPreview: false,
             canEditPreview: false,
           };
         }
         return item;
       });
 
-      state.orders[index].totalAmount  -= action.payload.subTotal;
-
+      state.orders[index].totalAmount -= action.payload.subTotal;
     },
     resetState: (state, action) => {
       state.orders = [];
@@ -314,7 +309,9 @@ export const {
   addMenu,
   setTakeAwayPrice,
   setLocation,
+  orders,
   initOTD,
+  takeAwayPrice,
   clearMerchantState,
   setOTDRestaurants,
   setLandmarks,
@@ -328,6 +325,7 @@ export const {
   updateOrderType,
   setCategoryNameInView,
   resetState,
+  orderCart,
   clearRestaurantCart,
   setOrderCart,
 } = merchantSlice.actions;

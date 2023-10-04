@@ -244,8 +244,41 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       })
       .catch((err) => console.log(err));
   }
+
+  const handlePinKeyDown = (index, e) => {
+    if (e.key === "Backspace" && index > 0) {
+      const newPins = [...pins];
+      newPins[index] = ""; // Clear the current character
+      setPins(newPins);
+
+      // Automatically focus on the previous TextField
+      pinRef[index - 1].current.focus();
+    }
+  };
+  const handleNewPinKeyDown = (index, e) => {
+    if (e.key === "Backspace" && index > 0) {
+      const firstNewPins = [...newPins];
+      firstNewPins[index] = ""; // Clear the current character
+      setNewPins(firstNewPins);
+
+      // Automatically focus on the previous TextField
+      pinRefs[index - 1].current.focus();
+    }
+  };
+  const handleConfirmNewPinsKeyDown = (index, e) => {
+    if (e.key === "Backspace" && index > 0) {
+      const newPins = [...confirmNewPins];
+      newPins[index] = "";
+      setConfirmNewPins(newPins);
+
+      // Automatically focus on the previous TextField
+      pinReffs[index - 1].current.focus();
+    }
+  };
+
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
+
     if (value.length > 1) return;
 
     if (!/^\d*$/.test(value)) return;
@@ -1125,6 +1158,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     type="password"
                     value={pin}
                     onChange={(e) => handleChange(index, e.target.value)}
+                    onKeyDown={(e) => handlePinKeyDown(index, e)}
                     inputProps={{
                       inputMode: "numeric",
                       pattern: "[0-9]*", // Ensure only numeric input is allowed
@@ -1553,6 +1587,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     type="password"
                     value={pin}
                     onChange={(e) => handleNewPinChange(index, e.target.value)}
+                    onKeyDown={(e) => handleNewPinKeyDown(index, e)}
                     inputProps={{
                       inputMode: "numeric",
                       maxLength: 1, // Limit input to one character
@@ -1620,6 +1655,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     onChange={(e) =>
                       handleConfirmNewPins(index, e.target.value)
                     }
+                    onKeyDown={(e) => handleConfirmNewPinsKeyDown(index, e)}
                     inputProps={{
                       inputMode: "numeric",
                       maxLength: 1, // Limit input to one character
@@ -1704,7 +1740,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       </Modal>
       {/* Modal 4 ends*/}
       {/* Modal 5* success response for restaurant & supermarket*/}
-      { isOTD || (supermarketCart?.length === 0 )? (
+      {isOTD || supermarketCart?.length === 0 ? (
         <Modal
           className="scale-in-center"
           open={successResponse}
