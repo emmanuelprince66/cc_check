@@ -38,6 +38,7 @@ const merchantSlice = createSlice({
     },
     clearMerchantState: (state, action) => {
       return {
+        ...state,
         data: [],
         orderCart: [],
         orders: [],
