@@ -5,7 +5,7 @@ import checkLogo from "../../images/checkLogo.svg";
 import emailLogo from "../../images/emailIcon.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { AuthAxios } from "../../helpers/axiosInstance";
+import { AuthAxios, BaseAxios } from "../../helpers/axiosInstance";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
@@ -19,14 +19,12 @@ import { Link } from "react-router-dom";
 import { Container } from "@mui/system";
 import Basic from "../../components/signup/SignUp";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../util/cookieAuth";
 import { useTheme } from "@emotion/react";
-import axios from "axios";
-import { BaseAxios } from "../../helpers/axiosInstance";
 
 const Login = () => {
   const currentTheme = useTheme();
@@ -36,6 +34,7 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = React.useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const [textOne, setTextOne] = useState(false);
   const [textTwo, setTextTwo] = useState(false);
@@ -56,53 +55,58 @@ const Login = () => {
       theme: "dark",
     });
   };
+  const mutation = useMutation(
+    async (formData) => {
+      const response = await BaseAxios({
+        url: "/auth/login",
+        method: "POST",
+        data: formData,
+      });
 
-  const {
-    isLoading,
-    data,
-    isError,
-    mutate: handleSubmit,
-  } = useMutation({
-    mutationFn: async (event) => {
-      event.preventDefault();
-
-      if (email && password) {
-        const formData = {
-          emailOrPhone: email,
-          password,
-        };
-
-        try {
-          const response = await axios.post(
-             "https://check-server-api-staging.herokuapp.com/api/v1/auth/login",
-          formData
-          )
-          return response.data;
-        } catch (error) {
-          setTimeout(() => {
-            notify(error.response?.data?.message);
-          }, 1000);
-        }
+      if (response.status !== 200) {
+        throw new Error(response.data.message);
       }
-    },
-    onSuccess: (data) => {
-      const authToken = data?.access_token;
-      const refreshToken = data?.refreshToken;
-      const currentTime = new Date();
-      console.log(authToken, refreshToken);
 
-      // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
-      setCookie("authToken", authToken);
-      setCookie("refreshToken", refreshToken);
-      navigate("/home");
+      return response.data;
     },
-    onError(err) {
-      const message = err.response.data.message;
-      setTimeout(() => {
-        notify(message);
-      }, 1);
-    },
-  });
+    {
+      mutationKey: "login", // Specify the mutation key
+      onSuccess: (data) => {
+        setButtonDisabled(false);
+        const authToken = data?.access_token;
+        const refreshToken = data?.refreshToken;
+        const currentTime = new Date();
+        console.log(authToken, refreshToken);
+
+        const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
+        setCookie("authToken", authToken);
+        setCookie("refreshToken", refreshToken);
+        navigate("/home");
+      },
+      onError: (error) => {
+        // Handle errors here
+        console.error("Login error:", error);
+        setButtonDisabled(false);
+
+        setTimeout(() => {
+          notify(error.response.data.message);
+        }, 1000);
+      },
+    }
+  );
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setButtonDisabled(true);
+
+    // Assuming you have email and password fields in your component state
+    const formData = {
+      emailOrPhone: email,
+      password,
+    };
+
+    // Call the mutation to trigger the login process
+    mutation.mutate(formData);
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -372,9 +376,12 @@ const Login = () => {
               </div>
 
               <div className="gpt3__check-button">
-                <button type="submit" disabled={isLoading}>
-                  {isLoading ? (
-                    <CircularProgress size="1.2rem" color="inherit" />
+                <button
+                  disabled={mutation.isLoading || buttonDisabled}
+                  type="submit"
+                >
+                  {mutation.isLoading || buttonDisabled ? (
+                    <CircularProgress size="1.2rem" sx={{ color: "white" }} />
                   ) : (
                     "Login"
                   )}
