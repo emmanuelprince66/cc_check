@@ -25,8 +25,8 @@ import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../util/cookieAuth";
 import { useTheme } from "@emotion/react";
-
-
+import axios from "axios";
+import { BaseAxios } from "../../helpers/axiosInstance";
 
 const Login = () => {
   const currentTheme = useTheme();
@@ -73,12 +73,10 @@ const Login = () => {
         };
 
         try {
-          const response = await AuthAxios({
-            url: "/auth/login",
-            method: "POST",
-            data: formData,
-          });
-
+          const response = await axios.post(
+             "https://check-server-api-staging.herokuapp.com/api/v1/auth/login",
+          formData
+          )
           return response.data;
         } catch (error) {
           setTimeout(() => {
@@ -89,9 +87,9 @@ const Login = () => {
     },
     onSuccess: (data) => {
       const authToken = data?.access_token;
-      const refreshToken = data?.refreshToken
+      const refreshToken = data?.refreshToken;
       const currentTime = new Date();
-      console.log(authToken,refreshToken)
+      console.log(authToken, refreshToken);
 
       // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
       setCookie("authToken", authToken);
