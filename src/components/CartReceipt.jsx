@@ -604,7 +604,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
             Share receipt
           </Button>
           <Button
-            onClick={handleClearCart}
+            onClick={() => handleClearCart()}
             sx={{
               width: "100%",
               padding: "10px, 16px, 10px, 16px",

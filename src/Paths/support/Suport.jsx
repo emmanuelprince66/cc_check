@@ -14,7 +14,6 @@ const Suport = () => {
   const currentTheme = useTheme();
 
   const copyFirstNumber = async (num) => {
-    console.log("hello");
     try {
       if (num) {
         await navigator.clipboard.writeText(num);
@@ -117,7 +116,7 @@ const Suport = () => {
                 alignItems: "start",
                 gap: "1rem",
                 padding: "1rem",
-                width: { xs: "18rem", sm: "100%", lg: "100%" },
+                width: { xs: "90%", sm: "100%", lg: "100%" },
               }}
             >
               <Typography
@@ -223,7 +222,7 @@ const Suport = () => {
                 alignItems: "start",
                 gap: "1rem",
                 padding: "1rem",
-                width: { xs: "18rem", sm: "100%", lg: "100%" },
+                width: { xs: "90%", sm: "100%", lg: "100%" },
               }}
             >
               <Typography
