@@ -246,76 +246,76 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   }
 
   const handlePinKeyDown = (index, e) => {
-    if (e.key === "Backspace" && index > 0) {
-      const newPins = [...pins];
-      newPins[index] = ""; // Clear the current character
-      setPins(newPins);
-
-      // Automatically focus on the previous TextField
+    if (index > 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
       pinRef[index - 1].current.focus();
+    } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed in the first field and it's empty, focus remains in the first field
+      e.preventDefault(); // Prevent the Backspace key from navigating away
     }
   };
   const handleNewPinKeyDown = (index, e) => {
-    if (e.key === "Backspace" && index > 0) {
-      const firstNewPins = [...newPins];
-      firstNewPins[index] = ""; // Clear the current character
-      setNewPins(firstNewPins);
-
-      // Automatically focus on the previous TextField
+    if (index > 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
       pinRefs[index - 1].current.focus();
+    } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed in the first field and it's empty, focus remains in the first field
+      e.preventDefault(); // Prevent the Backspace key from navigating away
     }
   };
   const handleConfirmNewPinsKeyDown = (index, e) => {
-    if (e.key === "Backspace" && index > 0) {
-      const newPins = [...confirmNewPins];
-      newPins[index] = "";
-      setConfirmNewPins(newPins);
-
-      // Automatically focus on the previous TextField
+    if (index > 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
       pinReffs[index - 1].current.focus();
+    } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed in the first field and it's empty, focus remains in the first field
+      e.preventDefault(); // Prevent the Backspace key from navigating away
     }
   };
 
   const handleChange = (index, value) => {
-    // Ensure that the value is only one digit
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const newPins = [...pins];
+      newPins[index] = value;
+      setPins(newPins);
 
-    if (value.length > 1) return;
-
-    if (!/^\d*$/.test(value)) return;
-
-    const newPins = [...pins];
-    newPins[index] = value;
-    setPins(newPins);
-
-    // Automatically focus on the next TextField if not already at the last one
-    if (index < pinRef.length - 1) {
-      pinRef[index + 1].current.focus();
+      if (value.length === 0 && index > 0) {
+        // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+        pinRef[index - 1].current.focus();
+      } else if (index < pinRef.length - 1 && value.length === 1) {
+        // If a digit is entered and it's not the last field, move focus to the next input field
+        pinRef[index + 1].current.focus();
+      }
     }
   };
   const handleNewPinChange = (index, value) => {
-    // Ensure that the value is only one digit
-    if (value.length > 1) return;
-    if (!/^\d*$/.test(value)) return;
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const firstNewPins = [...newPins];
+      firstNewPins[index] = value;
+      setNewPins(firstNewPins);
 
-    const firstNewPins = [...newPins];
-    firstNewPins[index] = value;
-    setNewPins(firstNewPins);
-    // Automatically focus on the next TextField if not already at the last one
-    if (index < pinRefs.length - 1) {
-      pinRefs[index + 1].current.focus();
+      if (value.length === 0 && index > 0) {
+        // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+        pinRefs[index - 1].current.focus();
+      } else if (index < pinRefs.length - 1 && value.length === 1) {
+        // If a digit is entered and it's not the last field, move focus to the next input field
+        pinRefs[index + 1].current.focus();
+      }
     }
   };
   const handleConfirmNewPins = (index, value) => {
-    // Ensure that the value is only one digit
-    if (value.length > 1) return;
-    if (!/^\d*$/.test(value)) return;
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const newPins = [...confirmNewPins];
+      newPins[index] = value;
+      setConfirmNewPins(newPins);
 
-    const newPins = [...confirmNewPins];
-    newPins[index] = value;
-    setConfirmNewPins(newPins);
-    // Automatically focus on the next TextField if not already at the last one
-    if (index < pinReffs.length - 1) {
-      pinReffs[index + 1].current.focus();
+      if (value.length === 0 && index > 0) {
+        // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+        pinReffs[index - 1].current.focus();
+      } else if (index < pinReffs.length - 1 && value.length === 1) {
+        // If a digit is entered and it's not the last field, move focus to the next input field
+        pinReffs[index + 1].current.focus();
+      }
     }
   };
 
