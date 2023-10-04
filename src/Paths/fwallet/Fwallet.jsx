@@ -189,7 +189,7 @@ const Fwallet = () => {
                   fontFamily: "raleWay",
                 }}
               >
-                {user.data ? user.data.firstName : ""}
+                {userDetails ? userDetails?.firstName : ""}
               </Typography>
               <Typography
                 variant="h6"

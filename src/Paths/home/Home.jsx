@@ -28,6 +28,8 @@ import { fillUserDetails, setLocation } from "../../util/slice/merchantSlice";
 import { Link } from "react-router-dom";
 import Acctbox from "../../components/acctbox/Acctbox";
 import { useDispatch } from "react-redux";
+import useUser from "../../hooks/useUser";
+import { getUser } from "../../helpers/getUser";
 import { useSelector } from "react-redux";
 
 const Home = () => {
@@ -36,7 +38,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
-
+// const user = useUser()
 const {userDetails} = useSelector(state=>state.merchantReducer)
 
   const mylocation = useMyLocation();
@@ -54,6 +56,21 @@ const {userDetails} = useSelector(state=>state.merchantReducer)
       setShowScanner(true);
     }, 4000);
   }, []);
+  useEffect( () => {
+
+    async function getData (){
+      const res = await getUser()
+      return (res)
+
+    }
+    if ( !userDetails ){
+      getData().then(res=>{
+        console.log(res)
+        dispatch(fillUserDetails(res));
+      }).catch(err=>console.log(err))
+    }
+  }, [userDetails ]);
+
 
   const handleShowAmount = () => {
     !isTextVisible

@@ -22,20 +22,6 @@ const {userDetails} = useSelector(state=>state.merchantReducer)
       localStorage.clear();
     }
   },[] )
-  useEffect( () => {
-
-    async function getData (){
-      const res = await getUser()
-      return (res)
-
-    }
-    if ( !userDetails ){
-      getData().then(res=>{
-        console.log(res)
-        dispatch(fillUserDetails(res));
-      }).catch(err=>console.log(err))
-    }
-  }, [userDetails ]);
 
     return (
     <QueryClientProvider client={queryClient}>
