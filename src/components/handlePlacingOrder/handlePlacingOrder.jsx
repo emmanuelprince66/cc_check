@@ -252,6 +252,12 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
       // If Backspace is pressed in the first field and it's empty, focus remains in the first field
       e.preventDefault(); // Prevent the Backspace key from navigating away
+    } else if (e.key === "Backspace" && e.target.selectionStart === 0) {
+      // If Backspace is pressed at the beginning of the field, move focus to the previous input field and set cursor position to the end
+      pinRef[index - 1].current.focus();
+      setTimeout(() => {
+        pinRef[index - 1].current.setSelectionRange(1, 1);
+      }, 0);
     }
   };
   const handleNewPinKeyDown = (index, e) => {
@@ -261,16 +267,30 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
       // If Backspace is pressed in the first field and it's empty, focus remains in the first field
       e.preventDefault(); // Prevent the Backspace key from navigating away
+    } else if (e.key === "Backspace" && e.target.selectionStart === 0) {
+      // If Backspace is pressed at the beginning of the field, move focus to the previous input field and set cursor position to the end
+      pinRefs[index - 1].current.focus();
+      setTimeout(() => {
+        pinRefs[index - 1].current.setSelectionRange(1, 1);
+      }, 0);
     }
   };
   const handleConfirmNewPinsKeyDown = (index, e) => {
+  
     if (index > 0 && e.key === "Backspace" && e.target.value === "") {
       // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
       pinReffs[index - 1].current.focus();
     } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
       // If Backspace is pressed in the first field and it's empty, focus remains in the first field
       e.preventDefault(); // Prevent the Backspace key from navigating away
+    } else if (e.key === "Backspace" && e.target.selectionStart === 0) {
+      // If Backspace is pressed at the beginning of the field, move focus to the previous input field and set cursor position to the end
+      pinReffs[index - 1].current.focus();
+      setTimeout(() => {
+        pinReffs[index - 1].current.setSelectionRange(1, 1);
+      }, 0);
     }
+ 
   };
 
   const handleChange = (index, value) => {
