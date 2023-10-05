@@ -49,9 +49,9 @@ AuthAxios.interceptors.response.use(
           Cookies.set('refreshToken', res?.refreshToken);
           AuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.access_token;
           return AuthAxios(originalRequest);
-        } else {
+        } 
+        else {
           // If there is no new access token, redirect to login page
-          window.location.href = '/'; // Adjust the URL as needed
           return Promise.reject(error);
         }
   }

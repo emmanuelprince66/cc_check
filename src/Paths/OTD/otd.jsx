@@ -50,10 +50,11 @@ const OTDMainPage = () => {
     const [openHours, openMinutes] = openTime.split(":");
     const [closeHours, closeMinutes] = closeTime.split(":");
     const isWithinTimeRange =
-      ((hrs > (Number(openHours ) )) ||( (hrs === (Number(openHours ))) && mins > Number(openMinutes))) 
-      &&
-(      (hrs < Number(closeHours) + 12 ) || ((hrs === Number(closeHours) + 12) && mins <= Number(closeMinutes)))  
-  if (isWithinTimeRange) {
+      (hrs > Number(openHours) ||
+        (hrs === Number(openHours) && mins > Number(openMinutes))) &&
+      (hrs < Number(closeHours) + 12 ||
+        (hrs === Number(closeHours) + 12 && mins <= Number(closeMinutes)));
+    if (isWithinTimeRange) {
       return "Open";
     } else {
       return "Closed";
@@ -82,13 +83,18 @@ const OTDMainPage = () => {
           );
           // return restaurants not more than 20km around.
 
-          const filteredResults = results?.filter((item) => {
-            const distance = parseInt(
-              item?.data?.rows[0].elements[0]?.distance?.text
+          const filteredResults = results
+            ?.filter((item) => {
+              const distance = parseInt(
+                item?.data?.rows[0].elements[0]?.distance?.text
+              );
+              return distance <= 20;
+            })
+            .sort(
+              (a, b) =>
+                parseInt(a?.data?.rows[0].elements[0]?.distance?.text) -
+                parseInt(b?.data?.rows[0].elements[0]?.distance?.text)
             );
-            return distance <= 20;
-          });
-
           // Dispatch the filtered results to the store
           if (filteredResults.length > 0) {
             dispatch(setOTDRestaurants(filteredResults));
@@ -102,12 +108,21 @@ const OTDMainPage = () => {
     fetchResults();
   }, [restaurants, myLocation, dispatch]);
   // navigate to the clicked restaurant.
-  function handleClick(id) {
-    navigate(`/restaurant/${id}`);
-    dispatch(setOTDOrderOnClickId(id));
-    dispatch(initOTD(true));
-    dispatch(clearStateForOTD());
-    dispatch(clearCart());
+  function handleClick(e,id,openingTime,closingTime) {
+    if (                
+      openStatus(openingTime, closingTime) === "Closed"
+){
+e.stopPropagation() 
+}
+else{
+  navigate(`/restaurant/${id}`);
+  dispatch(setOTDOrderOnClickId(id));
+  dispatch(initOTD(true));
+  dispatch(clearStateForOTD());
+  dispatch(clearCart());
+
+}
+
   }
   return (
     <div className="gpt3__restaurant">
@@ -186,7 +201,7 @@ const OTDMainPage = () => {
                   key={i}
                   variant="rectangular"
                   width={"100%"}
-                  height={'18vh'}
+                  height={"18vh"}
                 />
               );
             })
@@ -194,7 +209,7 @@ const OTDMainPage = () => {
             OTDRestaurants?.map((item, i) => {
               return (
                 <Card
-                  onClick={() => handleClick(item.restaurant.id)}
+                  onClick={(e) => handleClick(e,item.restaurant.id,item?.openingTime,item?.closingTime)}
                   key={i}
                   sx={{
                     padding: ".3em .3em",

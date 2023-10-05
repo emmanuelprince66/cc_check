@@ -19,8 +19,8 @@ export const RefreshToken = async () => {
 return response?.data
 
   } catch (error) {
-    if (error?.response?.status === 401 ||  error?.response?.status === 403) {
-      console.log(error)
+    if ( !(error?.response?.status === 201 ||  error?.response?.status === 200)) {
+      window.location.href = '/'; 
     }
   }
 };
