@@ -22,7 +22,7 @@ import Basic from "../../components/signup/SignUp";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Navigate } from "react-router-dom";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { setCookie } from "../../util/cookieAuth";
 import Cookies from "js-cookie";
 import { useTheme } from "@emotion/react";
@@ -44,7 +44,7 @@ const Login = () => {
   const [active, setActive] = useState(false);
 
   const navigate = useNavigate();
-  
+
   const notify = (message) => {
     toast.error(message, {
       position: "top-center",
@@ -81,12 +81,15 @@ const Login = () => {
         console.log(authToken, refreshToken);
 
         // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
-        Cookies.set("authToken", authToken,{expires:7});
-        Cookies.set("refreshToken", refreshToken,{expires:7});
-        if (history?.state?.idx !== 0) {
+        Cookies.set("authToken", authToken, { expires: 7 });
+        Cookies.set("refreshToken", refreshToken, { expires: 7 });
+        const loggedOutManual = localStorage.getItem("loggedOutManual");
+        if (!loggedOutManual) {
           navigate(history.go(-1));
+          localStorage.removeItem("loggedOutManual");
         } else {
-          navigate('/home');
+          navigate("/home");
+          localStorage.removeItem("loggedOutManual");
         }
       },
       onError: (error) => {
