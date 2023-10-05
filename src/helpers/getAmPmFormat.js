@@ -1,5 +1,12 @@
 export const convertTo12HourFormat = (timeString) => {
-  const [hours, minutes] =  timeString.split(":");
 
-  return `${hours}:${minutes} `;
+  if (timeString){
+    const [hours, minutes] =  timeString.split(":");
+
+    return `${hours}:${minutes} `;
+  
+  }
+else{
+  return 'Loading...'
+}
 };

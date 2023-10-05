@@ -33,18 +33,18 @@ AuthAxios.interceptors.request.use(
 );
 
 AuthAxios.interceptors.response.use(
-  (res) => {
+ async (res) => {
     return res;
   },
   async(error) => {
 
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error?.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
           let res  =  await RefreshToken()
           console.log(res)
-        if (res?.access_token) {
+        if (res) {
           Cookies.set('authToken', res?.access_token);
           Cookies.set('refreshToken', res?.refreshToken);
           AuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.access_token;

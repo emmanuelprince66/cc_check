@@ -40,7 +40,6 @@ const Home = () => {
   const [showScanner, setShowScanner] = useState(false);
   const user = useUser();
   const { userDetails } = useSelector((state) => state.merchantReducer);
-  console.log(userDetails);
 
   const mylocation = useMyLocation();
   useEffect(() => {

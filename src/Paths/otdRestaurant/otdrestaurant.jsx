@@ -24,21 +24,32 @@ const RestaurantPage = () => {
   const params = useParams();
   const { myLocation } = useSelector((state) => state.merchantReducer);
   const pep = useOTDResById(params?.id);
+
   const menu = useMenu(params.id);
-  let finalObject = {};
+  const [finalObject, setFinalObject] = useState({});
+  const [status, setStatus] = useState(false);
 
-  for (let obj in pep.data) {
-    if (pep.data[obj] !== null) {
-      finalObject[obj] = pep.data[obj];
+  useEffect(() => {
+    function call() {
+      let load = {};
+      for (let obj in pep?.data) {
+        if (pep?.data[obj] !== null) {
+          load[obj] = pep?.data[obj];
+        }
+      }
+      for (let obj in menu?.data) {
+        if (menu?.data[obj] !== null) {
+          load[obj] = menu?.data[obj];
+        }
+      }
+      setFinalObject(load);
+      console.log(load);
     }
-  }
-  for (let obj in menu.data) {
-    if (menu.data[obj] !== null) {
-      finalObject[obj] = menu.data[obj];
-    }
-  }
+    call();
 
-  console.log(finalObject);
+
+  }, [pep?.data, menu?.data]);
+
   const [data, setData] = useState({});
   useEffect(() => {
     const resCoords = {
@@ -62,25 +73,36 @@ const RestaurantPage = () => {
     myLocation?.latitude,
     myLocation?.longitude,
   ]);
-  function openStatus(openTime, closeTime) {
-    const time = new Date();
-    const hrs = time.getHours();
-    const mins = time.getMinutes();
 
-    const [openHours, openMinutes] = openTime.split(":");
-    const [closeHours, closeMinutes] = closeTime.split(":");
-    const isWithinTimeRange =
-      (hrs > Number(openHours) ||
-        (hrs === Number(openHours) && mins > Number(openMinutes))) &&
-      (hrs < Number(closeHours) + 12 ||
-        (hrs === Number(closeHours) + 12 && mins <= Number(closeMinutes)));
-    if (isWithinTimeRange) {
-      return "Open";
-    } else {
-      return "Closed";
+
+  useEffect(() => {
+    function openStatus(openTime, closeTime) {
+      if (!openTime || !closeTime) {
+        return "Invalid Time";
+      }
+  
+      const time = new Date();
+      const hrs = time.getHours();
+      const mins = time.getMinutes();
+  
+      const [openHours, openMinutes] = openTime.split(":");
+      const [closeHours, closeMinutes] = closeTime.split(":");
+      const isWithinTimeRange =
+        (hrs > Number(openHours) ||
+          (hrs === Number(openHours) && mins > Number(openMinutes))) &&
+        (hrs < Number(closeHours) + 12 ||
+          (hrs === Number(closeHours) + 12 && mins <= Number(closeMinutes)));
+      if (isWithinTimeRange) {
+        return "Open";
+      } else {
+        return "Closed";
+      }
     }
-  }
-
+  
+    const result = openStatus(finalObject?.openingTime, finalObject?.closingTime);
+  
+    setStatus(result);
+  }, [finalObject, setStatus]);
   return (
     <div className="gpt3__restaurant">
       <Container
@@ -137,26 +159,20 @@ const RestaurantPage = () => {
             <Box sx={{ display: "flex", gap: ".5em" }}>
               <Avatar sx={{ width: "20px", height: "20px" }} src={clockIcon} />
               <Typography sx={{ fontSize: "13px" }}>
-                {convertTo12HourFormat(finalObject.openingTime) +
+                {convertTo12HourFormat(finalObject?.openingTime) +
                   "AM" +
                   "-" +
-                  convertTo12HourFormat(finalObject.closingTime) +
+                  convertTo12HourFormat(finalObject?.closingTime) +
                   "PM"}{" "}
                 <span
                   style={{
                     background: `${
-                      openStatus(
-                        finalObject?.openingTime,
-                        finalObject?.closingTime
-                      ) === "Closed"
+                      status === "Closed"
                         ? "#ff000030"
                         : "hsla(120, 100%, 25%, 0.1)"
                     } `,
                     color: `${
-                      openStatus(
-                        finalObject?.openingTime,
-                        finalObject?.closingTime
-                      ) === "Closed"
+                      status === "Closed"
                         ? "var(--primary-red)"
                         : "var(--currency-green)"
                     } `,
@@ -168,10 +184,7 @@ const RestaurantPage = () => {
                   }}
                 >
                   {" "}
-                  {openStatus(
-                    finalObject?.openingTime,
-                    finalObject?.closingTime
-                  )}
+                  {status}
                 </span>
               </Typography>
             </Box>
@@ -202,14 +215,14 @@ const RestaurantPage = () => {
           </Box>
         </Card>
 
-        <Restaurant status={                      openStatus(
-                        finalObject?.openingTime,
-                        finalObject?.closingTime
-                      ) === "Closed"
-                        ? "Closed"
-                        : ""
-                    
-} />
+        <Restaurant
+          status={
+            status ===
+            "Closed"
+              ? "Closed"
+              : ""
+          }
+        />
       </Container>
     </div>
   );
