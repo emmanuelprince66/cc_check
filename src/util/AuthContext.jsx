@@ -50,10 +50,10 @@ export function AuthProvider({ children }) {
     return <>{children}</>;
   }
 
-  // if (!getCookieValue) {
-  //   localStorage.clear();
-  //   return <Navigate to="/" />;
-  // }
+  if (!getCookieValue) {
+    localStorage.clear();
+    return <Navigate to="/" />;
+  }
 
   return <>{children}</>;
 }
