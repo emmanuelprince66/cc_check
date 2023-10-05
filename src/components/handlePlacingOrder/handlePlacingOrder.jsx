@@ -251,9 +251,11 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     } else if (e.key === "Backspace" && e.target.selectionStart === 0) {
       // If Backspace is pressed at the beginning of the field, move focus to the previous input field and set cursor position to the end
       pinRef[index - 1].current.focus();
-      setTimeout(() => {
+
+      // Use requestAnimationFrame for smoother transitions
+      requestAnimationFrame(() => {
         pinRef[index - 1].current.setSelectionRange(1, 1);
-      }, 0);
+      });
     }
   };
   const handleNewPinKeyDown = (index, e) => {
@@ -266,13 +268,14 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     } else if (e.key === "Backspace" && e.target.selectionStart === 0) {
       // If Backspace is pressed at the beginning of the field, move focus to the previous input field and set cursor position to the end
       pinRefs[index - 1].current.focus();
-      setTimeout(() => {
+
+      // Use requestAnimationFrame for smoother transitions
+      requestAnimationFrame(() => {
         pinRefs[index - 1].current.setSelectionRange(1, 1);
-      }, 0);
+      });
     }
   };
   const handleConfirmNewPinsKeyDown = (index, e) => {
-  
     if (index > 0 && e.key === "Backspace" && e.target.value === "") {
       // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
       pinReffs[index - 1].current.focus();
@@ -282,11 +285,12 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     } else if (e.key === "Backspace" && e.target.selectionStart === 0) {
       // If Backspace is pressed at the beginning of the field, move focus to the previous input field and set cursor position to the end
       pinReffs[index - 1].current.focus();
-      setTimeout(() => {
+
+      // Use requestAnimationFrame for smoother transitions
+      requestAnimationFrame(() => {
         pinReffs[index - 1].current.setSelectionRange(1, 1);
-      }, 0);
+      });
     }
- 
   };
 
   const handleChange = (index, value) => {
@@ -539,7 +543,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     address: deliveryDetails.deliveryAddress,
     category: "restaurant",
     deliveryFee: `${landmarkCost.amount} `,
-    restaurantId: OTDOrderOnClickId || OTDRestaurantId ,
+    restaurantId: OTDOrderOnClickId || OTDRestaurantId,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
@@ -549,7 +553,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     commission: restaurantCommission,
     isHomeDelivery: true,
     category: "restaurant",
-    restaurantId: OTDOrderOnClickId || OTDRestaurantId ,
+    restaurantId: OTDOrderOnClickId || OTDRestaurantId,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
