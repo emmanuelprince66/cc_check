@@ -52,7 +52,6 @@ AuthAxios.interceptors.response.use(
         } 
         else {
           // If there is no new access token, redirect to login page
-          window.location.href = '/'
           return Promise.reject(error);
         }
   }
