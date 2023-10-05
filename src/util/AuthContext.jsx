@@ -1,5 +1,5 @@
 // AuthContext.js
-import React,{useEffect} from "react";
+import React,{useState,useEffect} from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -9,6 +9,8 @@ import { fillUserDetails } from "./slice/merchantSlice";
 import { getCookie } from "./cookieAuth";
 import { useSelector } from "react-redux";
 import { getUser } from "../helpers/getUser";
+import { RefreshToken } from "../helpers/getRefreshToken";
+import Cookies from "js-cookie";
 export function AuthProvider({ children }) {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -18,6 +20,22 @@ export function AuthProvider({ children }) {
   const {userDetails} =  useSelector(state=>state.merchantReducer)
 
 
+  const [res, setRes] = useState(null);
+
+  useEffect(() => {
+    const refreshTokenInterval = setInterval(async () => {
+      const refreshedToken = await RefreshToken();
+      if (refreshedToken) {
+        setRes(refreshedToken);
+        Cookies.set('authToken', refreshedToken?.access_token);
+        Cookies.set('refreshToken', refreshedToken?.refreshToken);
+      }
+    }, 30000);
+
+    return () => {
+      clearInterval(refreshTokenInterval); // Clear interval on component unmount
+    };
+  }, [res])
   if (!userDetails) {
     return (
       <Box
