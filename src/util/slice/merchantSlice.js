@@ -20,10 +20,14 @@ const merchantSlice = createSlice({
     isOTD: false,
     OTDtype: "delivery",
     OTDOrderOnClickId: 0,
+    OTDRestaurantId : 0,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
       state.data = action.payload;
+    },
+    setOTDRestaurantId: (state, action) => {
+      state.OTDRestaurantId = action.payload;
     },
     setOTDOrderOnClickId: (state, action) => {
       state.OTDOrderOnClickId = action.payload;
@@ -293,11 +297,23 @@ const merchantSlice = createSlice({
         deliveryDetails: {},
       };
     },
+    clearStateOuterOTD: (state, action) => {
+      return {
+        ...state,
+        data: [],
+        orders: [],
+        landmark: 0,
+        landmarks: null,
+        previewOrders: [],
+        deliveryDetails: {},
+      };
+    },
   },
 });
 
 export const {
   populateMerchantDetails,
+  setOTDRestaurantId,
   addOrders,
   clearStateForOTD,
   fillUserDetails,

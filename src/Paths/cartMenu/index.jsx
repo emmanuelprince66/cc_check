@@ -50,13 +50,14 @@ const RestaurantMenu = () => {
     orderInView,
     orders,
     takeAwayPrice,
-    OTDOrderOnClickId,
+    OTDRestaurantId,
     totalAmount,
     previewOrders,
+    OTDOrderOnClickId
   } = useSelector((state) => state.merchantReducer);
 
   const idToUse = isOTD
-    ? OTDOrderOnClickId
+    ? OTDRestaurantId || OTDOrderOnClickId
     : merchantDetails.restaurant
     ? merchantDetails?.restaurant?.id
     : null;

@@ -2,11 +2,12 @@
 import React from 'react'
 import { useTheme } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useSelector } from 'react-redux';
 import { Dialog ,Box,Typography,TextField,InputAdornment} from '@mui/material'
 const LandmarkModal
  = ({OTDLandmarks,close,handleCost}) => {
    const currentTheme = useTheme();
-
+const {landmarks} = useSelector(state=>state.merchantReducer)
   return (
 <Dialog
 sx={{
@@ -86,7 +87,7 @@ onClose={close}
         gap: "0em",
       }}
     >
-      {OTDLandmarks?.landmarks?.map((item, i) => {
+      {(OTDLandmarks || landmarks )?.map((item, i) => {
         return (
           <Typography
             onClick={() =>
