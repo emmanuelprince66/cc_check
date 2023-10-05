@@ -20,22 +20,7 @@ export function AuthProvider({ children }) {
   const {userDetails} =  useSelector(state=>state.merchantReducer)
 
 
-  const [res, setRes] = useState(null);
 
-  useEffect(() => {
-    const refreshTokenInterval = setInterval(async () => {
-      const refreshedToken = await RefreshToken();
-      if (refreshedToken) {
-        setRes(refreshedToken);
-        Cookies.set('authToken', refreshedToken?.access_token);
-        Cookies.set('refreshToken', refreshedToken?.refreshToken);
-      }
-    }, 30000);
-
-    return () => {
-      clearInterval(refreshTokenInterval); // Clear interval on component unmount
-    };
-  }, [res])
   if (!userDetails) {
     return (
       <Box
