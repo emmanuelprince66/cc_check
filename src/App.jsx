@@ -25,20 +25,20 @@ const [res, setRes] = useState(null);
       localStorage.clear();
     }
   },[] )
-  useEffect(() => {
-    const refreshTokenInterval = setInterval(async () => {
-      const refreshedToken = await RefreshToken();
-      if (refreshedToken) {
-        setRes(refreshedToken);
-        Cookies.set('authToken', refreshedToken?.access_token,{expires:7});
-        Cookies.set('refreshToken', refreshedToken?.refreshToken,{expires:7});
-      }
-    }, 30000);
+  // useEffect(() => {
+  //   const refreshTokenInterval = setInterval(async () => {
+  //     const refreshedToken = await RefreshToken();
+  //     if (refreshedToken) {
+  //       setRes(refreshedToken);
+  //       Cookies.set('authToken', refreshedToken?.access_token,{expires:7});
+  //       Cookies.set('refreshToken', refreshedToken?.refreshToken,{expires:7});
+  //     }
+  //   }, 30000);
 
-    return () => {
-      clearInterval(refreshTokenInterval); // Clear interval on component unmount
-    };
-  }, [res])
+  //   return () => {
+  //     clearInterval(refreshTokenInterval); // Clear interval on component unmount
+  //   };
+  // }, [res])
 
 
     return (
