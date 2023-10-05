@@ -40,7 +40,7 @@ const Home = () => {
   const [showScanner, setShowScanner] = useState(false);
   const user = useUser();
   const { userDetails } = useSelector((state) => state.merchantReducer);
-
+const location = useLocation()
   const mylocation = useMyLocation();
   useEffect(() => {
     mylocation
@@ -71,6 +71,7 @@ const Home = () => {
       ? setIsTextVisible(!isTextVisible)
       : setIsTextVisible(!isTextVisible);
   };
+  console.log(history)
 
   return (
     <AuthProvider>

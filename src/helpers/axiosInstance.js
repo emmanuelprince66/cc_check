@@ -43,7 +43,6 @@ AuthAxios.interceptors.response.use(
     if (error?.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
           let res  =  await RefreshToken()
-          console.log(res)
         if (res) {
           Cookies.set('authToken', res?.access_token,{expires:7});
           Cookies.set('refreshToken', res?.refreshToken,{expires:7});
