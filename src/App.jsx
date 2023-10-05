@@ -30,8 +30,8 @@ const [res, setRes] = useState(null);
       const refreshedToken = await RefreshToken();
       if (refreshedToken) {
         setRes(refreshedToken);
-        Cookies.set('authToken', refreshedToken?.access_token);
-        Cookies.set('refreshToken', refreshedToken?.refreshToken);
+        Cookies.set('authToken', refreshedToken?.access_token,{expires:7});
+        Cookies.set('refreshToken', refreshedToken?.refreshToken,{expires:7});
       }
     }, 30000);
 

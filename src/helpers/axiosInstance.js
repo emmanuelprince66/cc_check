@@ -45,8 +45,8 @@ AuthAxios.interceptors.response.use(
           let res  =  await RefreshToken()
           console.log(res)
         if (res) {
-          Cookies.set('authToken', res?.access_token);
-          Cookies.set('refreshToken', res?.refreshToken);
+          Cookies.set('authToken', res?.access_token,{expires:7});
+          Cookies.set('refreshToken', res?.refreshToken,{expires:7});
           AuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.access_token;
           return AuthAxios(originalRequest);
         } 

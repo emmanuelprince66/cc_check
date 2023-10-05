@@ -24,6 +24,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setCookie } from "../../util/cookieAuth";
+import Cookies from "js-cookie";
 import { useTheme } from "@emotion/react";
 
 const Login = () => {
@@ -79,8 +80,8 @@ const Login = () => {
         console.log(authToken, refreshToken);
 
         // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
-        setCookie("authToken", authToken);
-        setCookie("refreshToken", refreshToken);
+        Cookies.set("authToken", authToken,{expires:7});
+        Cookies.set("refreshToken", refreshToken,{expires:7});
         navigate("/home");
       },
       onError: (error) => {
