@@ -38,8 +38,9 @@ const Home = () => {
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
-// const user = useUser()
-const {userDetails} = useSelector(state=>state.merchantReducer)
+  const user = useUser();
+  const { userDetails } = useSelector((state) => state.merchantReducer);
+  console.log(userDetails);
 
   const mylocation = useMyLocation();
   useEffect(() => {
@@ -56,21 +57,15 @@ const {userDetails} = useSelector(state=>state.merchantReducer)
       setShowScanner(true);
     }, 4000);
   }, []);
-  useEffect( () => {
-
-    async function getData (){
-      const res = await getUser()
-      return (res)
-
+  useEffect(() => {
+    // async function getData() {
+    //   const res = await getUser();
+    //   return res;
+    if (user) {
+      dispatch(fillUserDetails(user.data));
+      console.log(user.data);
     }
-    if ( !userDetails ){
-      getData().then(res=>{
-        console.log(res)
-        dispatch(fillUserDetails(res));
-      }).catch(err=>console.log(err))
-    }
-  }, [userDetails ]);
-
+  }, [user]);
 
   const handleShowAmount = () => {
     !isTextVisible
@@ -111,8 +106,8 @@ const {userDetails} = useSelector(state=>state.merchantReducer)
                 fontSize: "16px",
               }}
             >
-              {`${ userDetails?.firstName || ""} ${
-                 userDetails?.lastName || ""
+              {`${userDetails?.firstName || ""} ${
+                userDetails?.lastName || ""
               }  `}
             </Typography>
           </Box>

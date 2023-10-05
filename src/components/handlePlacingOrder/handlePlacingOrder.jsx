@@ -244,45 +244,78 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       })
       .catch((err) => console.log(err));
   }
+
+  const handlePinKeyDown = (index, e) => {
+    if (index > 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+      pinRef[index - 1].current.focus();
+    } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed in the first field and it's empty, focus remains in the first field
+      e.preventDefault(); // Prevent the Backspace key from navigating away
+    }
+  };
+  const handleNewPinKeyDown = (index, e) => {
+    if (index > 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+      pinRefs[index - 1].current.focus();
+    } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed in the first field and it's empty, focus remains in the first field
+      e.preventDefault(); // Prevent the Backspace key from navigating away
+    }
+  };
+  const handleConfirmNewPinsKeyDown = (index, e) => {
+    if (index > 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+      pinReffs[index - 1].current.focus();
+    } else if (index === 0 && e.key === "Backspace" && e.target.value === "") {
+      // If Backspace is pressed in the first field and it's empty, focus remains in the first field
+      e.preventDefault(); // Prevent the Backspace key from navigating away
+    }
+  };
+
   const handleChange = (index, value) => {
-    // Ensure that the value is only one digit
-    if (value.length > 1) return;
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const newPins = [...pins];
+      newPins[index] = value;
+      setPins(newPins);
 
-    if (!/^\d*$/.test(value)) return;
-
-    const newPins = [...pins];
-    newPins[index] = value;
-    setPins(newPins);
-
-    // Automatically focus on the next TextField if not already at the last one
-    if (index < pinRef.length - 1) {
-      pinRef[index + 1].current.focus();
+      if (value.length === 0 && index > 0) {
+        // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+        pinRef[index - 1].current.focus();
+      } else if (index < pinRef.length - 1 && value.length === 1) {
+        // If a digit is entered and it's not the last field, move focus to the next input field
+        pinRef[index + 1].current.focus();
+      }
     }
   };
   const handleNewPinChange = (index, value) => {
-    // Ensure that the value is only one digit
-    if (value.length > 1) return;
-    if (!/^\d*$/.test(value)) return;
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const firstNewPins = [...newPins];
+      firstNewPins[index] = value;
+      setNewPins(firstNewPins);
 
-    const firstNewPins = [...newPins];
-    firstNewPins[index] = value;
-    setNewPins(firstNewPins);
-    // Automatically focus on the next TextField if not already at the last one
-    if (index < pinRefs.length - 1) {
-      pinRefs[index + 1].current.focus();
+      if (value.length === 0 && index > 0) {
+        // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+        pinRefs[index - 1].current.focus();
+      } else if (index < pinRefs.length - 1 && value.length === 1) {
+        // If a digit is entered and it's not the last field, move focus to the next input field
+        pinRefs[index + 1].current.focus();
+      }
     }
   };
   const handleConfirmNewPins = (index, value) => {
-    // Ensure that the value is only one digit
-    if (value.length > 1) return;
-    if (!/^\d*$/.test(value)) return;
+    if (/^\d*$/.test(value) && value.length <= 1) {
+      const newPins = [...confirmNewPins];
+      newPins[index] = value;
+      setConfirmNewPins(newPins);
 
-    const newPins = [...confirmNewPins];
-    newPins[index] = value;
-    setConfirmNewPins(newPins);
-    // Automatically focus on the next TextField if not already at the last one
-    if (index < pinReffs.length - 1) {
-      pinReffs[index + 1].current.focus();
+      if (value.length === 0 && index > 0) {
+        // If Backspace is pressed and the field is empty (not the first field), move focus to the previous input field
+        pinReffs[index - 1].current.focus();
+      } else if (index < pinReffs.length - 1 && value.length === 1) {
+        // If a digit is entered and it's not the last field, move focus to the next input field
+        pinReffs[index + 1].current.focus();
+      }
     }
   };
 
@@ -1125,6 +1158,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     type="password"
                     value={pin}
                     onChange={(e) => handleChange(index, e.target.value)}
+                    onKeyDown={(e) => handlePinKeyDown(index, e)}
                     inputProps={{
                       inputMode: "numeric",
                       pattern: "[0-9]*", // Ensure only numeric input is allowed
@@ -1553,6 +1587,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     type="password"
                     value={pin}
                     onChange={(e) => handleNewPinChange(index, e.target.value)}
+                    onKeyDown={(e) => handleNewPinKeyDown(index, e)}
                     inputProps={{
                       inputMode: "numeric",
                       maxLength: 1, // Limit input to one character
@@ -1620,6 +1655,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     onChange={(e) =>
                       handleConfirmNewPins(index, e.target.value)
                     }
+                    onKeyDown={(e) => handleConfirmNewPinsKeyDown(index, e)}
                     inputProps={{
                       inputMode: "numeric",
                       maxLength: 1, // Limit input to one character
@@ -1704,7 +1740,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       </Modal>
       {/* Modal 4 ends*/}
       {/* Modal 5* success response for restaurant & supermarket*/}
-      { isOTD || (supermarketCart?.length === 0 )? (
+      {isOTD || supermarketCart?.length === 0 ? (
         <Modal
           className="scale-in-center"
           open={successResponse}

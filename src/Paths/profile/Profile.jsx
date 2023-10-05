@@ -53,6 +53,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
 
   const handleLogOut = () => {
     Cookies.remove("authToken");
+    Cookies.remove("refreshToken");
     localStorage.clear();
     dispatch(clearCart());
     dispatch(clearMerchantState());

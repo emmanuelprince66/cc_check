@@ -14,7 +14,9 @@
   flex-direction: column;
   gap: 5px;
 }
-
+#cart-nav {
+  margin-left: -10px;
+}
 .gpt3__navbar img {
   filter: invert(44%) sepia(0%) saturate(0%) hue-rotate(142deg) brightness(101%)
     contrast(92%);

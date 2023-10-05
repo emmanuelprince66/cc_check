@@ -102,9 +102,12 @@ const Navbar = () => {
             </Link>
           </Box>
 
-          <Box sx={{                marginLeft:'-2em',
-          width: { md: "20%", sm: "20%", xs: "15%" },
-}}>
+          <Box
+            sx={{
+              marginLeft: "-2em",
+              width: { md: "20%", sm: "20%", xs: "15%" },
+            }}
+          >
             <Link
               sx={{
                 fontWeight: scanMatch ? "1000" : ",",
@@ -160,7 +163,7 @@ const Navbar = () => {
               className={cartMatch ? "active-link" : ""}
               style={{ color: "black", textDecoration: "none" }}
             >
-              <div className="gpt3__navbar">
+              <div id="cart-nav" className="gpt3__navbar">
                 <img src={cart} alt="cart-logo" />
                 <MyTypography>Cart</MyTypography>
               </div>
