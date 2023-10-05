@@ -83,13 +83,16 @@ const Login = () => {
         // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
         Cookies.set("authToken", authToken, { expires: 7 });
         Cookies.set("refreshToken", refreshToken, { expires: 7 });
-        const loggedOutManual = localStorage.getItem("loggedOutManual");
-        if (!loggedOutManual) {
-          navigate(history.go(-1));
-          localStorage.removeItem("loggedOutManual");
-        } else {
+         const loggedIn = localStorage.getItem('loggedIn')
+        console.log(loggedIn)
+        if ( !loggedIn) {
           navigate("/home");
           localStorage.removeItem("loggedOutManual");
+          localStorage.setItem("loggedIn", true);
+        } else {
+          navigate(history.go(-1));
+          localStorage.removeItem("loggedOutManual");
+
         }
       },
       onError: (error) => {
