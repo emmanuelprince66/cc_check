@@ -34,6 +34,7 @@ const Restaurant = ({status}) => {
     data: merchantDetails,
     isOTD,
     OTDtype,
+    OTDRestaurantId
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails)
   const navigate = useNavigate();
@@ -77,7 +78,11 @@ const Restaurant = ({status}) => {
     setAllCartOptions(false);
   }
   function handleClickMenu(id) {
-    dispatch(setOTDRestaurantId(params.id))
+
+if (!OTDRestaurantId && location.pathname.includes( '/restaurant') ){
+  dispatch(setOTDRestaurantId(params.id))
+}
+     
     dispatch(setOrderInView(id));
     navigate("/restaurant/menu");
   }

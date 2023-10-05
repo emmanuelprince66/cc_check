@@ -78,13 +78,15 @@ const RestaurantMenu = () => {
 
   // this is called when the order viewing the menu has changed
   useEffect(() => {
+    let index = orderInView - 1
     const filteredResult = menu?.data?.menu?.map((order) => {
       return { ...order, count: 1, subTotal: parseFloat(order.price) };
     });
     dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price));
-    if (!orders[orderInView - 1]?.menu) {
+    if (!(orders[index]?.menu)) {
       dispatch(addMenu(filteredResult));
     }
+    console.log(filteredResult)
   }, [orderInView, menu?.data?.menu]);
   // targets categoryName
   useEffect(() => {
