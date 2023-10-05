@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
   }
 
   if (!getCookieValue) {
-    localStorage.clear();
+    // localStorage.clear();
     return <Navigate to="/" />;
   }
 
