@@ -155,9 +155,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     myLocation,
     landmarkCost,
     OTDOrderOnClickId,
+    OTDRestaurantId,
     OTDRestaurants,
     isOTD,
-    OTDtype,
+    landmarks,
     deliveryDetails,
     totalAmount,
   } = useSelector((state) => state.merchantReducer);
@@ -238,11 +239,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   };
   function handleOpenLocationOptions() {
     setOpenLocationOptions(true);
-    getLandmarks(myLocation.latitude, myLocation.longitude)
-      .then((res) => {
-        dispatch(setLandmarks(res.data));
-      })
-      .catch((err) => console.log(err));
   }
 
   const handlePinKeyDown = (index, e) => {
@@ -543,7 +539,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     address: deliveryDetails.deliveryAddress,
     category: "restaurant",
     deliveryFee: `${landmarkCost.amount} `,
-    restaurantId: OTDOrderOnClickId,
+    restaurantId: OTDOrderOnClickId || OTDRestaurantId ,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
@@ -553,7 +549,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     commission: restaurantCommission,
     isHomeDelivery: true,
     category: "restaurant",
-    restaurantId: OTDOrderOnClickId,
+    restaurantId: OTDOrderOnClickId || OTDRestaurantId ,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
@@ -1982,7 +1978,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       {openLocationOptions ? (
         <LandmarkModal
           handleCost={handleSaveDeliveryCost}
-          OTDLandmarks={OTDLandmarks}
+          OTDLandmarks={OTDLandmarks?.landmarks}
           close={closeLocationOptions}
         />
       ) : null}{" "}

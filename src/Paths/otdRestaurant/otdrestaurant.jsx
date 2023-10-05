@@ -14,7 +14,9 @@ import { getMenu } from "../../helpers/getMenu";
 import useMenu from "../../hooks/useMenu";
 import useRestaurant from "../../hooks/useRestaurant";
 import Restaurant from "../../components/restaurant/index";
+import { clearMerchantState, clearStateForOTD, initOTD, setLandmarks } from "../../util/slice/merchantSlice";
 import clockIcon from "../../assets/clock.svg";
+import { useDispatch } from "react-redux";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
 import card1 from "../../assets/Card/card1.svg";
 import card2 from "../../assets/card2.svg";
@@ -24,7 +26,7 @@ const RestaurantPage = () => {
   const params = useParams();
   const { myLocation } = useSelector((state) => state.merchantReducer);
   const pep = useOTDResById(params?.id);
-
+const dispatch = useDispatch()
   const menu = useMenu(params.id);
   const [finalObject, setFinalObject] = useState({});
   const [status, setStatus] = useState(false);
@@ -102,7 +104,14 @@ const RestaurantPage = () => {
     const result = openStatus(finalObject?.openingTime, finalObject?.closingTime);
   
     setStatus(result);
+    dispatch(setLandmarks(finalObject?.landmarks))
   }, [finalObject, setStatus]);
+
+  useEffect(()=>{
+dispatch(initOTD(true))
+dispatch(clearStateForOTD())
+  },[])
+  console.log(finalObject)
   return (
     <div className="gpt3__restaurant">
       <Container

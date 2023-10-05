@@ -17,6 +17,7 @@ import {
   setOrderInView,
   clearMerchantState,
   setOTDtype,
+  setOTDRestaurantId,
 } from "../../util/slice/merchantSlice";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import options from "../../assets/MoreOptions.svg";
@@ -39,7 +40,6 @@ const Restaurant = ({status}) => {
 
   const params = useParams();
   const currentTheme = useTheme();
-
   const location = useLocation();
   const dispatch = useDispatch();
   const [openOrderOptions, setOpenOrderOptions] = useState({
@@ -50,14 +50,16 @@ const Restaurant = ({status}) => {
   const [allCartOptions, setAllCartOptions] = useState(false);
 
   useEffect(() => {
+    let ordertype = isOTD ? "delivery" : "eat-in"
+
     let firstOrder = {
       id: 1,
       totalAmount: 0.0,
-      orderType: isOTD ? "delivery" : "eat-in",
+      orderType: ordertype,
       items: [],
     };
     dispatch(addOrders(firstOrder));
-  }, [orderCart, orders]);
+  }, [dispatch,orderCart,isOTD,orders]);
 
   function handleNewOrders() {
     const maxId = orders.length + 1;
@@ -75,6 +77,7 @@ const Restaurant = ({status}) => {
     setAllCartOptions(false);
   }
   function handleClickMenu(id) {
+    dispatch(setOTDRestaurantId(params.id))
     dispatch(setOrderInView(id));
     navigate("/restaurant/menu");
   }
