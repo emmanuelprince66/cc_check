@@ -19,25 +19,31 @@ import { getLandmarks } from "../../hooks/useGetLandMarks";
 import card1 from "../../assets/Card/card1.svg";
 import card2 from "../../assets/card2.svg";
 import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
+import useOTDResById from "../../hooks/useOTDResById";
 const RestaurantPage = () => {
   const params = useParams();
-  const { OTDRestaurants, myLocation } = useSelector(
-    (state) => state.merchantReducer
-  );
-  const restaurant = OTDRestaurants?.find(
-    (item) => item?.restaurant?.id == params.id
-  );
-
-
-  // useEffect(() => {
-  // }, [OTDRestaurants, params.id]);
-
+  const { myLocation } = useSelector((state) => state.merchantReducer);
+  const pep = useOTDResById(params?.id);
   const menu = useMenu(params.id);
+  let finalObject = {};
+
+  for (let obj in pep.data) {
+    if (pep.data[obj] !== null) {
+      finalObject[obj] = pep.data[obj];
+    }
+  }
+  for (let obj in menu.data) {
+    if (menu.data[obj] !== null) {
+      finalObject[obj] = menu.data[obj];
+    }
+  }
+
+  console.log(finalObject);
   const [data, setData] = useState({});
   useEffect(() => {
     const resCoords = {
-      lat: restaurant?.latitude,
-      long: restaurant?.longitude,
+      lat: finalObject?.latitude,
+      long: finalObject?.longitude,
     };
     const userCoords = {
       lat: myLocation?.latitude,
@@ -51,8 +57,8 @@ const RestaurantPage = () => {
     }
     getData();
   }, [
-    restaurant?.latitude,
-    restaurant?.longitude,
+    finalObject?.latitude,
+    finalObject?.longitude,
     myLocation?.latitude,
     myLocation?.longitude,
   ]);
@@ -64,10 +70,11 @@ const RestaurantPage = () => {
     const [openHours, openMinutes] = openTime.split(":");
     const [closeHours, closeMinutes] = closeTime.split(":");
     const isWithinTimeRange =
-      ((hrs > (Number(openHours ) )) ||( (hrs === (Number(openHours ))) && mins > Number(openMinutes))) 
-      &&
-(      (hrs < Number(closeHours) + 12 ) || ((hrs === Number(closeHours) + 12) && mins <= Number(closeMinutes)))  
-  if (isWithinTimeRange) {
+      (hrs > Number(openHours) ||
+        (hrs === Number(openHours) && mins > Number(openMinutes))) &&
+      (hrs < Number(closeHours) + 12 ||
+        (hrs === Number(closeHours) + 12 && mins <= Number(closeMinutes)));
+    if (isWithinTimeRange) {
       return "Open";
     } else {
       return "Closed";
@@ -86,7 +93,7 @@ const RestaurantPage = () => {
         }}
       >
         <Box sx={{ height: "20vh" }}>
-          {restaurant?.image ? (
+          {finalObject?.image ? (
             <Avatar
               sx={{
                 width: "100%",
@@ -96,7 +103,7 @@ const RestaurantPage = () => {
               }}
               variant="rounded"
               alt="Menu Item Image"
-              src={restaurant?.image}
+              src={finalObject?.image}
             />
           ) : (
             <Skeleton variant="rectangular" width={"100%"} height={"100%"} />
@@ -125,30 +132,30 @@ const RestaurantPage = () => {
           >
             <Typography fontSize={"22px"} fontWeight={600}>
               {" "}
-              {menu?.data?.companyName}{" "}
+              {finalObject.companyName}{" "}
             </Typography>
             <Box sx={{ display: "flex", gap: ".5em" }}>
               <Avatar sx={{ width: "20px", height: "20px" }} src={clockIcon} />
               <Typography sx={{ fontSize: "13px" }}>
-                {  convertTo12HourFormat(restaurant.openingTime) +
+                {convertTo12HourFormat(finalObject.openingTime) +
                   "AM" +
                   "-" +
-                   convertTo12HourFormat(restaurant.closingTime) +
+                  convertTo12HourFormat(finalObject.closingTime) +
                   "PM"}{" "}
                 <span
                   style={{
-                    background: `${ 
-                     openStatus(
-                        restaurant?.openingTime,
-                        restaurant?.closingTime
+                    background: `${
+                      openStatus(
+                        finalObject?.openingTime,
+                        finalObject?.closingTime
                       ) === "Closed"
                         ? "#ff000030"
                         : "hsla(120, 100%, 25%, 0.1)"
                     } `,
                     color: `${
-                       openStatus(
-                        restaurant?.openingTime,
-                        restaurant?.closingTime
+                      openStatus(
+                        finalObject?.openingTime,
+                        finalObject?.closingTime
                       ) === "Closed"
                         ? "var(--primary-red)"
                         : "var(--currency-green)"
@@ -161,7 +168,10 @@ const RestaurantPage = () => {
                   }}
                 >
                   {" "}
-                  {openStatus(restaurant?.openingTime, restaurant?.closingTime)}
+                  {openStatus(
+                    finalObject?.openingTime,
+                    finalObject?.closingTime
+                  )}
                 </span>
               </Typography>
             </Box>
@@ -192,7 +202,14 @@ const RestaurantPage = () => {
           </Box>
         </Card>
 
-        <Restaurant />
+        <Restaurant status={                      openStatus(
+                        finalObject?.openingTime,
+                        finalObject?.closingTime
+                      ) === "Closed"
+                        ? "Closed"
+                        : ""
+                    
+} />
       </Container>
     </div>
   );

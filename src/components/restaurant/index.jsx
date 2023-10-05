@@ -26,7 +26,7 @@ import { useParams, useLocation } from "react-router-dom";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import { useTheme } from "@mui/material";
 
-const Restaurant = () => {
+const Restaurant = ({status}) => {
   const {
     orders,
     orderCart,
@@ -255,6 +255,7 @@ const Restaurant = () => {
                               ? "1px solid var(--primary-red)"
                               : "1px solid #eeee",
                         }}
+                        disabled={status === 'Closed' }
                         onClick={() => handleClickMenu(order?.id)}
                       >
                         <span style={{ fontWeight: "600" }}>Add Items</span>
