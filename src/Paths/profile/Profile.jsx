@@ -58,7 +58,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
     dispatch(clearCart());
     dispatch(clearMerchantState());
     navigate("/");
-    localStorage.setItem('loggedOutManual',true)
+    localStorage.removeItem('loggedIn')
   };
 
   const currentTheme = useTheme();
