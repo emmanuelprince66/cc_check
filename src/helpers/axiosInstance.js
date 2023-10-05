@@ -33,25 +33,24 @@ AuthAxios.interceptors.request.use(
 );
 
 AuthAxios.interceptors.response.use(
-  (res) => {
+ async (res) => {
     return res;
   },
   async(error) => {
 
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error?.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
           let res  =  await RefreshToken()
-          console.log(res)
-        if (res?.access_token) {
-          Cookies.set('authToken', res?.access_token);
-          Cookies.set('refreshToken', res?.refreshToken);
+        if (res) {
+          Cookies.set('authToken', res?.access_token,{expires:7});
+          Cookies.set('refreshToken', res?.refreshToken,{expires:7});
           AuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.access_token;
           return AuthAxios(originalRequest);
-        } else {
+        } 
+        else {
           // If there is no new access token, redirect to login page
-          window.location.href = '/'; // Adjust the URL as needed
           return Promise.reject(error);
         }
   }
