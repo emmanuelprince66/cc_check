@@ -17,9 +17,10 @@ export function AuthProvider({ children }) {
   const authPages = ["/"];
   const isAuthPage = authPages.includes(pathname);
   const getCookieValue = getCookie("authToken");
+  const wrongAuth = getCookie("wrongAuth");
   const {userDetails} =  useSelector(state=>state.merchantReducer)
-
-
+const location = useLocation()
+console.log(location)
 
   if (!userDetails) {
     return (
@@ -53,9 +54,9 @@ export function AuthProvider({ children }) {
     return <>{children}</>;
   }
 
-  if (!getCookieValue) {
-    // localStorage.clear();
-    return <Navigate to="/" />;
+  if (!getCookieValue || wrongAuth ) {
+    localStorage.clear();
+    return <Navigate to="/"  state={{prevUrl:location.pathname}} />;
   }
 
   return <>{children}</>;

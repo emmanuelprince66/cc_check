@@ -33,26 +33,36 @@ AuthAxios.interceptors.request.use(
 );
 
 AuthAxios.interceptors.response.use(
- async (res) => {
+  async (res) => {
     return res;
   },
-  async(error) => {
-
+  async (error) => {
     const originalRequest = error.config;
 
-    if (error?.response?.status === 401 && !originalRequest._retry) {
+    if (!originalRequest._retry && error.response.status === 401 ) {
       originalRequest._retry = true;
-          let res  =  await RefreshToken()
+
+      try {
+        let res = await RefreshToken();
+        
         if (res) {
-          Cookies.set('authToken', res?.access_token,{expires:7});
-          Cookies.set('refreshToken', res?.refreshToken,{expires:7});
+          Cookies.set('authToken', res?.access_token, { expires: 7 });
+          Cookies.set('refreshToken', res?.refreshToken, { expires: 7 });
           AuthAxios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.access_token;
           return AuthAxios(originalRequest);
-        } 
-        else {
-          // If there is no new access token, redirect to login page
-          return Promise.reject(error);
+        } else {
+          throw new Error('Error refreshing token'); // Throw an error if no new access token is obtained
         }
+      } catch (error) {
+        // Handle the error here (e.g., log it, show a message to the user, etc.)
+        console.error('Error:', error);
+
+        // You can re-throw the error or return a rejected Promise
+        return Promise.reject(error);
+      }
+    }
+
+    // If it's not a 401 error or if the request has already been retried, reject the error
+    return Promise.reject(error);
   }
-  }
-)
+);

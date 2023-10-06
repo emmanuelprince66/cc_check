@@ -15,7 +15,7 @@ import { AuthAxios } from "../../helpers/axiosInstance";
 
 import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "../../util/cookieAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -26,7 +26,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Typography from "@mui/material/Typography";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Cookies from "js-cookie";
 const SignUp = ({ setIsShown, setActive }) => {
   const navigate = useNavigate();
 
@@ -67,6 +67,9 @@ const SignUp = ({ setIsShown, setActive }) => {
   const [phoneNoError, setPhoneNoError] = useState(false);
   const [addressError, setAddressError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  const location = useLocation();
+  console.log(location);
 
   const notify = (message) => {
     toast.error(message, {
@@ -125,8 +128,11 @@ const SignUp = ({ setIsShown, setActive }) => {
       //  console.log(data.access_token);
       const authToken = data.access_token;
       const expirationTime = 5000;
-      setCookie("authToken", authToken, expirationTime);
-      navigate("/home");
+
+      Cookies.set("authToken", authToken, { expires: 7 });
+      Cookies.set("refreshToken", data.refreshToken, { expires: 7 });
+      navigate(location?.state?.prevUrl ? location?.state?.prevUrl : "/home");
+
     },
     onError(err) {
       const message = err.response.data.message;

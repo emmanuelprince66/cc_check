@@ -90,16 +90,17 @@ const Orders = () => {
   };
 
   async function confirmOrder() {
-    const token = getCookie("authToken");
+    const isOTD = orderToView.orders[0].orderType === 'eat-out' ||orderToView.orders[0].orderType === 'delivery' 
+    console.log(isOTD)
     try {
       const response = await AuthAxios({
-        url: `/cart/${orderToView.id}`,
+        url: `/cart/${orderToView?.id}`,
         method: "PATCH",
         data: {
-          status: "COMPLETED",
-          userId: userDetails.id,
-          transactionRef: orderToView.transactionRef,
-        }
+          status: isOTD ? "DELIVERED" : "COMPLETED",
+          userId: userDetails?.id,
+          transactionRef: orderToView?.transactionRef,
+        },
       });
 
       return response.data;
@@ -120,7 +121,7 @@ const Orders = () => {
         data: {
           cartId: orderToView.id,
           transactionRef: orderToView.transactionRef,
-        }
+        },
       });
 
       return response.data;
