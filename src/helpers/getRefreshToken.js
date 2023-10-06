@@ -21,7 +21,9 @@ export const RefreshToken = async () => {
   } catch (error) {
     if (!(error?.response?.status === 201 || error?.response?.status === 200)) {
       window.location.href = "/";
+      localStorage.clear()
       localStorage.setItem('wrongAuth',true)
+
       console.log(error);
     }
   }

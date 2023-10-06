@@ -96,11 +96,12 @@ const Orders = () => {
         url: `/cart/${orderToView.id}`,
         method: "PATCH",
         data: {
-          status: "COMPLETED",
+          status: orderToView.isHomeDelivery ? "DELIVERED" : "COMPLETED",
           userId: userDetails.id,
           transactionRef: orderToView.transactionRef,
-        }
+        },
       });
+      console.log(orderToView)
 
       return response.data;
     } catch (error) {
@@ -120,7 +121,7 @@ const Orders = () => {
         data: {
           cartId: orderToView.id,
           transactionRef: orderToView.transactionRef,
-        }
+        },
       });
 
       return response.data;
