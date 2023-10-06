@@ -20,6 +20,8 @@ export function AuthProvider({ children }) {
   const wrongAuth = getCookie("wrongAuth");
   const { userDetails } = useSelector((state) => state.merchantReducer);
   const location = useLocation();
+  console.log(location);
+
 
   if (!userDetails) {
     return (
@@ -46,7 +48,7 @@ export function AuthProvider({ children }) {
   }
 
   if (isAuthPage && userDetails) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/home"  state={{prevUrl:location.pathname}}/>;
   }
 
   if (isAuthPage) {
