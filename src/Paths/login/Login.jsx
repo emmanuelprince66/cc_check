@@ -47,7 +47,6 @@ const Login = () => {
   const location = useLocation();
   console.log(location);
 
-
   const notify = (message) => {
     toast.error(message, {
       position: "top-center",
@@ -81,7 +80,7 @@ const Login = () => {
         const authToken = data?.access_token;
         const refreshToken = data?.refreshToken;
         const currentTime = new Date();
-
+        localStorage.clear();
         // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
         Cookies.set("authToken", authToken, { expires: 7 });
         Cookies.set("refreshToken", refreshToken, { expires: 7 });

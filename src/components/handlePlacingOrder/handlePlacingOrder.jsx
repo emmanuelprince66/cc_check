@@ -71,7 +71,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const [phoneNo, setPhoneNo] = useState("");
   const [openLocationOptions, setOpenLocationOptions] = useState(false);
   const { userDetails } = useSelector((state) => state.merchantReducer);
-  console.log(userDetails);
   const [phoneNoError, setPhoneNoError] = useState(false);
   const handlePhoneNoBlur = () => {
     if (!phoneNo) {
@@ -458,10 +457,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
       setTimeout(() => {
         if (noti === "Insufficient Funds") {
+          setButtonDisabled(false);
           setShowInsufficientBalance(true);
           setShowOrderText(false);
           setPins(["", "", "", ""]);
-          setButtonDisabled(false);
         }
       }, 1000);
       throw new Error(error.response);
@@ -500,6 +499,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         if (noti === "Insufficient Funds") {
           setShowInsufficientBalance(true);
           setShowOrderText(false);
+          setButtonDisabled(false);
           setPins(["", "", "", ""]);
         }
       }, 1000);

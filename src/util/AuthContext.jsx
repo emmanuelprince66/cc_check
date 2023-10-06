@@ -1,5 +1,5 @@
 // AuthContext.js
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -18,9 +18,8 @@ export function AuthProvider({ children }) {
   const isAuthPage = authPages.includes(pathname);
   const getCookieValue = getCookie("authToken");
   const wrongAuth = getCookie("wrongAuth");
-  const {userDetails} =  useSelector(state=>state.merchantReducer)
-const location = useLocation()
-console.log(location)
+  const { userDetails } = useSelector((state) => state.merchantReducer);
+  const location = useLocation();
 
   if (!userDetails) {
     return (
@@ -54,9 +53,9 @@ console.log(location)
     return <>{children}</>;
   }
 
-  if (!getCookieValue || wrongAuth ) {
+  if (!getCookieValue || wrongAuth) {
     localStorage.clear();
-    return <Navigate to="/"  state={{prevUrl:location.pathname}} />;
+    return <Navigate to="/" state={{ prevUrl: location.pathname }} />;
   }
 
   return <>{children}</>;

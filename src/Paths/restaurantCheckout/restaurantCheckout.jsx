@@ -22,9 +22,11 @@ import { setDeliveryDetails } from "../../util/slice/merchantSlice";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useDispatch } from "react-redux";
 import { PlaceOrder } from "../../components/handlePlacingOrder/handlePlacingOrder";
+import { useNavigate } from "react-router-dom";
 const RestaurantCheckout = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [collapse, setCollapse] = useState({ id: null, status: false });
+
   const {
     handleSubmit,
     control,
@@ -39,6 +41,7 @@ const RestaurantCheckout = () => {
 
   const supermarketCart = useSelector((state) => state.cart.data);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // orders being sent.
   const ordersToSend = orders
     .filter((order) => order.items.length > 0)
@@ -46,7 +49,7 @@ const RestaurantCheckout = () => {
       const { menu, ...rest } = item;
       return rest;
     });
-// submit and dispatch form details.
+  // submit and dispatch form details.
   const onSubmit = (data) => {
     dispatch(setDeliveryDetails(data));
     setShowSummary(true);
@@ -72,7 +75,9 @@ const RestaurantCheckout = () => {
         position: "relative",
       }}
     >
-      <BackArrow />
+      <Box onClick={() => navigate(-1)}>
+        <BackArrow />
+      </Box>
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
         <Typography fontSize={"1.3em"} fontWeight={700}>
           Checkout{" "}
@@ -205,48 +210,45 @@ const RestaurantCheckout = () => {
                     Phone Number
                   </Typography>
                   <Controller
-                  name="phoneNumber"
-                  control={control}
-                  defaultValue={userDetails?.phoneNumber}
-                  rules={{ required: "Phone Number is required" }}
-                  render={({ field }) => (
-
-                  <TextField
-                  {...field}
-                    sx={{
-                      width: "100%",
-                      color:'grey',
-                      mx: "auto",
-                      "& .MuiInputBase-root": {
-                        backgroundColor: "hsla(0, 0%, 78%, .2)",
-                      },
-                    }}
                     name="phoneNumber"
-                    fullWidth
-                    placeholder="Enter your phone Number"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment>
-                          <PhoneIcon />
-                          &nbsp;&nbsp;
-                        </InputAdornment>
-                      ),
-                    }}
-                    aria-describedby="outlined-weight-helper-text"
-                    inputProps={{
-                      "aria-label": "weight",
-                    }}
+                    control={control}
+                    defaultValue={userDetails?.phoneNumber}
+                    rules={{ required: "Phone Number is required" }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        sx={{
+                          width: "100%",
+                          color: "grey",
+                          mx: "auto",
+                          "& .MuiInputBase-root": {
+                            backgroundColor: "hsla(0, 0%, 78%, .2)",
+                          },
+                        }}
+                        name="phoneNumber"
+                        fullWidth
+                        placeholder="Enter your phone Number"
+                        type="number"
+                        InputProps={{
+                          pattern: "[0-9]*",
+                          startAdornment: (
+                            <InputAdornment>
+                              <PhoneIcon />
+                              &nbsp;&nbsp;
+                            </InputAdornment>
+                          ),
+                        }}
+                        aria-describedby="outlined-weight-helper-text"
+                        inputProps={{
+                          "aria-label": "weight",
+                        }}
+                      />
+                    )}
                   />
-                 )}
-                 
-                    />
-                                 </FormControl>
-                                 {errors.phoneNumber && (
-                  <p style={{ color: "red" }}>
-                    {errors.phoneNumber.message}
-                  </p>
+                </FormControl>
+                {errors.phoneNumber && (
+                  <p style={{ color: "red" }}>{errors.phoneNumber.message}</p>
                 )}
-
 
                 <Box
                   sx={{
@@ -262,7 +264,7 @@ const RestaurantCheckout = () => {
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6}>
-              <FormControl
+                <FormControl
                   sx={{
                     width: "100%",
                     marginBottom: "0.5rem",
@@ -280,46 +282,50 @@ const RestaurantCheckout = () => {
                       fontSize: "16px",
                     }}
                   >
-                   Alternative Phone Number
+                    Alternative Phone Number
                   </Typography>
 
-
-                <Controller
-                  name="altPhoneNumber"
-                  control={control}
-                  defaultValue=""
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      variant="outlined"
-                      sx={{
-                        width: "100%",
-                      mx: "auto",
-                        "& .MuiInputBase-root": {
-                          backgroundColor: "hsla(0, 0%, 78%, .2)",
-                        },
-                      }}
-                      placeholder="Enter an alternative phone number"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
+                  <Controller
+                    name="altPhoneNumber"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        variant="outlined"
+                        type="number"
+                        sx={{
+                          width: "100%",
+                          mx: "auto",
+                          "& .MuiInputBase-root": {
+                            backgroundColor: "hsla(0, 0%, 78%, .2)",
+                          },
+                        }}
+                        placeholder="Enter an alternative phone number"
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
                               <PhoneIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                      aria-describedby="outlined-weight-helper-text"
-                    inputProps={{
-                      "aria-label": "weight",
-                    }}
-
-                    />
-                  )}
-                />
+                            </InputAdornment>
+                          ),
+                        }}
+                        aria-describedby="outlined-weight-helper-text"
+                        inputProps={{
+                          "aria-label": "weight",
+                        }}
+                      />
+                    )}
+                  />
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <InputLabel
-                  sx={{ fontSize: "1em", fontWeight: "600", color: "black" }}
+                  sx={{
+                    fontSize: "1em",
+                    fontWeight: "600",
+                    color: "black",
+                    mb: "10px",
+                  }}
                   htmlFor="deliveryAddress"
                 >
                   Delivery Address*
@@ -332,7 +338,7 @@ const RestaurantCheckout = () => {
                   render={({ field }) => (
                     <TextareaAutosize
                       {...field}
-                      minRows={3}
+                      minRows={6}
                       fullWidth
                       startIcon={<LocationOnIcon />}
                       placeholder="Delivery Address*"
@@ -481,7 +487,7 @@ const RestaurantCheckout = () => {
             );
           })}
 
-          <Box >
+          <Box>
             <Typography
               marginBottom={"1em"}
               fontWeight={700}
@@ -530,8 +536,11 @@ const RestaurantCheckout = () => {
               </span>
             </Box>
           </Box>
-{/* handle placing orders here */}
-          <PlaceOrder supermarketCart={supermarketCart} restaurant={merchantDetails.restaurant} />
+          {/* handle placing orders here */}
+          <PlaceOrder
+            supermarketCart={supermarketCart}
+            restaurant={merchantDetails.restaurant}
+          />
         </Box>
       )}{" "}
     </Container>
