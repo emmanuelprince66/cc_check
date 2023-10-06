@@ -70,7 +70,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const [text, setText] = useState(false);
   const [phoneNo, setPhoneNo] = useState("");
   const [openLocationOptions, setOpenLocationOptions] = useState(false);
-
+  const { userDetails } = useSelector((state) => state.merchantReducer);
+  console.log(userDetails);
   const [phoneNoError, setPhoneNoError] = useState(false);
   const handlePhoneNoBlur = () => {
     if (!phoneNo) {
@@ -425,6 +426,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       setTimeout(() => {
         if (noti === "Invalid pin") {
           setShowInvalidPin(true);
+          setButtonDisabled(false);
           setShowOrderText(false);
         } else {
           notify(error.response.data.message);
@@ -459,6 +461,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           setShowInsufficientBalance(true);
           setShowOrderText(false);
           setPins(["", "", "", ""]);
+          setButtonDisabled(false);
         }
       }, 1000);
       throw new Error(error.response);

@@ -12,17 +12,13 @@ import { AuthProvider } from "../../util/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import ClipboardJS from "clipboard";
 
-
-
 import useUser from "../../hooks/useUser";
 
 const Fwallet = () => {
-
-  const {userDetails} = useSelector(state=>state.merchantReducer)
+  const { userDetails } = useSelector((state) => state.merchantReducer);
 
   const navigate = useNavigate();
   const currentTheme = useTheme();
-
 
   const copyToClipboard = async () => {
     try {

@@ -14,10 +14,9 @@ const InsufficientFund = ({
   setShowInsufficientBalance,
 }) => {
   const currentTheme = useTheme();
-  const {userDetails} = useSelector(state=>state.merchantReducer)
+  const { userDetails } = useSelector((state) => state.merchantReducer);
   const navigate = useNavigate();
   const remInsufficientBalance = () => setShowInsufficientBalance(false);
-
   return (
     <Modal
       classetsName="scale-in-center"
@@ -114,7 +113,7 @@ const InsufficientFund = ({
                 }}
                 id="modal-modal-title"
               >
-                { <FormattedPrice amount={userDetails?.balance} /> }
+                {<FormattedPrice amount={userDetails?.balance} />}
               </Typography>
             </Box>
             <Box
@@ -154,7 +153,7 @@ const InsufficientFund = ({
                 }}
                 id="modal-modal-title"
               >
-                {<FormattedPrice amount={totalPrice} /> }
+                {<FormattedPrice amount={totalPrice} />}
               </Typography>
             </Box>
           </Box>

@@ -15,7 +15,7 @@ import { AuthAxios } from "../../helpers/axiosInstance";
 
 import { useMutation } from "@tanstack/react-query";
 import { setCookie } from "../../util/cookieAuth";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -105,7 +105,7 @@ const SignUp = ({ setIsShown, setActive }) => {
           password: passwordInput,
           lastName,
           address,
-          phoneNumber: phoneNo,
+          phoneNumber: `+234${phoneNo}`,
           email,
         };
 
@@ -132,7 +132,6 @@ const SignUp = ({ setIsShown, setActive }) => {
       Cookies.set("authToken", authToken, { expires: 7 });
       Cookies.set("refreshToken", data.refreshToken, { expires: 7 });
       navigate(location?.state?.prevUrl ? location?.state?.prevUrl : "/home");
-
     },
     onError(err) {
       const message = err.response.data.message;
