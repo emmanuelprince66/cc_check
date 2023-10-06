@@ -22,7 +22,7 @@ const [res, setRes] = useState(null);
   useEffect(() => {
     const getCookieValue = getCookie("authToken");
     if (!getCookieValue) {
-      localStorage.clear();
+      // localStorage.clear();
     }
   },[] )
   // useEffect(() => {
