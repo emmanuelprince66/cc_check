@@ -44,6 +44,9 @@ const Login = () => {
   const [active, setActive] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+
 
   const notify = (message) => {
     toast.error(message, {
@@ -78,22 +81,11 @@ const Login = () => {
         const authToken = data?.access_token;
         const refreshToken = data?.refreshToken;
         const currentTime = new Date();
-        console.log(authToken, refreshToken);
 
         // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
         Cookies.set("authToken", authToken, { expires: 7 });
         Cookies.set("refreshToken", refreshToken, { expires: 7 });
-        const loggedIn = localStorage.getItem("loggedIn");
-        const wrongAuth = localStorage.getItem("wrongAuth");
-        console.log(loggedIn);
-        if (wrongAuth) {
-          navigate(-1);
-          localStorage.removeItem("loggedOutManual");
-        } else {
-          navigate("/home");
-          localStorage.removeItem("loggedOutManual");
-          localStorage.setItem("loggedIn", true);
-        }
+        navigate(location?.state?.prevUrl ? location?.state?.prevUrl : "/home");
       },
       onError: (error) => {
         // Handle errors here
