@@ -18,10 +18,9 @@ export function AuthProvider({ children }) {
   const isAuthPage = authPages.includes(pathname);
   const getCookieValue = getCookie("authToken");
   const wrongAuth = getCookie("wrongAuth");
-  const { userDetails } = useSelector((state) => state.merchantReducer);
-  const location = useLocation();
-  console.log(location);
-
+  const {userDetails} =  useSelector(state=>state.merchantReducer)
+const location = useLocation()
+console.log(location)
 
   if (!userDetails) {
     return (

@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { AuthAxios } from "../helpers/axiosInstance";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { RefreshToken } from "../helpers/getRefreshToken";
 import Cookies from "js-cookie";
 
 export  function ResponseInterceptor() {
   const interceptorId = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation()
+  console.log(location)
   useEffect(() => {
     interceptorId.current = AuthAxios.interceptors.response.use(
       async (res) => {
@@ -33,7 +35,7 @@ export  function ResponseInterceptor() {
             }
           } catch (error) {
             // Handle the error here (e.g., log it, show a message to the user, etc.)
-            navigate("/");
+            navigate("/", {state:{ prevUrl: location.pathname }} );
             console.log('logout')
             console.error("Error:", error);
 
