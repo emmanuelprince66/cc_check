@@ -14,22 +14,31 @@ import { getMenu } from "../../helpers/getMenu";
 import useMenu from "../../hooks/useMenu";
 import useRestaurant from "../../hooks/useRestaurant";
 import Restaurant from "../../components/restaurant/index";
-import { clearMerchantState, clearStateForOTD, initOTD, setLandmarks } from "../../util/slice/merchantSlice";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import {
+  clearMerchantState,
+  clearStateForOTD,
+  initOTD,
+  setLandmarks,
+} from "../../util/slice/merchantSlice";
 import clockIcon from "../../assets/clock.svg";
 import { useDispatch } from "react-redux";
+import BackArrow from "../../components/backArrow/BackArrow";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
 import card1 from "../../assets/Card/card1.svg";
 import card2 from "../../assets/card2.svg";
+import { useNavigate } from "react-router-dom";
 import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
 import useOTDResById from "../../hooks/useOTDResById";
 const RestaurantPage = () => {
   const params = useParams();
   const { myLocation } = useSelector((state) => state.merchantReducer);
   const pep = useOTDResById(params?.id);
-const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const menu = useMenu(params.id);
   const [finalObject, setFinalObject] = useState({});
   const [status, setStatus] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function call() {
@@ -48,8 +57,6 @@ const dispatch = useDispatch()
       console.log(load);
     }
     call();
-
-
   }, [pep?.data, menu?.data]);
 
   const [data, setData] = useState({});
@@ -76,17 +83,16 @@ const dispatch = useDispatch()
     myLocation?.longitude,
   ]);
 
-
   useEffect(() => {
     function openStatus(openTime, closeTime) {
       if (!openTime || !closeTime) {
         return "Invalid Time";
       }
-  
+
       const time = new Date();
       const hrs = time.getHours();
       const mins = time.getMinutes();
-  
+
       const [openHours, openMinutes] = openTime.split(":");
       const [closeHours, closeMinutes] = closeTime.split(":");
       const isWithinTimeRange =
@@ -100,18 +106,21 @@ const dispatch = useDispatch()
         return "Closed";
       }
     }
-  
-    const result = openStatus(finalObject?.openingTime, finalObject?.closingTime);
-  
+
+    const result = openStatus(
+      finalObject?.openingTime,
+      finalObject?.closingTime
+    );
+
     setStatus(result);
-    dispatch(setLandmarks(finalObject?.landmarks))
+    dispatch(setLandmarks(finalObject?.landmarks));
   }, [finalObject, setStatus]);
 
-  useEffect(()=>{
-dispatch(initOTD(true))
-dispatch(clearStateForOTD())
-  },[])
-  console.log(finalObject)
+  useEffect(() => {
+    dispatch(initOTD(true));
+    dispatch(clearStateForOTD());
+  }, []);
+  console.log(finalObject);
   return (
     <div className="gpt3__restaurant">
       <Container
@@ -139,6 +148,32 @@ dispatch(clearStateForOTD())
           ) : (
             <Skeleton variant="rectangular" width={"100%"} height={"100%"} />
           )}{" "}
+        </Box>
+        <Box
+          onClick={() => navigate(-1)}
+          sx={{
+            position: "absolute",
+            top: "10px",
+            left: "10px",
+          }}
+        >
+          <Box
+            sx={{
+              background: "red",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "40px",
+              height: "40px",
+              borderRadius: "5px",
+            }}
+          >
+            <ChevronLeftRoundedIcon
+              sx={{
+                color: "white",
+              }}
+            />
+          </Box>
         </Box>
         <Card
           sx={{
@@ -223,15 +258,7 @@ dispatch(clearStateForOTD())
             </Box>
           </Box>
         </Card>
-
-        <Restaurant
-          status={
-            status ===
-            "Closed"
-              ? "Closed"
-              : ""
-          }
-        />
+        <Restaurant status={status === "Closed" ? "Closed" : ""} />
       </Container>
     </div>
   );
