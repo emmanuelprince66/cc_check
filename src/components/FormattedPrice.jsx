@@ -1,6 +1,7 @@
 import React from "react";
 
 const formattedMoney = (amount) => {
+  console.log(amount);
   const formatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
