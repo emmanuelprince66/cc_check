@@ -30,6 +30,7 @@ import card2 from "../../assets/card2.svg";
 import { useNavigate } from "react-router-dom";
 import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
 import useOTDResById from "../../hooks/useOTDResById";
+import { useMyLocation } from "../../hooks/useLocation";
 const RestaurantPage = () => {
   const params = useParams();
   const { myLocation } = useSelector((state) => state.merchantReducer);
@@ -39,7 +40,8 @@ const RestaurantPage = () => {
   const [finalObject, setFinalObject] = useState({});
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
-
+  const locateMe = useMyLocation();
+  console.log(locateMe);
   useEffect(() => {
     function call() {
       let load = {};
@@ -60,16 +62,22 @@ const RestaurantPage = () => {
   }, [pep?.data, menu?.data]);
 
   const [data, setData] = useState({});
-  useEffect(() => {
-    const resCoords = {
-      lat: finalObject?.latitude,
-      long: finalObject?.longitude,
-    };
-    const userCoords = {
-      lat: myLocation?.latitude,
-      long: myLocation?.longitude,
-    };
+  useEffect( () => {
+
+
     async function getData() {
+const locateInOTD = await locateMe
+
+      const resCoords = {
+        lat: finalObject?.latitude,
+        long: finalObject?.longitude,
+      };
+  
+      const userCoords = {
+        lat: myLocation?.latitude || locateInOTD?.latitude ,
+        long: myLocation?.longitude || locateInOTD?.longitude,
+      };
+  
       const res = await getLandmarks({ resCoords, userCoords });
       if (res && res?.data) {
         setData(res?.data);
@@ -81,12 +89,13 @@ const RestaurantPage = () => {
     finalObject?.longitude,
     myLocation?.latitude,
     myLocation?.longitude,
+    locateMe
   ]);
 
   useEffect(() => {
     function openStatus(openTime, closeTime) {
       if (!openTime || !closeTime) {
-        return "Invalid Time";
+        return ". . .";
       }
 
       const time = new Date();

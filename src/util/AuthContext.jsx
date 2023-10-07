@@ -1,5 +1,5 @@
 // AuthContext.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
@@ -10,6 +10,7 @@ import { getCookie } from "./cookieAuth";
 import { useSelector } from "react-redux";
 import { getUser } from "../helpers/getUser";
 import { RefreshToken } from "../helpers/getRefreshToken";
+import useUser from "../hooks/useUser";
 import Cookies from "js-cookie";
 export function AuthProvider({ children }) {
   const { pathname } = useLocation();
@@ -20,7 +21,24 @@ export function AuthProvider({ children }) {
   const wrongAuth = getCookie("wrongAuth");
   const {userDetails} =  useSelector(state=>state.merchantReducer)
 const location = useLocation()
-console.log(location)
+
+useEffect(() => {
+  
+  async function fetchUser (){
+const user   = await getUser()
+console.log(user)
+if (user){
+  dispatch(fillUserDetails(user))
+}
+
+  }
+  if (!userDetails){
+    fetchUser()
+  }
+
+
+}, [])
+
 
   if (!userDetails) {
     return (

@@ -36,6 +36,7 @@ export  function ResponseInterceptor() {
           } catch (error) {
             // Handle the error here (e.g., log it, show a message to the user, etc.)
             navigate("/", {state:{ prevUrl: location.pathname }} );
+            localStorage.clear()
             console.log('logout')
             console.error("Error:", error);
 

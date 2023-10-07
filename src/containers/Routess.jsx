@@ -35,6 +35,7 @@ import MainScanner from "../components/MainScanner";
 import ScrollToTop from "../components/scrollToTop";
 import ForgetPassword from "../Paths/forgetp/ForgetPassword";
 import ChangePassWord from "../components/ChangePassWord";
+import { AuthProvider } from "../util/AuthContext";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -62,53 +63,242 @@ const Routess = () => {
         <CssBaseline>
           <Routes>
             <Route index path="/" element={<Login />} />
-            <Route path="/home" element={<Home />} />
+            <Route
+              path="/home"
+              element={
+                <AuthProvider>
+                  <Home />
+                </AuthProvider>
+              }
+            />
 
             <Route
               path="/profile"
               element={
-                <Profile
-                  darkMode={darkMode}
-                  onToggleDarkMode={handleToggleDarkMode}
-                />
+                <AuthProvider>
+                  <Profile
+                    darkMode={darkMode}
+                    onToggleDarkMode={handleToggleDarkMode}
+                  />
+                </AuthProvider>
               }
             />
 
-            <Route index path="/transactions" element={<Transaction />} />
-            <Route index path="/scan" element={<Scan />} />
-            <Route index path="/cart" element={<Cart />} />
-            <Route path="/paybills" element={<PayBills />} />
-            <Route index path="/mainScanner" element={<MainScanner />} />
-            <Route index path="/forget-password" element={<ForgetPassword />} />
+            <Route
+              index
+              path="/transactions"
+              element={
+                <AuthProvider>
+                  <Transaction />
+                </AuthProvider>
+              }
+            />
+            <Route
+              index
+              path="/scan"
+              element={
+                <AuthProvider>
+                  <Scan />
+                </AuthProvider>
+              }
+            />
+            <Route
+              index
+              path="/cart"
+              element={
+                <AuthProvider>
+                  <Cart />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/paybills"
+              element={
+                <AuthProvider>
+                  <PayBills />
+                </AuthProvider>
+              }
+            />
+            <Route
+              index
+              path="/mainScanner"
+              element={
+                <AuthProvider>
+                  <MainScanner />
+                </AuthProvider>
+              }
+            />
+            <Route
+              index
+              path="/forget-password"
+              element={
+                <AuthProvider>
+                  <ForgetPassword />
+                </AuthProvider>
+              }
+            />
 
-            <Route path="/wallet" element={<Wallet />} />
-            <Route path="/fwallet" element={<Fwallet />} />
-            <Route path="/fwithdraw" element={<Fwithdraw />} />
-            <Route path="/wtransfer" element={<Wtransfer />} />
-            <Route path="/frecharge" element={<Frecharge />} />
-            <Route path="/change-password" element={<ChangePassWord />} />
-            <Route path="/elect" element={<Elect />} />
-            <Route path="/tvsub" element={<Tvsub />} />
-            <Route path="/referral" element={<Referral />} />
-            <Route path="/support" element={<Suport />} />
-            <Route path="/cpass" element={<Cpass />} />
-            <Route path="/rlocation" element={<Rlocation />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/restaurant/menu" element={<RestaurantMenu />} />
-            <Route path="/order/:id" element={<OrderSummary />} />
-            <Route path="/order-out" element={<OTDMainPage />} />
+            <Route
+              path="/wallet"
+              element={
+                <AuthProvider>
+                  <Wallet />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/fwallet"
+              element={
+                <AuthProvider>
+                  <Fwallet />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/fwithdraw"
+              element={
+                <AuthProvider>
+                  <Fwithdraw />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/wtransfer"
+              element={
+                <AuthProvider>
+                  <Wtransfer />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/frecharge"
+              element={
+                <AuthProvider>
+                  <Frecharge />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/change-password"
+              element={
+                <AuthProvider>
+                  <ChangePassWord />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/elect"
+              element={
+                <AuthProvider>
+                  <Elect />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/tvsub"
+              element={
+                <AuthProvider>
+                  <Tvsub />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/referral"
+              element={
+                <AuthProvider>
+                  <Referral />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/support"
+              element={
+                <AuthProvider>
+                  <Suport />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/cpass"
+              element={
+                <AuthProvider>
+                  <Cpass />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/rlocation"
+              element={
+                <AuthProvider>
+                  <Rlocation />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <AuthProvider>
+                  <Orders />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/restaurant/menu"
+              element={
+                <AuthProvider>
+                  <RestaurantMenu />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/order/:id"
+              element={
+                <AuthProvider>
+                  <OrderSummary />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/order-out"
+              element={
+                <AuthProvider>
+                  <OTDMainPage />
+                </AuthProvider>
+              }
+            />
             <Route
               path="/restaurant-receipt/:id"
-              element={<RestaurantReceipt />}
+              element={
+                <AuthProvider>
+                  <RestaurantReceipt />
+                </AuthProvider>
+              }
             />
             <Route
               path="/restaurant-checkout"
-              element={<RestaurantCheckout />}
+              element={
+                <AuthProvider>
+                  <RestaurantCheckout />
+                </AuthProvider>
+              }
             />
-            <Route path="/order-out" element={<OTDMainPage />} />
-            <Route path="/restaurant/:id" element={<RestaurantPage />} />
+            <Route
+              path="/order-out"
+              element={
+                <AuthProvider>
+                  <OTDMainPage />
+                </AuthProvider>
+              }
+            />
+            <Route
+              path="/restaurant/:id"
+              element={
+                <AuthProvider>
+                  <RestaurantPage />
+                </AuthProvider>
+              }
+            />
           </Routes>
-
           {location.pathname !== "/" &&
           location.pathname !== "/restaurant/menu" &&
           location.pathname !== "/forget-password" &&
