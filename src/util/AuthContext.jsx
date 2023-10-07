@@ -21,6 +21,8 @@ export function AuthProvider({ children }) {
   const wrongAuth = getCookie("wrongAuth");
   const {userDetails} =  useSelector(state=>state.merchantReducer)
 const location = useLocation()
+// this checks if userDetails are there and if not calls the endpoints and auths 
+const isAuthenticated = Object.keys( userDetails).length > 0
 
 useEffect(() => {
   
@@ -32,7 +34,8 @@ if (user){
 }
 
   }
-  if (!userDetails){
+
+  if ( Object.keys( userDetails).length === 0){
     fetchUser()
   }
 
@@ -40,7 +43,7 @@ if (user){
 }, [location.pathname,dispatch,userDetails])
 
 
-  if (!userDetails) {
+  if (!isAuthenticated) {
     return (
       <Box
         sx={{
@@ -64,7 +67,7 @@ if (user){
     );
   }
 
-  if (isAuthPage && userDetails) {
+  if (isAuthPage && isAuthenticated) {
     return <Navigate to="/home"  state={{prevUrl:location.pathname}}/>;
   }
 
