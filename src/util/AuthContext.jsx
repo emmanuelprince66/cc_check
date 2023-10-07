@@ -37,7 +37,7 @@ if (user){
   }
 
 
-}, [])
+}, [location.pathname,dispatch,userDetails])
 
 
   if (!userDetails) {

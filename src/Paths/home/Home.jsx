@@ -56,14 +56,16 @@ const Home = () => {
       setShowScanner(true);
     }, 4000);
   }, []);
-  // useEffect(() => {
-  //   // async function getData() {
-  //   //   const res = await getUser();
-  //   //   return res;
-  //   if (user) {
-  //     dispatch(fillUserDetails(user.data));
-  //   }
-  // }, [user]);
+//   useEffect(() => {
+//     async function getData() {
+//       const res = await getUser();
+//       return res;
+//     if (user) {
+//       dispatch(fillUserDetails(user.data));
+//     }
+//   }
+// getData()
+// }, [user]);
 
   const handleShowAmount = () => {
     !isTextVisible
