@@ -135,12 +135,14 @@ const RestaurantPage = () => {
   }, []);
   useEffect(() => {
     if (pep?.error?.response?.status === 404) {
-      setNotFoundError(true);
+      if ( !notFoundError ){
+        setNotFoundError(true);
+      }
       if ( loading){
         setLoading(false);
       }
     }
-  }, [pep,loading]);
+  }, [pep,loading,notFoundError]);
 
   const NotFoundError = () => (
     <div
