@@ -180,9 +180,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       if (location.pathname === "/cart") {
         !itemInCart
           ? notify("No Item in Cart!")
-          : ordersDelivery.length > 0 && landmarkCost.amount !== undefined
+          : ordersDelivery.length > 0 && landmarkCost?.amount !== undefined
           ? navigate("/restaurant-checkout")
-          : landmarkCost.amount === undefined && ordersDelivery.length > 0
+          : landmarkCost?.amount === undefined && ordersDelivery.length > 0
           ? notify("Choose a Landmark!")
           : itemInCart
           ? setOpen(true)
@@ -545,7 +545,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     phoneNumber: deliveryDetails.phoneNumber,
     address: deliveryDetails.deliveryAddress,
     category: "restaurant",
-    deliveryFee: `${landmarkCost.amount} `,
+    deliveryFee: `${landmarkCost?.amount} `,
     restaurantId: OTDOrderOnClickId,
     totalAmount: totalPrice,
     paymentType: "WALLET",
@@ -767,7 +767,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                   {" "}
                   Delivery Fee{" "}
                 </Typography>
-                {!landmarkCost.amount ? (
+                {!landmarkCost?.amount ? (
                   <Button
                     onClick={() => handleOpenLocationOptions()}
                     sx={{
@@ -797,11 +797,11 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                     }}
                   >
                     {" "}
-                    {landmarkCost.location +
+                    {landmarkCost?.location +
                       " " +
                       "|" +
                       " " +
-                      landmarkCost.amount}{" "}
+                      landmarkCost?.amount}{" "}
                   </Typography>
                 )}{" "}
               </Box>

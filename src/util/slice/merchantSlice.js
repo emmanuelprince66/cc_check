@@ -297,6 +297,7 @@ const merchantSlice = createSlice({
         orders: [],
         landmark: 0,
         landmarks: null,
+        landmarkCost: null,
         previewOrders: [],
         deliveryDetails: {},
       };

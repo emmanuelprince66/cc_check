@@ -64,6 +64,7 @@ const RestaurantMenu = () => {
   const menu = useMenu(idToUse);
   const category = useRestaurantCategory(idToUse);
   const navigate = useNavigate();
+  console.log(category)
   // this adds the menu as the orderCart which can be used subsequently
   // adds other fields  - count,subTotal
   useEffect(() => {
@@ -100,6 +101,10 @@ const RestaurantMenu = () => {
   useEffect(() => {
     dispatch(handlePreview());
   }, [orders[orderInView - 1]?.menu]);
+
+
+  
+
 
   function checkCategory(i, name) {
     dispatch(setCategoryNameInView(name));

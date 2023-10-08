@@ -41,6 +41,7 @@ const RestaurantPage = () => {
   const menu = useMenu(params.id);
   const [finalObject, setFinalObject] = useState({});
   const [status, setStatus] = useState(false);
+  const [notFoundError, setNotFoundError] = useState(false);
   const navigate = useNavigate();
   const locateMe = useMyLocation();
   console.log(locateMe);
@@ -131,36 +132,51 @@ const locateInOTD = await locateMe
     dispatch(initOTD(true));
     dispatch(clearStateForOTD());
   }, []);
+  useEffect(() => {
+    console.log(pep)
+    if (pep?.error?.response?.status === 404){
+      setNotFoundError(true)
+    }
+      }, [pep])
+    
   console.log(finalObject);
+
+ const NotFoundError = ()=> 
+ <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+      }}
+    >
+      <div style={{ textAlign: 'center' }}>
+        <h1
+          style={{
+            fontSize: '3rem',
+            fontWeight: 'bold',
+            marginBottom: '1rem',
+            color: '#3182ce',
+            animation: 'fadeIn 1s forwards'
+          }}
+        >
+          Restaurant Not Found
+        </h1>
+        <p
+          style={{
+            color: '#4a5568',
+            animation: 'fadeIn 1s 1s forwards',
+            padding:'0 1em'
+          }}
+        >
+          Sorry, we couldn't find the restaurant you're looking for.
+        </p>
+      </div>
+    </div>
+    
   return (
     <div className="gpt3__restaurant">
-      <Container
-        sx={{
-          padding: "0px",
-          display: "flex",
-          marginTop: "-1em",
-          gap: "2em",
-          flexDirection: "column",
-        }}
-      >
-        <Box sx={{ height: "20vh" }}>
-          {finalObject?.image ? (
-            <Avatar
-              sx={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "4px 4px 0 0",
-                objectFit: "cover",
-              }}
-              variant="rounded"
-              alt="Menu Item Image"
-              src={finalObject?.image}
-            />
-          ) : (
-            <Skeleton variant="rectangular" width={"100%"} height={"100%"} />
-          )}{" "}
-        </Box>
-        <Box
+            <Box
           onClick={() => navigate(-1)}
           sx={{
             position: "absolute",
@@ -185,6 +201,33 @@ const locateInOTD = await locateMe
               }}
             />
           </Box>
+        </Box>
+{notFoundError ? <NotFoundError/> :    
+  <Container
+        sx={{
+          padding: "0px",
+          display: "flex",
+          marginTop: "-1em",
+          gap: "2em",
+          flexDirection: "column",
+        }}
+      >
+        <Box sx={{ height: "20vh" }}>
+          {finalObject?.image ? (
+            <Avatar
+              sx={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "4px 4px 0 0",
+                objectFit: "cover",
+              }}
+              variant="rounded"
+              alt="Menu Item Image"
+              src={finalObject?.image}
+            />
+          ) : (
+            <Skeleton variant="rectangular" width={"100%"} height={"100%"} />
+          )}{" "}
         </Box>
         <Card
           sx={{
@@ -271,7 +314,13 @@ const locateInOTD = await locateMe
         </Card>
         <Restaurant status={status === "Closed" ? "Closed" : ""} />
       </Container>
+
+}
+
+
+
     </div>
   );
-};
+}
+
 export default RestaurantPage;
