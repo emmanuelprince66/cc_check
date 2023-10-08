@@ -3,6 +3,7 @@ const merchantSlice = createSlice({
   name: "merchantDetails",
   initialState: {
     data: [],
+    isScanned:false,
     orderCart: [],
     refreshError:false,
     orders: [],
@@ -74,6 +75,9 @@ const merchantSlice = createSlice({
     },
     setCategoryNameInView: (state, action) => {
       state.categoryNameInView = action.payload;
+    },
+    setIsScanned: (state, action) => {
+      state.isScanned = action.payload;
     },
     setRefreshError: (state, action) => {
       state.refreshError = action.payload;
@@ -321,6 +325,7 @@ export const {
   setOTDRestaurantId,
   addOrders,
   clearStateForOTD,
+  setIsScanned,
   fillUserDetails,
   removeOrder,
   setDeliveryDetails,

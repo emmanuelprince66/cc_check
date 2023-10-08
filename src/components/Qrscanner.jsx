@@ -1,13 +1,24 @@
 import React from "react";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import QrReader from "react-qr-scanner";
 import { Box, CircularProgress, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
-
+import useSuperMarket from "../hooks/useSuperMarket";
+import useRestaurant from "../hooks/useRestaurant";
 import WelcomeUser from "./WelcomeUser";
+import { clearCart } from "../util/slice/CartSlice";
+import { useSelector } from "react-redux";
+import {
+  clearMerchantState,
+  populateMerchantDetails,
+  initOTD,
+  setIsScanned,
+} from "../util/slice/merchantSlice";
+
+import { useDispatch } from "react-redux";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -15,10 +26,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Qrscanner = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const {data:merchantDetails,isScanned} = useSelector(state=>state.merchantReducer)
 
   const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
+  const [key, setKey] = useState(null);
+  const handleClose = () => dispatch(setIsScanned(false));
   const [showProgress, setShowProgress] = useState(false);
+console.log(key)
+  const superMarket = useSuperMarket(key);
+  const restaurant = useRestaurant(key);
+
 
   function isValidJSON(jsonString) {
     try {
@@ -33,7 +51,6 @@ const Qrscanner = () => {
     const val = localStorage.getItem("myData");
 
     if (val && isValidJSON(val)) {
-      setOpen(true);
     } else {
       notifyErr("Invalid Qr Code");
     }
@@ -46,14 +63,17 @@ const Qrscanner = () => {
 
   const handleQrScan = (data) => {
     if (data) {
-      localStorage.setItem("myData", data.text);
+      // localStorage.setItem("myData", data.text);
+        let res = JSON.parse(data?.text);
+console.log(data,res)
+ res.id ? setKey(res.id) : setKey(res);
+
       playNotificationSound();
       setShowProgress(true);
-      setTimeout(() => {
-        welcomeUser();
-      }, 3000);
     }
   };
+
+
 
   let notificationSound;
 
@@ -82,6 +102,44 @@ const Qrscanner = () => {
       theme: "dark",
     });
   };
+
+
+
+  useEffect(() => {
+    console.log(superMarket.data,restaurant.data,open)
+    if (superMarket?.data) {
+      dispatch(setIsScanned(true))
+      dispatch(clearMerchantState());
+      dispatch(clearCart());
+      dispatch(populateMerchantDetails(superMarket?.data));
+       setShowProgress(false);
+       setTimeout(() => {
+        handleClose();
+                  navigate("/scan");
+      }, 6000);
+  
+    } else if (restaurant?.data) {
+      dispatch(clearMerchantState());
+      dispatch(clearCart());
+      dispatch(setIsScanned(true))
+      setShowProgress(false);
+console.log(isScanned)
+      dispatch(populateMerchantDetails(restaurant?.data));
+            setTimeout(() => {
+      handleClose();
+                navigate("/cart");
+    }, 6000);
+
+  
+      // }
+  }
+  else {
+    // notifyErr("No restaurant or supermarket found");
+    console.log("No restaurant or supermarket found");
+  }
+
+}, [superMarket.data, navigate,merchantDetails,open, isScanned,dispatch,restaurant.data]);
+console.log(open)
 
   return (
     <Box>
@@ -118,7 +176,7 @@ const Qrscanner = () => {
       {/* Dialouge full screen modal start */}
       <Dialog
         fullScreen
-        open={open}
+        open={isScanned}
         onClose={handleClose}
         TransitionComponent={Transition}
       >

@@ -5,7 +5,7 @@ import checkLogo from "../images/checkLogo.svg";
 import { useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useSuperMarket from "../hooks/useSuperMarket";
 import useRestaurant from "../hooks/useRestaurant";
 import {
@@ -22,53 +22,54 @@ const WelcomeUser = () => {
   const currentTheme = useTheme();
   // const [key, setKey] = useState("");
   const [info, setInfo] = useState(null);
-  const val = localStorage.getItem("myData");
-  let data = JSON.parse(val);
+  const {data:merchantDetails} = useSelector(state=>state.merchantReducer)
+//   const val = localStorage.getItem("myData");
+//   let data = JSON.parse(val);
 
- const key = data.id ? (data.id) : (val);
+//  const key = data.id ? (data.id) : (val);
 
-  const superMarket = useSuperMarket(key);
-  const restaurant = useRestaurant(key);
-  const notifyErr = (message) => {
-    toast.error(message, {
-      position: "top-center",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-  useEffect(() => {
-    if (superMarket.data) {
-      setInfo(superMarket?.data);
-      dispatch(clearMerchantState());
-      dispatch(clearMerchantState());
-      dispatch(populateMerchantDetails(superMarket?.data));
-      if (info){
-        setTimeout(() => {
-          navigate("/scan");
-        }, 4000);
+  // const superMarket = useSuperMarket(key);
+  // const restaurant = useRestaurant(key);
+  // const notifyErr = (message) => {
+  //   toast.error(message, {
+  //     position: "top-center",
+  //     autoClose: 2000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "dark",
+  //   });
+  // };
+  // useEffect(() => {
+  //   if (superMarket.data) {
+  //     setInfo(superMarket?.data);
+  //     dispatch(clearMerchantState());
+  //     dispatch(clearMerchantState());
+  //     dispatch(populateMerchantDetails(superMarket?.data));
+  //     if (info){
+  //       setTimeout(() => {
+  //         navigate("/scan");
+  //       }, 4000);
   
-      }
-    } else if (restaurant.data) {
-      setInfo(restaurant?.data);
-      dispatch(clearMerchantState());
-      dispatch(clearCart());
-      dispatch(populateMerchantDetails(restaurant?.data));
-      if (info){
-        setTimeout(() => {
-          navigate("/cart");
-        }, 4000);
+  //     }
+  //   } else if (restaurant.data) {
+  //     setInfo(restaurant?.data);
+  //     dispatch(clearMerchantState());
+  //     dispatch(clearCart());
+  //     dispatch(populateMerchantDetails(restaurant?.data));
+  //     if (info){
+  //       setTimeout(() => {
+  //         navigate("/cart");
+  //       }, 4000);
   
-      }
-    } else {
-      // notifyErr("No restaurant or supermarket found");
-      console.log("No restaurant or supermarket found");
-    }
-  }, [superMarket.data, navigate,info, dispatch,restaurant.data]);
+  //     }
+  //   } else {
+  //     // notifyErr("No restaurant or supermarket found");
+  //     console.log("No restaurant or supermarket found");
+  //   }
+  // }, [superMarket.data, navigate,info, dispatch,restaurant.data]);
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
@@ -152,10 +153,10 @@ const WelcomeUser = () => {
           }}
         >
           {(
-            info?.restaurant ? (
-              info?.restaurant?.companyName
+            merchantDetails?.restaurant ? (
+              merchantDetails?.restaurant?.companyName
             ) : (
-              info?.companyName
+              merchantDetails?.companyName
             )
           ) }
         </Typography>
