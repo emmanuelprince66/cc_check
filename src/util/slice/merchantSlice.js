@@ -4,6 +4,7 @@ const merchantSlice = createSlice({
   initialState: {
     data: [],
     orderCart: [],
+    refreshError:false,
     orders: [],
     userDetails: {},
     deliveryDetails: {},
@@ -73,6 +74,9 @@ const merchantSlice = createSlice({
     },
     setCategoryNameInView: (state, action) => {
       state.categoryNameInView = action.payload;
+    },
+    setRefreshError: (state, action) => {
+      state.refreshError = action.payload;
     },
     addOrders: (state, action) => {
       let itemExists = state.orders.find(
@@ -325,6 +329,7 @@ export const {
   addMenu,
   setTakeAwayPrice,
   setLocation,
+  setRefreshError,
   orders,
   initOTD,
   takeAwayPrice,

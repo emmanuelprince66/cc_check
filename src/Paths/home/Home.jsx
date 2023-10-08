@@ -38,7 +38,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
-  const user = useUser();
+  // const user = useUser();
   const { userDetails } = useSelector((state) => state.merchantReducer);
   const location = useLocation();
   const mylocation = useMyLocation();
@@ -56,14 +56,16 @@ const Home = () => {
       setShowScanner(true);
     }, 4000);
   }, []);
-  useEffect(() => {
-    // async function getData() {
-    //   const res = await getUser();
-    //   return res;
-    if (user) {
-      dispatch(fillUserDetails(user.data));
-    }
-  }, [user]);
+//   useEffect(() => {
+//     async function getData() {
+//       const res = await getUser();
+//       return res;
+//     if (user) {
+//       dispatch(fillUserDetails(user.data));
+//     }
+//   }
+// getData()
+// }, [user]);
 
   const handleShowAmount = () => {
     !isTextVisible
