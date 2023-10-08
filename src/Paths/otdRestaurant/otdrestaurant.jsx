@@ -160,7 +160,7 @@ const RestaurantPage = () => {
             fontWeight: "bold",
             marginBottom: "1rem",
             color: "#3182ce",
-            animation: "fadeIn 2s forwards",
+            // animation: "fadeIn 2s forwards",
           }}
         >
           Restaurant Not Found
