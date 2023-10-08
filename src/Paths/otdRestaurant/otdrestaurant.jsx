@@ -136,9 +136,11 @@ const RestaurantPage = () => {
   useEffect(() => {
     if (pep?.error?.response?.status === 404) {
       setNotFoundError(true);
-      setLoading(false);
+      if ( loading){
+        setLoading(false);
+      }
     }
-  }, [pep]);
+  }, [pep,loading]);
 
   const NotFoundError = () => (
     <div
@@ -156,7 +158,7 @@ const RestaurantPage = () => {
             fontWeight: "bold",
             marginBottom: "1rem",
             color: "#3182ce",
-            animation: "fadeIn 8s forwards",
+            animation: "fadeIn 2s forwards",
           }}
         >
           Restaurant Not Found
