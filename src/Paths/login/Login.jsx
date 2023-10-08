@@ -45,7 +45,6 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   const notify = (message) => {
     toast.error(message, {

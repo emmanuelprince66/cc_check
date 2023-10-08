@@ -9,7 +9,6 @@ export  function ResponseInterceptor() {
   const interceptorId = useRef(null);
   const navigate = useNavigate();
   const location = useLocation()
-  console.log(location)
   useEffect(() => {
     interceptorId.current = AuthAxios.interceptors.response.use(
       async (res) => {
@@ -37,8 +36,6 @@ export  function ResponseInterceptor() {
             // Handle the error here (e.g., log it, show a message to the user, etc.)
             navigate("/", {state:{ prevUrl: location.pathname }} );
             localStorage.clear()
-            console.log('logout')
-            console.error("Error:", error);
 
             // You can re-throw the error or return a rejected Promise
             return Promise.reject(error);

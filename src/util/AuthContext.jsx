@@ -28,7 +28,6 @@ useEffect(() => {
   
   async function fetchUser (){
 const user   = await getUser()
-console.log(user)
 if (user){
   dispatch(fillUserDetails(user))
 }

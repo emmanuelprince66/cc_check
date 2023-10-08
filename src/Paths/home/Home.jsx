@@ -72,7 +72,6 @@ const Home = () => {
       ? setIsTextVisible(!isTextVisible)
       : setIsTextVisible(!isTextVisible);
   };
-  console.log(history);
 
   return (
     <AuthProvider>

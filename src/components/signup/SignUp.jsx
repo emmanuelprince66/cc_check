@@ -69,7 +69,6 @@ const SignUp = ({ setIsShown, setActive }) => {
   const [passwordError, setPasswordError] = useState(false);
 
   const location = useLocation();
-  console.log(location);
 
   const notify = (message) => {
     toast.error(message, {

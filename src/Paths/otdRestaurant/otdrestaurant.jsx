@@ -23,6 +23,7 @@ import {
   setOTDOrderOnClickId,
   setLandmarks,
 } from "../../util/slice/merchantSlice";
+import { CircularProgress } from "@mui/material";
 import clockIcon from "../../assets/clock.svg";
 import { useDispatch } from "react-redux";
 import BackArrow from "../../components/backArrow/BackArrow";
@@ -41,10 +42,10 @@ const RestaurantPage = () => {
   const menu = useMenu(params.id);
   const [finalObject, setFinalObject] = useState({});
   const [status, setStatus] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [notFoundError, setNotFoundError] = useState(false);
   const navigate = useNavigate();
   const locateMe = useMyLocation();
-  console.log(locateMe);
   useEffect(() => {
     function call() {
       let load = {};
@@ -59,28 +60,28 @@ const RestaurantPage = () => {
         }
       }
       setFinalObject(load);
-      console.log(load);
+      if (pep?.data && menu?.data) {
+        setLoading(false);
+      }
     }
     call();
   }, [pep?.data, menu?.data]);
 
   const [data, setData] = useState({});
-  useEffect( () => {
-
-
+  useEffect(() => {
     async function getData() {
-const locateInOTD = await locateMe
+      const locateInOTD = await locateMe;
 
       const resCoords = {
         lat: finalObject?.latitude,
         long: finalObject?.longitude,
       };
-  
+
       const userCoords = {
-        lat: myLocation?.latitude || locateInOTD?.latitude ,
+        lat: myLocation?.latitude || locateInOTD?.latitude,
         long: myLocation?.longitude || locateInOTD?.longitude,
       };
-  
+
       const res = await getLandmarks({ resCoords, userCoords });
       if (res && res?.data) {
         setData(res?.data);
@@ -92,7 +93,7 @@ const locateInOTD = await locateMe
     finalObject?.longitude,
     myLocation?.latitude,
     myLocation?.longitude,
-    locateMe
+    locateMe,
   ]);
 
   useEffect(() => {
@@ -133,194 +134,229 @@ const locateInOTD = await locateMe
     dispatch(clearStateForOTD());
   }, []);
   useEffect(() => {
-    console.log(pep)
-    if (pep?.error?.response?.status === 404){
-      setNotFoundError(true)
+    if (pep?.error?.response?.status === 404) {
+      setNotFoundError(true);
+      setLoading(false);
     }
-      }, [pep])
-    
-  console.log(finalObject);
+  }, [pep]);
 
- const NotFoundError = ()=> 
- <div
+  const NotFoundError = () => (
+    <div
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
       }}
     >
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: "center" }}>
         <h1
           style={{
-            fontSize: '3rem',
-            fontWeight: 'bold',
-            marginBottom: '1rem',
-            color: '#3182ce',
-            animation: 'fadeIn 1s forwards'
+            fontSize: "3rem",
+            fontWeight: "bold",
+            marginBottom: "1rem",
+            color: "#3182ce",
+            animation: "fadeIn 1s forwards",
           }}
         >
           Restaurant Not Found
         </h1>
         <p
           style={{
-            color: '#4a5568',
-            animation: 'fadeIn 1s 1s forwards',
-            padding:'0 1em'
+            color: "#4a5568",
+            animation: "fadeIn 1s 1s forwards",
+            padding: "0 1em",
           }}
         >
           Sorry, we couldn't find the restaurant you're looking for.
         </p>
       </div>
     </div>
-    
+  );
+
   return (
     <div className="gpt3__restaurant">
-            <Box
-          onClick={() => navigate(-1)}
+      {loading ? (
+        <Box
           sx={{
-            position: "absolute",
-            top: "10px",
-            left: "10px",
+            maxWidth: "31%",
+            margin: "auto",
+            marginTop: "1rem",
+            maxWidth: { xs: "100%", sm: "100%", md: "31%" },
           }}
         >
           <Box
             sx={{
-              background: "red",
+              width: "100%",
               display: "flex",
-              alignItems: "center",
               justifyContent: "center",
-              width: "40px",
-              height: "40px",
-              borderRadius: "5px",
+              marginTop: "10rem",
             }}
           >
-            <ChevronLeftRoundedIcon
-              sx={{
-                color: "white",
-              }}
-            />
+            <CircularProgress size="4rem" color="error" />
           </Box>
         </Box>
-{notFoundError ? <NotFoundError/> :    
-  <Container
-        sx={{
-          padding: "0px",
-          display: "flex",
-          marginTop: "-1em",
-          gap: "2em",
-          flexDirection: "column",
-        }}
-      >
-        <Box sx={{ height: "20vh" }}>
-          {finalObject?.image ? (
-            <Avatar
-              sx={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "4px 4px 0 0",
-                objectFit: "cover",
-              }}
-              variant="rounded"
-              alt="Menu Item Image"
-              src={finalObject?.image}
-            />
-          ) : (
-            <Skeleton variant="rectangular" width={"100%"} height={"100%"} />
-          )}{" "}
-        </Box>
-        <Card
-          sx={{
-            padding: ".5em ",
-            width: { xs: "90%", md: "90%" },
-            margin: " 0 auto",
-            insetInline: "0",
-            zIndex: "9",
-            marginTop: "-4em",
-            boxShadow:
-              " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
-            display: "flex",
-          }}
-        >
+      ) : (
+        <>
           <Box
+            onClick={() => navigate(-1)}
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: ".5em",
-              padding: ".5em",
+              position: "absolute",
+              top: "10px",
+              left: "10px",
             }}
           >
-            <Typography fontSize={"22px"} fontWeight={600}>
-              {" "}
-              {finalObject.companyName}{" "}
-            </Typography>
-            <Box sx={{ display: "flex", gap: ".5em" }}>
-              <Avatar sx={{ width: "20px", height: "20px" }} src={clockIcon} />
-              <Typography sx={{ fontSize: "13px" }}>
-                {convertTo12HourFormat(finalObject?.openingTime) +
-                  "AM" +
-                  "-" +
-                  convertTo12HourFormat(finalObject?.closingTime) +
-                  "PM"}{" "}
-                <span
-                  style={{
-                    background: `${
-                      status === "Closed"
-                        ? "#ff000030"
-                        : "hsla(120, 100%, 25%, 0.1)"
-                    } `,
-                    color: `${
-                      status === "Closed"
-                        ? "var(--primary-red)"
-                        : "var(--currency-green)"
-                    } `,
-                    padding: " .2em .4em",
-                    marginLeft: ".5em",
-                    height: "fit-content",
-                    borderRadius: ".3em",
-                    fontWeight: "600",
+            <Box
+              sx={{
+                background: "red",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "5px",
+              }}
+            >
+              <ChevronLeftRoundedIcon
+                sx={{
+                  color: "white",
+                }}
+              />
+            </Box>
+          </Box>
+
+          {notFoundError ? (
+            <NotFoundError />
+          ) : (
+            <Container
+              sx={{
+                padding: "0px",
+                display: "flex",
+                marginTop: "-1em",
+                gap: "2em",
+                flexDirection: "column",
+              }}
+            >
+              <Box sx={{ height: "20vh" }}>
+                {finalObject?.image ? (
+                  <Avatar
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "4px 4px 0 0",
+                      objectFit: "cover",
+                    }}
+                    variant="rounded"
+                    alt="Menu Item Image"
+                    src={finalObject?.image}
+                  />
+                ) : (
+                  <Skeleton
+                    variant="rectangular"
+                    width={"100%"}
+                    height={"100%"}
+                  />
+                )}{" "}
+              </Box>
+              <Card
+                sx={{
+                  padding: ".5em ",
+                  width: { xs: "90%", md: "90%" },
+                  margin: " 0 auto",
+                  insetInline: "0",
+                  zIndex: "9",
+                  marginTop: "-4em",
+                  boxShadow:
+                    " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
+                  display: "flex",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: ".5em",
+                    padding: ".5em",
                   }}
                 >
-                  {" "}
-                  {status}
-                </span>
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", gap: ".5em" }}>
-              <Avatar sx={{ width: "20px", height: "20px" }} src={card2} />
-              <Typography sx={{ fontSize: "13px", width: "100%" }}>
-                {" "}
-                {data && data?.destination_addresses ? (
-                  <>
-                    <span> {data?.destination_addresses[0]}</span>
-                    &nbsp;
-                    <span>
-                      ({data?.rows[0].elements[0].distance?.text} away)
-                    </span>
-                  </>
-                ) : (
-                  <Skeleton variant="text" width={"100%"} height={30} />
-                )}{" "}
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", gap: ".5em" }}>
-              <Avatar sx={{ width: "20px", height: "20px" }} src={card1} />
-              <Typography sx={{ fontSize: "13px" }}>
-                {" "}
-                Delivery Available
-              </Typography>
-            </Box>
-          </Box>
-        </Card>
-        <Restaurant status={status === "Closed" ? "Closed" : ""} />
-      </Container>
-
-}
-
-
-
+                  <Typography fontSize={"22px"} fontWeight={600}>
+                    {" "}
+                    {finalObject.companyName}{" "}
+                  </Typography>
+                  <Box sx={{ display: "flex", gap: ".5em" }}>
+                    <Avatar
+                      sx={{ width: "20px", height: "20px" }}
+                      src={clockIcon}
+                    />
+                    <Typography sx={{ fontSize: "13px" }}>
+                      {convertTo12HourFormat(finalObject?.openingTime) +
+                        "AM" +
+                        "-" +
+                        convertTo12HourFormat(finalObject?.closingTime) +
+                        "PM"}{" "}
+                      <span
+                        style={{
+                          background: `${
+                            status === "Closed"
+                              ? "#ff000030"
+                              : "hsla(120, 100%, 25%, 0.1)"
+                          } `,
+                          color: `${
+                            status === "Closed"
+                              ? "var(--primary-red)"
+                              : "var(--currency-green)"
+                          } `,
+                          padding: " .2em .4em",
+                          marginLeft: ".5em",
+                          height: "fit-content",
+                          borderRadius: ".3em",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {" "}
+                        {status}
+                      </span>
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", gap: ".5em" }}>
+                    <Avatar
+                      sx={{ width: "20px", height: "20px" }}
+                      src={card2}
+                    />
+                    <Typography sx={{ fontSize: "13px", width: "100%" }}>
+                      {" "}
+                      {data && data?.destination_addresses ? (
+                        <>
+                          <span> {data?.destination_addresses[0]}</span>
+                          &nbsp;
+                          <span>
+                            ({data?.rows[0].elements[0].distance?.text} away)
+                          </span>
+                        </>
+                      ) : (
+                        <Skeleton variant="text" width={"100%"} height={30} />
+                      )}{" "}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", gap: ".5em" }}>
+                    <Avatar
+                      sx={{ width: "20px", height: "20px" }}
+                      src={card1}
+                    />
+                    <Typography sx={{ fontSize: "13px" }}>
+                      {" "}
+                      Delivery Available
+                    </Typography>
+                  </Box>
+                </Box>
+              </Card>
+              <Restaurant status={status === "Closed" ? "Closed" : ""} />
+            </Container>
+          )}
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default RestaurantPage;
