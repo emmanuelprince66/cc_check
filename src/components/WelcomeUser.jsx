@@ -20,8 +20,12 @@ const WelcomeUser = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentTheme = useTheme();
-  const [key, setKey] = useState("");
-  const [info, setInfo] = useState([]);
+  // const [key, setKey] = useState("");
+  const [info, setInfo] = useState(null);
+  const val = localStorage.getItem("myData");
+  let data = JSON.parse(val);
+
+ const key = data.id ? (data.id) : (val);
 
   const superMarket = useSuperMarket(key);
   const restaurant = useRestaurant(key);
@@ -39,32 +43,38 @@ const WelcomeUser = () => {
   };
   useEffect(() => {
     if (superMarket.data) {
-      setInfo(superMarket.data);
+      setInfo(superMarket?.data);
       dispatch(clearMerchantState());
       dispatch(clearMerchantState());
-      dispatch(populateMerchantDetails(superMarket.data));
-      setTimeout(() => {
-        navigate("/scan");
-      }, 3000);
+      dispatch(populateMerchantDetails(superMarket?.data));
+      if (info){
+        setTimeout(() => {
+          navigate("/scan");
+        }, 4000);
+  
+      }
     } else if (restaurant.data) {
-      setInfo(restaurant.data);
+      setInfo(restaurant?.data);
       dispatch(clearMerchantState());
       dispatch(clearCart());
       dispatch(populateMerchantDetails(restaurant?.data));
-      setTimeout(() => {
-        navigate("/cart");
-      }, 3000);
+      if (info){
+        setTimeout(() => {
+          navigate("/cart");
+        }, 4000);
+  
+      }
     } else {
       // notifyErr("No restaurant or supermarket found");
       console.log("No restaurant or supermarket found");
     }
-  }, [superMarket.data, restaurant.data]);
+  }, [superMarket.data, navigate,info, dispatch,restaurant.data]);
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
     let data = JSON.parse(val);
 
-    data.id ? setKey(data.id) : setKey(val);
+    // data.id ? setKey(data.id) : setKey(val);
   }, []);
 
   return (
@@ -141,15 +151,13 @@ const WelcomeUser = () => {
             fontWeight: "1000",
           }}
         >
-          {info ? (
-            info.restaurant ? (
-              info.restaurant.companyName
+          {(
+            info?.restaurant ? (
+              info?.restaurant?.companyName
             ) : (
-              info.companyName
+              info?.companyName
             )
-          ) : (
-            <CircularProgress size="1.5rem" color="error" />
-          )}
+          ) }
         </Typography>
       </Box>
       <ToastContainer />

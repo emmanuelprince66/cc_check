@@ -79,8 +79,9 @@ const Restaurant = ({status}) => {
   }
   function handleClickMenu(id) {
 
-if (!OTDRestaurantId && location.pathname.includes( '/restaurant') ){
-  dispatch(setOTDRestaurantId(params.id))
+if (location.pathname.includes( '/restaurant') ){
+  dispatch(setOTDOrderOnClickId(params.id))
+  console.log(params.id)
 }
      
     dispatch(setOrderInView(id));

@@ -57,7 +57,7 @@ const RestaurantMenu = () => {
   } = useSelector((state) => state.merchantReducer);
 
   const idToUse = isOTD
-    ? OTDRestaurantId || OTDOrderOnClickId
+    ? OTDOrderOnClickId
     : merchantDetails.restaurant
     ? merchantDetails?.restaurant?.id
     : null;

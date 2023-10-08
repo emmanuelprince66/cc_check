@@ -19,6 +19,8 @@ import {
   clearMerchantState,
   clearStateForOTD,
   initOTD,
+  setOTDRestaurantId,
+  setOTDOrderOnClickId,
   setLandmarks,
 } from "../../util/slice/merchantSlice";
 import clockIcon from "../../assets/clock.svg";
